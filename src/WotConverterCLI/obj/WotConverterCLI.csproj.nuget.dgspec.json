@@ -1,0 +1,138 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj",
+        "projectName": "WotConverterCLI",
+        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj",
+        "packagesPath": "C:\\Users\\z004sa3n\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\z004sa3n\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj": {
+                "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "JsonSchema.Net": {
+              "target": "Package",
+              "version": "[5.2.6, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+        "projectName": "WotConverterCore",
+        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+        "packagesPath": "C:\\Users\\z004sa3n\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\z004sa3n\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "DTDLParser": {
+              "target": "Package",
+              "version": "[1.0.52, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

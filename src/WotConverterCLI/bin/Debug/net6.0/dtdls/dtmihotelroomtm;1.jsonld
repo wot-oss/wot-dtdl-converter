@@ -1,0 +1,24 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:hotelroomtm;1",
+  "@type": "Interface",
+  "displayName": "HotelRoomTM",
+  "description": "Creted from HotelRoomTM thing model",
+  "comment": "coap://{{URI}}",
+  "contents": [
+    {
+      "@type": "Telemetry",
+      "name": "light/{{href_1}}",
+      "displayName": "light",
+      "description": "light",
+      "schema": "number"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "switch/{{href_2}}",
+      "displayName": "switch",
+      "description": "switch",
+      "schema": "boolean"
+    }
+  ]
+}

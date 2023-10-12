@@ -1,0 +1,12 @@
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\bin\Debug\net6.0\WotConverterCore.deps.json
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\bin\Debug\net6.0\WotConverterCore.dll
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\bin\Debug\net6.0\WotConverterCore.pdb
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.csproj.AssemblyReference.cache
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.AssemblyInfoInputs.cache
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.AssemblyInfo.cs
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.csproj.CoreCompileInputs.cache
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.dll
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\refint\WotConverterCore.dll
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\WotConverterCore.pdb
+C:\Users\z004sa3n\Repositories\DTDL\WotConverter\WotConverterCore\obj\Debug\net6.0\ref\WotConverterCore.dll

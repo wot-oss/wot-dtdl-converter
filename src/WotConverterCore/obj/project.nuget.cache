@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "fZxIwu1Z1sf/06SWIO+nfiz1izakrMi7qrwawvSibbDsH2QYUdjBS62K/ucJ+W7hGUtOvoNWQQDBR+JAfMnJEg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\dtdlparser\\1.0.52\\dtdlparser.1.0.52.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.text.json\\7.0.1\\system.text.json.7.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

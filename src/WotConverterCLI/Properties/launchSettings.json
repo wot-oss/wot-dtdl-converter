@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WotConverterCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "./Examples"
+    }
+  }
+}
