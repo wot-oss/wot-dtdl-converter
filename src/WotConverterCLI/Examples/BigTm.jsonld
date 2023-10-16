@@ -1,0 +1,152 @@
+{
+  "@context": "https://www.w3.org/2019/wot/td/v1",
+  "id": "urn:HotelRoom",
+  "securityDefinitions": {
+    "nosec_sc": {
+      "scheme": "nosec"
+    }
+  },
+  "security": "nosec_sc",
+  "@type": "tm:ThingModel",
+  "base": "coap://{{URL}}:3000",
+  "title": "simulated Hotel Room",
+  "properties": {
+    "brightness": {
+      "minimum": 0,
+      "maximum": 100,
+      "type": "integer",
+      "title": "Light Brightness",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/light/Brightness",
+          "op": [
+            "observeproperty",
+            "readproperty",
+            "writeproperty"
+          ]
+        }
+      ]
+    },
+    "color": {
+      "title": "Light Color",
+      "type": "string",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/light/Color",
+          "op": [
+            "readproperty",
+            "observeproperty",
+            "writeproperty"
+          ]
+        }
+      ]
+    },
+    "goalTemperature": {
+      "minimum": 16.0,
+      "maximum": 28.0,
+      "title": "Goal Temperature",
+      "type": "number",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/aircon/goalTemperature",
+          "op": [
+            "observeproperty",
+            "readproperty",
+            "writeproperty"
+          ]
+        }
+      ]
+    },
+    "currentTemperature": {
+      "title": "currentTemperature",
+      "type": "number",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/aircon/currentTemperature",
+          "op": [
+            "readproperty",
+            "observeproperty"
+          ]
+        }
+      ]
+    },
+    "smoke": {
+      "title": "Smoke Detector",
+      "type": "boolean",
+      "readOnly": false,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/smoke/isSmoke",
+          "op": [
+            "readproperty",
+            "observeproperty",
+            "writeproperty"
+          ]
+        }
+      ]
+    },
+    "roomnumber": {
+      "title": "Roomnumber",
+      "type": "integer",
+      "readOnly": true,
+      "observable": true,
+      "forms": [
+        {
+          "href": "/roomnumber/Roomnumber",
+          "op": [
+            "readproperty",
+            "observeproperty"
+          ]
+        }
+      ]
+    }
+  },
+  "actions": {
+    "DimLight": {
+      "title": "DimLight",
+      "input": {
+        "type": "object",
+        "properties": {
+          "brightness": {
+            "type": "integer",
+            "description": "An integer value that is equal to the lamps brightness in percent",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "duration": {
+            "type": "integer",
+            "description": "The amount of seconds the dimming should take",
+            "minimum": 2,
+            "maximum": 10
+          }
+        },
+        "required": [
+          "brightness",
+          "duration"
+        ]
+      },
+      "output": {
+        "type": "string"
+      },
+      "forms": [
+        {
+          "href": "/dim_light",
+          "contentType": "application/json",
+          "cov:methodName": "POST",
+          "op": [
+            "invokeaction"
+          ]
+        }
+      ]
+    }
+  }
+}

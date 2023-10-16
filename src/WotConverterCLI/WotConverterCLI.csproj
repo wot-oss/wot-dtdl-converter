@@ -26,10 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Examples\ExampleTM_1.jsonld">
+    <None Update="Examples\BigTm.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\ExampleTM_2.jsonld">
+    <None Update="Examples\InvalidTM.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using WotConverterCore.Interfaces;
+using WotConverterCore.Models.Common;
+using WotConverterCore.Models.Serializers;
+using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models
 {
@@ -14,7 +13,11 @@ namespace WotConverterCore.Models
         {
             Converters =
             {
-                GenericString.Singleton
+                GenericStringArray.Serializer,
+                GenericStringDouble.Serializer,
+                GenericStringInt.Serializer,
+                GenericStringBool.Serializer,
+                BaseDataSchema.Serializer
             },
             NullValueHandling = NullValueHandling.Ignore
         };
@@ -27,12 +30,30 @@ namespace WotConverterCore.Models
             return targetConvertible.IsAssignableFrom(typeof(T));
         }
 
+        protected static string SanitizeMustacheJson(string inputString)
+        {
+            if (string.IsNullOrWhiteSpace(inputString))
+                return inputString;
+
+            //Replace '{{' with '"{{'
+            inputString = Regex.Replace(inputString, @"(?<!""){1}(?<="" :)(?:\s *)(\{\{)(?!\""){1}", @"""{{");
+
+            //Replace '}}' with '}}"'
+            inputString = Regex.Replace(inputString, @"(?<!""){1}(\}\})(?=\s*,)(?!\""){1}", @"}}""");
+
+            return inputString;
+        }
         public string Serialize() =>
             JsonConvert.SerializeObject(this, Formatting.Indented, SerializationSettings);
 
-        public static T? Deserialize(string inputString) =>
-             JsonConvert.DeserializeObject<T>(inputString, SerializationSettings);
+        public static T? Deserialize(string inputString, bool sanitizeMustache = false) =>
+            JsonConvert.DeserializeObject<T>(
+                sanitizeMustache ? SanitizeMustacheJson(inputString) : inputString, SerializationSettings);
 
-        
+
     }
 }
+
+
+
+

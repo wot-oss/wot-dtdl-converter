@@ -281,11 +281,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+      "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj",
       "projectName": "WotConverterCore",
-      "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+      "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj",
       "packagesPath": "C:\\Users\\z004sa3n\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\obj\\",
+      "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\z004sa3n\\AppData\\Roaming\\NuGet\\NuGet.Config",

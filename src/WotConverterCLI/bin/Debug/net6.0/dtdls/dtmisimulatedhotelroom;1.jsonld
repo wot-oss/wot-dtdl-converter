@@ -1,0 +1,46 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:simulated:hotel:room;1",
+  "@type": "Interface",
+  "displayName": "simulated Hotel Room",
+  "description": "Creted from simulated Hotel Room thing model",
+  "comment": "coap://localhost:3000",
+  "contents": [
+    {
+      "@type": "Telemetry",
+      "name": "brightness/light/Brightness",
+      "displayName": "brightness",
+      "description": "brightness"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "color/light/Color",
+      "displayName": "color",
+      "description": "color"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "goalTemperature/aircon/goalTemperature",
+      "displayName": "goalTemperature",
+      "description": "goalTemperature"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "currentTemperature/aircon/currentTemperature",
+      "displayName": "currentTemperature",
+      "description": "currentTemperature"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "smoke/smoke/isSmoke",
+      "displayName": "smoke",
+      "description": "smoke"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "roomnumber/roomnumber/Roomnumber",
+      "displayName": "roomnumber",
+      "description": "roomnumber"
+    }
+  ]
+}

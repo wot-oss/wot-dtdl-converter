@@ -1,16 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models;
+﻿using WotConverterCore.Models.DigitalTwin;
+using WotConverterCore.Models.ThingModel;
+using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Converters
 {
     internal static class DTDLConverters
     {
-        public static DTDL? ThingModel2DTDL(ThingModel tm)
+        public static DTDL? ThingModel2DTDL(TM tm)
         {
 
             try
@@ -25,49 +21,44 @@ namespace WotConverterCore.Converters
                     Comment = tm.Base
                 };
 
-                if (tm.Context.StringArray == null && tm.Context.String != null)
-                {
-                    if (tm.Context.String.Contains("/UA/"))
-                    {
-                        dtdl.Comment += ";" + tm.Context.String;
-                    }
-                }
-
-                foreach (var context in tm.Context.StringArray ?? new List<string>())
-                {
-                    if (context.Contains("/UA/"))
-                    {
-                        dtdl.Comment += ";" + context;
-                    }
-                }
-
-                if (dtdl.Comment == null)
-                    throw new Exception("No Tm context has been provided.");
-               
-
-                dtdl.Contents = new List<Content>();
-                foreach (KeyValuePair<string, Property> property in tm.Properties)
+                //DTDL Properties
+                var tmProperties = tm.GetProperties() ?? new();
+                foreach (var property in tmProperties)
                 {
                     foreach (Form form in property.Value.Forms)
                     {
-                        Content content = new();
-                        content.Name = property.Key + "/" + form.Href.Trim('/');
-                        content.DisplayName = property.Key;
-                        content.Type = "Telemetry";
+                        DTDLProperty content = new();
+                        content.Name = property.Key;
+                        content.DisplayName = property.Value.Title;
+                        content.Description = property.Value.Description;
+                        content.Schema = GetDTDLType(property.Value.Type);
 
                         if (tm.Base.ToLower().StartsWith("modbus://"))
                         {
-                            content.Description = property.Key.Replace("_", "") + "_" + form.ModbusQuantity + ";" + form.ModbusAddress.ToString();
-                            content.Schema = "string";
+                            content.Comment = @$"modbus connection: function={form.ModbusFunction}, address={form.ModbusAddress}, quantity={form.ModbusQuantity}, unitId={form.ModbusUnitId}";
                         }
                         else
                         {
-                            content.Description = property.Key;
                             content.Schema = form.Type;
                         }
 
-                        dtdl.Contents.Add(content);
+                        dtdl.Addcontent(content);
                     }
+                }
+
+                //DTDL Telemetry
+                var tmActions = tm.GetActions() ?? new();
+                foreach (var action in tmActions)
+                {
+
+                }
+
+                //DTDL Telemetry
+                var tmEvents = tm.GetEvents() ?? new();
+
+                foreach (var eventValue in tmEvents)
+                {
+
                 }
 
                 return dtdl;
@@ -79,5 +70,9 @@ namespace WotConverterCore.Converters
             }
         }
 
+        private static string GetDTDLType(TypeEnum TMType)
+        {
+            return "string";
+        }
     }
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj": {}
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\WotConverterCLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj": {
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\WotConverterCLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj",
+        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\WotConverterCLI.csproj",
         "projectName": "WotConverterCLI",
-        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\WotConverterCLI.csproj",
+        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\WotConverterCLI.csproj",
         "packagesPath": "C:\\Users\\z004sa3n\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCLI\\obj\\",
+        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\z004sa3n\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj": {
-                "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj"
+              "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj": {
+                "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj"
               }
             }
           }
@@ -69,14 +69,14 @@
         }
       }
     },
-    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj": {
+    "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+        "projectUniqueName": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj",
         "projectName": "WotConverterCore",
-        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\WotConverterCore.csproj",
+        "projectPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\WotConverterCore.csproj",
         "packagesPath": "C:\\Users\\z004sa3n\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\WotConverterCore\\obj\\",
+        "outputPath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\z004sa3n\\AppData\\Roaming\\NuGet\\NuGet.Config",

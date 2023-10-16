@@ -1,12 +1,9 @@
-﻿using WotConverterCore.Models;
-using System.IO;
+﻿using Json.Schema;
 using System.Reflection;
-using Json.Schema;
-using Newtonsoft.Json.Schema;
-using Json.More;
+using WotConverterCore.Models.DigitalTwin;
+using WotConverterCore.Models.ThingModel;
 
 Console.WriteLine("======== WOT TD CONVERTER =======");
-
 
 if (args.Length < 0)
 {
@@ -22,7 +19,7 @@ var resourceName = "WotConverterCLI.Examples.Schema.Schema.jsonld";
 var dtdls = new List<DTDL>();
 var files = new List<string>();
 
-if(!((File.GetAttributes(pathToTm) & FileAttributes.Directory) == FileAttributes.Directory))
+if (!((File.GetAttributes(pathToTm) & FileAttributes.Directory) == FileAttributes.Directory))
 {
     files.Add(pathToTm);
 }
@@ -38,18 +35,18 @@ else
     files = files.Where(_ => _.EndsWith(".jsonld")).ToList();
 }
 
-Console.WriteLine("Validating TMs...");
+Console.WriteLine("=== Validating TMs...");
 
 foreach (var item in files)
 {
-    Console.WriteLine($"---------- TM {item} ----------");
+    Console.WriteLine($"\n--- TM {item}");
 
-    using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+    using (Stream? stream = assembly.GetManifestResourceStream(resourceName))
     using (StreamReader schemaSr = new StreamReader(stream))
     using (var tmSr = new StreamReader(item))
     {
         var sourceTm = tmSr.ReadToEnd();
-        var schema = await Json.Schema.JsonSchema.FromStream(schemaSr.BaseStream);
+        var schema = await JsonSchema.FromStream(schemaSr.BaseStream);
         if (schema == null)
         {
             Console.WriteLine("Unable to parse source schema validation! ");
@@ -61,20 +58,20 @@ foreach (var item in files)
 
         if (!res.IsValid)
         {
-            Console.WriteLine("The TM file provided is not a valid json schema! ");
-            return 1;
+            Console.WriteLine($"The TM file: {item} is not a valid TM file! ");
+            continue;
         }
 
         Console.WriteLine("Valid Tm File!");
 
-        var thingModel = ThingModel.Deserialize(sourceTm);
+        var thingModel = TM.Deserialize(sourceTm, true);
         if (thingModel == null)
         {
             Console.WriteLine("Unable to convert TM to DTDL");
             return 1;
         }
 
-        Console.WriteLine("TM properties: {0}", thingModel.Properties?.Count() ?? 0);
+        Console.WriteLine("TM properties: {0}", thingModel.GetProperties()?.Count() ?? 0);
 
         var dtdl = new DTDL();
         dtdl.ConvertFrom(thingModel);
@@ -89,15 +86,17 @@ bool exists = Directory.Exists("./dtdls");
 if (!exists)
     Directory.CreateDirectory("./dtdls");
 
+Console.WriteLine("\n=== Writing DTDLS... \n");
+
 foreach (var dtdl in dtdls)
 {
     using (StreamWriter outputFile = new StreamWriter(Path.Combine("./dtdls", dtdl.Id.Replace(":", "") + ".jsonld")))
     {
         await outputFile.WriteAsync(dtdl.Serialize());
-        Console.WriteLine("New DTDL file output: {0}", ((FileStream)(outputFile.BaseStream)).Name);
+        Console.WriteLine("New DTDL file output: {0} \n ---", ((FileStream)(outputFile.BaseStream)).Name);
     }
 }
 
-
+Console.WriteLine("\nConversion Ended !");
 return 0;
 
