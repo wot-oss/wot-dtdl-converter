@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "YO2YSrcyH1k+w5nX2uOWZLTmEX6CN45B0UV74EALbbwNVu0jV7Gi1V4hd2lgfrdJ1U3kVMsD/rOD6t04pGSJQQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\z004sa3n\\Repositories\\DTDL\\WotConverter\\src\\WotConverterCLI\\WotConverterCLI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\dtdlparser\\1.0.52\\dtdlparser.1.0.52.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\jetbrains.annotations\\2021.2.0\\jetbrains.annotations.2021.2.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\json.more.net\\1.9.0\\json.more.net.1.9.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\jsonpointer.net\\3.0.3\\jsonpointer.net.3.0.3.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\jsonschema.net\\5.2.6\\jsonschema.net.5.2.6.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\z004sa3n\\.nuget\\packages\\system.text.json\\7.0.1\\system.text.json.7.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

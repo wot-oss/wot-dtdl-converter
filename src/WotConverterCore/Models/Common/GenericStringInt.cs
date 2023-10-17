@@ -17,5 +17,15 @@ namespace WotConverterCore.Models.Common
         internal static readonly GenericStringIntSerializer Serializer = new GenericStringIntSerializer();
 
         public bool isString() => stringInt != null;
+
+        public override string ToString()
+        {
+            if (integer != null)
+                return integer.ToString();
+            else if (stringInt != null)
+                return stringInt.ToString();
+            else
+                return "";
+        } 
     }
 }

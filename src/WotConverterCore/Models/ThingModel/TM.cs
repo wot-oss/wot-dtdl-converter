@@ -133,22 +133,22 @@ namespace WotConverterCore.Models.ThingModel
     public class Link
     {
         [JsonProperty("anchor")]
-        public string Anchor { get; set; }
+        public string? Anchor { get; set; }
 
         [JsonProperty("href")]
-        public string Href { get; set; }
+        public string? Href { get; set; }
 
         [JsonProperty("hreflang")]
         public GenericStringArray? Hreflang { get; set; }
 
         [JsonProperty("rel")]
-        public string Rel { get; set; }
+        public string? Rel { get; set; }
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [JsonProperty("sizes")]
-        public string Sizes { get; set; }
+        public string? Sizes { get; set; }
     }
 
 }

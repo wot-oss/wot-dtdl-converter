@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.Serializers;
+﻿using System.Globalization;
+using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
@@ -17,5 +18,14 @@ namespace WotConverterCore.Models.Common
         internal static readonly GenericStringBoolSerializer Serializer = new GenericStringBoolSerializer();
         public bool isString() => stringBoolean != null;
 
+        public override string ToString()
+        {
+            if (boolean != null)
+                return boolean.ToString();
+            else if (stringBoolean != null)
+                return stringBoolean.ToString();
+            else
+                return "";
+        }
     }
 }

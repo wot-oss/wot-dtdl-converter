@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.Serializers;
+﻿using System.Globalization;
+using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
@@ -16,5 +17,12 @@ namespace WotConverterCore.Models.Common
         internal static readonly GenericStringArraySerializer Serializer = new GenericStringArraySerializer();
 
         public bool isString() => stringValue != null;
+        public override string ToString()
+        {
+            if (stringValue != null)
+                return stringValue.ToString();
+            else
+                return "";
+        }
     }
 }

@@ -10,22 +10,22 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         public string? LdType { get; set; }
 
         [JsonProperty("format")]
-        public string Format { get; set; }
+        public string? Format { get; set; }
 
         [JsonProperty("title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonProperty("titles")]
-        public Dictionary<string, string> Titles { get; set; }
+        public Dictionary<string, string>? Titles { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("descriptions")]
-        public Dictionary<string, string> Descriptions { get; set; }
+        public Dictionary<string, string>? Descriptions { get; set; }
 
         [JsonProperty("type")]
-        public TypeEnum Type { get; protected set; }
+        public TypeEnum? Type { get; protected set; }
 
         [JsonProperty("writeOnly")]
         public bool? WriteOnly { get; set; }

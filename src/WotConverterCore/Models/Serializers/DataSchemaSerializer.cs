@@ -15,32 +15,67 @@ namespace WotConverterCore.Models.Serializers
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
-            var baseDataSchema = serializer.Deserialize<BaseDataSchema>(reader);
-
-            if (baseDataSchema == null)
+            if (reader.TokenType == JsonToken.Null)
                 return null;
 
-            switch (baseDataSchema.Type)
+            JObject jObject = JObject.Load(reader);
+
+            var baseObject = new BaseDataSchema();
+            var parsedType = jObject["type"]?.ToString();
+            if (parsedType == null)
+                return null;
+
+            var baseObjectType = Enum.Parse(typeof(TypeEnum), parsedType, true);
+
+            switch (baseObjectType)
             {
                 case TypeEnum.Array:
-                    return serializer.Deserialize<ArraySchema>(reader);
+                    baseObject = existingValue as ArraySchema ?? (ArraySchema)serializer.ContractResolver.ResolveContract(typeof(ArraySchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.Boolean:
-                    return serializer.Deserialize<BooleanSchema>(reader);
+                    baseObject = existingValue as BooleanSchema ?? (BooleanSchema)serializer.ContractResolver.ResolveContract(typeof(BooleanSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.Number:
-                    return serializer.Deserialize<NumberSchema>(reader);
+                    baseObject = existingValue as NumberSchema ?? (NumberSchema)serializer.ContractResolver.ResolveContract(typeof(NumberSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.Integer:
-                    return serializer.Deserialize<IntegerSchema>(reader);
+                    baseObject = existingValue as IntegerSchema ?? (IntegerSchema)serializer.ContractResolver.ResolveContract(typeof(IntegerSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.Object:
-                    return serializer.Deserialize<ObjectSchema>(reader);
+                    baseObject = existingValue as ObjectSchema ?? (ObjectSchema)serializer.ContractResolver.ResolveContract(typeof(ObjectSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.String:
-                    return serializer.Deserialize<StringSchema>(reader);
+                    baseObject = existingValue as StringSchema ?? (StringSchema)serializer.ContractResolver.ResolveContract(typeof(StringSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
                 case TypeEnum.Null:
-                    return serializer.Deserialize<NullSchema>(reader);
+                    baseObject = existingValue as NullSchema ?? (NullSchema)serializer.ContractResolver.ResolveContract(typeof(NullSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
+                case null:
                 default:
+                    baseObject = existingValue as BaseDataSchema ?? (BaseDataSchema)serializer.ContractResolver.ResolveContract(typeof(BaseDataSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
                     break;
             }
 
-            return baseDataSchema;
+            using (var subReader = jObject.CreateReader())
+                serializer.Populate(subReader, baseObject); 
+
+            return baseObject;
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)

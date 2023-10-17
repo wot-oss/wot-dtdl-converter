@@ -29,7 +29,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string DisplayName { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -54,7 +54,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string DisplayName { get; set; }
 
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

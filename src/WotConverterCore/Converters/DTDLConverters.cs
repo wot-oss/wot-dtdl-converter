@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.DigitalTwin;
+﻿using System.Net;
+using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
@@ -22,44 +23,13 @@ namespace WotConverterCore.Converters
                 };
 
                 //DTDL Properties
-                var tmProperties = tm.GetProperties() ?? new();
-                foreach (var property in tmProperties)
-                {
-                    foreach (Form form in property.Value.Forms)
-                    {
-                        DTDLProperty content = new();
-                        content.Name = property.Key;
-                        content.DisplayName = property.Value.Title;
-                        content.Description = property.Value.Description;
-                        content.Schema = GetDTDLType(property.Value.Type);
+                CreateDTDLProperties(ref dtdl, tm);
 
-                        if (tm.Base.ToLower().StartsWith("modbus://"))
-                        {
-                            content.Comment = @$"modbus connection: function={form.ModbusFunction}, address={form.ModbusAddress}, quantity={form.ModbusQuantity}, unitId={form.ModbusUnitId}";
-                        }
-                        else
-                        {
-                            content.Schema = form.Type;
-                        }
-
-                        dtdl.Addcontent(content);
-                    }
-                }
+                //DTDL Commands
+                CreateDTDLCommands(ref dtdl, tm);
 
                 //DTDL Telemetry
-                var tmActions = tm.GetActions() ?? new();
-                foreach (var action in tmActions)
-                {
-
-                }
-
-                //DTDL Telemetry
-                var tmEvents = tm.GetEvents() ?? new();
-
-                foreach (var eventValue in tmEvents)
-                {
-
-                }
+                CreateDTDLTelemetry(ref dtdl, tm);
 
                 return dtdl;
             }
@@ -70,9 +40,177 @@ namespace WotConverterCore.Converters
             }
         }
 
-        private static string GetDTDLType(TypeEnum TMType)
+        private static void CreateDTDLProperties(ref DTDL dtdl, TM tm)
         {
-            return "string";
+            var tmProperties = tm.GetProperties() ?? new();
+
+            //TODO: Enum, Object, Map values
+            foreach (var property in tmProperties)
+            {
+                var propertyForms = property.Value.Forms;
+                var propertyValue = property.Value;
+
+                foreach (Form form in propertyForms)
+                {
+                    var formIndexName = (propertyForms.Count() > 1 ? $"_{propertyForms.IndexOf(form)}" : "");
+                    var formIndexDisplayName = (propertyForms.Count() > 1 ? $"({propertyForms.IndexOf(form)})" : "");
+                    DTDLProperty content = new()
+                    {
+                        Name = property.Key + formIndexName,
+                        DisplayName = propertyValue.Title + formIndexDisplayName,
+                        Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' TM",
+                        Schema = GetDTDLSchema(propertyValue.Type, propertyValue.Format),
+                        Writable = form.Op?.Contains(Op.WriteProperty) ?? false
+                    };
+
+                    content.Comment = GetProtocolComment(form, tm.Base);
+
+                    dtdl.Addcontent(content);
+                }
+            }
+        }
+        private static void CreateDTDLCommands(ref DTDL dtdl, TM tm)
+        {
+            var tmActions = tm.GetActions() ?? new();
+            foreach (var action in tmActions)
+            {
+                var actionForms = action.Value.Forms;
+                var actionValue = action.Value;
+
+                foreach (Form form in actionForms)
+                {
+                    var formIndexName = (actionForms.Count() > 1 ? $"_{actionForms.IndexOf(form)}" : "");
+                    var formIndexDisplayName = (actionForms.Count() > 1 ? $"({actionForms.IndexOf(form)})" : "");
+                    DTDLCommand content = new()
+                    {
+                        Name = action.Key + formIndexName,
+                        DisplayName = actionValue.Title + formIndexDisplayName,
+                        Description = actionValue.Description ?? $"Property obtained from '{tm.Title}' TM"
+                    };
+
+                    if (actionValue.Input != null)
+                    {
+                        var request = new DTDLCommandRequest
+                        {
+                            DisplayName = actionValue.Input.Title ?? action.Key + " Request",
+                            Name = action.Key + "Request" + formIndexName,
+                            Description = actionValue.Input.Description,
+                            Schema = GetDTDLSchema(actionValue.Input.Type, actionValue.Input.Format)
+                        };
+
+                        content.Request = request;
+                    }
+
+                    if (actionValue.Output != null)
+                    {
+                        var response = new DTDLCommandResponse
+                        {
+                            DisplayName = actionValue.Output.Title ?? action.Key + " Response",
+                            Name = action.Key + "Response" + formIndexName,
+                            Description = actionValue.Output.Description,
+                            Schema = GetDTDLSchema(actionValue.Output.Type, actionValue.Output.Format)
+                        };
+
+                        content.Response = response;
+                    }
+
+                    content.Comment = GetProtocolComment(form, tm.Base);
+
+                    dtdl.Addcontent(content);
+                }
+            }
+        }
+        private static void CreateDTDLTelemetry(ref DTDL dtdl, TM tm)
+        {
+            var tmEvents = tm.GetEvents() ?? new();
+
+            foreach (var ev in tmEvents)
+            {
+                var eventForms = ev.Value.Forms;
+                var eventValue = ev.Value;
+
+                foreach (Form form in eventForms)
+                {
+                    var formIndexName = (eventForms.Count() > 1 ? $"_{eventForms.IndexOf(form)}" : "");
+                    var formIndexDisplayName = (eventForms.Count() > 1 ? $"({eventForms.IndexOf(form)})" : "");
+                    DTDLTelemetry content = new()
+                    {
+                        Name = ev.Key + formIndexName,
+                        DisplayName = eventValue.Title + formIndexDisplayName,
+                        Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' TM",
+                        Schema = GetDTDLSchema(eventValue.DataResponse?.Type , eventValue.DataResponse?.Format),
+                    };
+
+                    content.Comment = GetProtocolComment(form, tm.Base);
+
+                    dtdl.Addcontent(content);
+                }
+            }
+        }
+
+        private static string GetDTDLSchema(TypeEnum? TMType, string? format = null)
+        {
+            if (TMType == null)
+                return "string";
+
+            switch(TMType)
+            {
+                case TypeEnum.String:
+                    if (format == "date-time")
+                        return "dateTime";
+                    else if (format == "time")
+                        return "duration";
+                    else
+                        return "string";
+                case TypeEnum.Number:
+                    return "double";
+                case TypeEnum.Boolean:
+                    return "boolean";
+                case TypeEnum.Integer: 
+                    return "integer";
+                case TypeEnum.Object: 
+                    return "Object";
+                case TypeEnum.Array: 
+                    return "Array";
+                default:
+                    return "string";
+            }
+        }
+
+        private static string? GetProtocolComment(Form form, string? baseAddress = null)
+        {
+            var comment = string.Empty;
+
+            if ((baseAddress?.ToLower().StartsWith("modbus://") ?? false) || (form.Href?.OriginalString.ToLower().StartsWith("modbus://") ?? false))
+            {
+                if (form.ModbusFunction.HasValue)
+                {
+                    comment?.Trim(':');
+                    comment += $"function={Enum.GetName(form.ModbusFunction.Value)}, ";
+                }
+
+                if (form.ModbusAddress != null)
+                {
+                    comment?.Trim(':');
+                    comment = $"adress={form.ModbusAddress}, ";
+                }
+
+                if (form.ModbusQuantity != null)
+                {
+                    comment?.Trim(':');
+                    comment = $"quantity={form.ModbusQuantity}, ";
+                }
+
+                if (form.ModbusUnitId != null)
+                {
+                    comment?.Trim(':');
+                    comment = $"unitId={form.ModbusUnitId}";
+                }
+
+                comment?.TrimEnd(',');
+            }
+
+            return string.IsNullOrWhiteSpace(comment) ? null : comment;
         }
     }
 }

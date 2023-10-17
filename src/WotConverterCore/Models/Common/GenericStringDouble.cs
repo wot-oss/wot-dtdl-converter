@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.Serializers;
+﻿using System.Globalization;
+using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
@@ -17,6 +18,15 @@ namespace WotConverterCore.Models.Common
         internal static readonly GenericStringDoubleSerializer Serializer = new GenericStringDoubleSerializer();
         public bool isString() => stringDouble != null;
 
+        public override string ToString()
+        {
+            if (doubleValue != null)
+                return doubleValue.ToString();
+            else if (stringDouble != null)
+                return stringDouble.ToString();
+            else
+                return "";
+        }
 
     }
 }

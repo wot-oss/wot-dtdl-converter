@@ -17,7 +17,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string Id { get; set; }
 
         [JsonProperty("@type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = "Interface";
 
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
