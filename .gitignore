@@ -3,3 +3,7 @@
 ################################################################################
 
 /src/.vs/WotConverter
+/src/WotConverterCLI/obj
+/src/WotConverterCore/obj
+/src/WotConverterCLI/bin
+/src/WotConverterCore/bin
