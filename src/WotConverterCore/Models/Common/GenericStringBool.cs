@@ -1,9 +1,9 @@
-﻿using System.Globalization;
+﻿using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    public class GenericStringBool : IGenericString
+    public class GenericStringBool : IGenericString, ISerializable<GenericStringBoolSerializer>
     {
 
         private bool? boolean;

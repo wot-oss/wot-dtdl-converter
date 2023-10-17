@@ -1,5 +1,5 @@
-﻿using System.Net;
-using WotConverterCore.Models.DigitalTwin;
+﻿using WotConverterCore.Models.DigitalTwin;
+using WotConverterCore.Models.DigitalTwin.Schema;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
@@ -9,7 +9,6 @@ namespace WotConverterCore.Converters
     {
         public static DTDL? ThingModel2DTDL(TM tm)
         {
-
             try
             {
                 DTDL dtdl = new()
@@ -39,6 +38,92 @@ namespace WotConverterCore.Converters
                 return null;
             }
         }
+        public static DTDLBaseSchema? TMSchema2DTDLSchema(BaseDataSchema? schema)
+        {
+            if (schema == null)
+                return null;
+
+            switch (schema.Type)
+            {
+                case TypeEnum.String:
+
+                    if (schema.Enum?.Any() ?? false)
+                    {
+                        var enumResult = new DTDLEnumSchema("string")
+                        {
+                            DisplayName = schema.Title,
+                            Description = schema.Description
+                        };
+
+
+                        foreach (var item in schema.Enum)
+                        {
+                            enumResult.AddEnumValue(new DTDLEnumValue
+                            {
+                                DisplayName = item,
+                                Name = item,
+                                EnumValue = item
+                            });
+                        }
+
+                        return enumResult;
+                    }
+
+                    else if (schema.Format == "date-time")
+                        return "dateTime";
+                    else if (schema.Format == "time")
+                        return "duration";
+                    else
+                        return "string";
+
+                case TypeEnum.Object:
+
+                    var objectResult = new DTDLObjectSchema()
+                    {
+                        DisplayName = schema.Title,
+                        Description = schema.Description,
+                    };
+
+                    var castedTmObjectSchema = (ObjectSchema)schema;
+                    foreach (var item in castedTmObjectSchema?.Properties ?? new())
+                    {
+                        objectResult.AddObjectField(new DTDLObjectField
+                        {
+                            Description = item.Value.Description,
+                            Name = item.Key,
+                            DisplayName = item.Value.Title?.Replace(" ", ""),
+                            Schema = TMSchema2DTDLSchema(item.Value)
+                        });
+                    }
+
+                    return objectResult;
+
+                case TypeEnum.Array:
+                    var arrayResult = new DTDLArraySchema("string")
+                    {
+                        DisplayName = schema.Title,
+                        Description = schema.Description
+                    };
+                    
+                    var castedTmArraySchema = (ArraySchema)schema;
+                    
+                    if (castedTmArraySchema.Items != null)
+                    {
+                        arrayResult.ElementSchema = TMSchema2DTDLSchema(castedTmArraySchema.Items);        
+                    }
+
+                    return arrayResult;
+
+                case TypeEnum.Number:
+                    return "double";
+                case TypeEnum.Boolean:
+                    return "boolean";
+                case TypeEnum.Integer:
+                    return "integer";
+                default:
+                    return "string";
+            }
+        }
 
         private static void CreateDTDLProperties(ref DTDL dtdl, TM tm)
         {
@@ -59,8 +144,8 @@ namespace WotConverterCore.Converters
                         Name = property.Key + formIndexName,
                         DisplayName = propertyValue.Title + formIndexDisplayName,
                         Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model",
-                        Schema = GetDTDLSchema(propertyValue.Type, propertyValue.Format),
-                        Writable = form.Op?.Contains(Op.WriteProperty) ?? false
+                        Schema = TMSchema2DTDLSchema(propertyValue.DataSchema),
+                        Writable = form.HasOpProperty(OpEnum.WriteProperty)
                     };
 
                     content.Comment = GetProtocolComment(form, tm.Base);
@@ -95,7 +180,7 @@ namespace WotConverterCore.Converters
                             DisplayName = actionValue.Input.Title ?? action.Key + " Request",
                             Name = action.Key + "Request" + formIndexName,
                             Description = actionValue.Input.Description,
-                            Schema = GetDTDLSchema(actionValue.Input.Type, actionValue.Input.Format)
+                            Schema = TMSchema2DTDLSchema(actionValue.Input)
                         };
 
                         content.Request = request;
@@ -108,7 +193,7 @@ namespace WotConverterCore.Converters
                             DisplayName = actionValue.Output.Title ?? action.Key + " Response",
                             Name = action.Key + "Response" + formIndexName,
                             Description = actionValue.Output.Description,
-                            Schema = GetDTDLSchema(actionValue.Output.Type, actionValue.Output.Format)
+                            Schema = TMSchema2DTDLSchema(actionValue.Output)
                         };
 
                         content.Response = response;
@@ -138,7 +223,7 @@ namespace WotConverterCore.Converters
                         Name = ev.Key + formIndexName,
                         DisplayName = eventValue.Title + formIndexDisplayName,
                         Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' Thing Model",
-                        Schema = GetDTDLSchema(eventValue.DataResponse?.Type , eventValue.DataResponse?.Format),
+                        Schema = TMSchema2DTDLSchema(eventValue.DataResponse),
                     };
 
                     content.Comment = GetProtocolComment(form, tm.Base);
@@ -148,34 +233,6 @@ namespace WotConverterCore.Converters
             }
         }
 
-        private static string GetDTDLSchema(TypeEnum? TMType, string? format = null)
-        {
-            if (TMType == null)
-                return "string";
-
-            switch(TMType)
-            {
-                case TypeEnum.String:
-                    if (format == "date-time")
-                        return "dateTime";
-                    else if (format == "time")
-                        return "duration";
-                    else
-                        return "string";
-                case TypeEnum.Number:
-                    return "double";
-                case TypeEnum.Boolean:
-                    return "boolean";
-                case TypeEnum.Integer: 
-                    return "integer";
-                case TypeEnum.Object: 
-                    return "Object";
-                case TypeEnum.Array: 
-                    return "Array";
-                default:
-                    return "string";
-            }
-        }
 
         private static string? GetProtocolComment(Form form, string? baseAddress = null)
         {

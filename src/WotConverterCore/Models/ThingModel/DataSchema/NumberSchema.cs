@@ -7,7 +7,7 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
     {
         public NumberSchema()
         {
-            Type = TypeEnum.Number;        
+            Type = TypeEnum.Number;
         }
 
         [JsonProperty("minimum")]

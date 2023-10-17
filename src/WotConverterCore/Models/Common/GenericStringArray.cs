@@ -1,20 +1,20 @@
-﻿using System.Globalization;
+﻿using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    public class GenericStringArray : IGenericString
+    public class GenericStringArray<T> : IGenericString, ISerializable<GenericStringArraySerializer<T>>
     {
-        private List<string>? stringArray;
+        private List<T>? array;
         private string? stringValue;
 
-        public List<string>? StringArray { get { return stringArray; } set { stringValue = null; stringArray = value; } }
-        public string? String { get { return stringValue; } set { stringArray = null; stringValue = value; } }
+        public List<T>? Array { get { return array; } set { stringValue = null; array = value; } }
+        public string? String { get { return stringValue; } set { array = null; stringValue = value; } }
 
-        public static implicit operator GenericStringArray(string String) => new GenericStringArray { String = String };
-        public static implicit operator GenericStringArray(List<string> StringArray) => new GenericStringArray { StringArray = StringArray };
+        public static implicit operator GenericStringArray<T>(string String) => new GenericStringArray<T> { String = String };
+        public static implicit operator GenericStringArray<T>(List<T> array) => new GenericStringArray<T> { Array = array };
 
-        internal static readonly GenericStringArraySerializer Serializer = new GenericStringArraySerializer();
+        internal static readonly GenericStringArraySerializer<T> Serializer = new GenericStringArraySerializer<T>();
 
         public bool isString() => stringValue != null;
         public override string ToString()

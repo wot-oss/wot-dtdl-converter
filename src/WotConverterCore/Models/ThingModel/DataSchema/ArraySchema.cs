@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using WotConverterCore.Models.Common;
+using WotConverterCore.Models.DigitalTwin.Schema;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
@@ -7,11 +8,11 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
     {
         public ArraySchema()
         {
-            Type = TypeEnum.Array; 
+            Type = TypeEnum.Array;
         }
 
         [JsonProperty("items")]
-        public List<BaseDataSchema> Items { get; set; }
+        public BaseDataSchema? Items { get; set; }
 
         [JsonProperty("minItems")]
         public GenericStringInt? MinItems { get; set; }

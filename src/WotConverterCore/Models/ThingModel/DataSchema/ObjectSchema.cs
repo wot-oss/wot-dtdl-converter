@@ -6,7 +6,7 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
     {
         public ObjectSchema()
         {
-            Type = TypeEnum.Object;                
+            Type = TypeEnum.Object;
         }
 
         [JsonProperty("properties")]
@@ -14,6 +14,5 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
 
         [JsonProperty("required")]
         public string[]? Required { get; set; }
-
     }
 }

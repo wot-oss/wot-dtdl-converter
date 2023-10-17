@@ -2,7 +2,8 @@
 using System.Text.RegularExpressions;
 using WotConverterCore.Interfaces;
 using WotConverterCore.Models.Common;
-using WotConverterCore.Models.Serializers;
+using WotConverterCore.Models.DigitalTwin.Schema;
+using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models
@@ -13,11 +14,14 @@ namespace WotConverterCore.Models
         {
             Converters =
             {
-                GenericStringArray.Serializer,
+                GenericStringArray<string>.Serializer,
+                GenericStringArray<OpEnum>.Serializer,
                 GenericStringDouble.Serializer,
                 GenericStringInt.Serializer,
                 GenericStringBool.Serializer,
-                BaseDataSchema.Serializer
+                BaseDataSchema.Serializer,
+                DTDLBaseSchema.Serializer,
+                Property.Serializer
             },
             NullValueHandling = NullValueHandling.Ignore
         };

@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Models.DigitalTwin.Schema;
+
 namespace WotConverterCore.Models.DigitalTwin
 {
     public class DTDLProperty : BaseDTDLContent
@@ -12,7 +14,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public bool? Writable { get; set; }
 
         [JsonProperty("schema")]
-        public string? Schema { get; set; }
+        public DTDLBaseSchema? Schema { get; set; }
 
     }
 }

@@ -60,6 +60,14 @@ foreach (var item in files)
         if (!res.IsValid)
         {
             Console.WriteLine($"The TM file: {item} is not a valid TM file! ");
+            if (res.Errors?.Any() ?? false)
+            {
+                Console.WriteLine("ERRORS:");
+                foreach (var err in res.Errors)
+                {
+                    Console.WriteLine($"\t- {err.Key} => {err.Value}");
+                }
+            }
             continue;
         }
 

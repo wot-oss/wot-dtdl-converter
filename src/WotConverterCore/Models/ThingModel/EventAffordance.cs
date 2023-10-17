@@ -5,7 +5,7 @@ namespace WotConverterCore.Models.ThingModel
 {
     public class Event : BaseAffordance
     {
-        public Event() : base() {}
+        public Event() : base() { }
 
         [JsonProperty("subscription")]
         public BaseDataSchema? Subscription { get; set; }

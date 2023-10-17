@@ -7,7 +7,7 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
     {
         public StringSchema()
         {
-            Type = TypeEnum.String;        
+            Type = TypeEnum.String;
         }
 
         [JsonProperty("minLength")]

@@ -10,18 +10,17 @@ namespace WotConverterCore.Models.ThingModel
 {
     public class TM : BaseConvertible<TM>, IConvertible<DTDL>
     {
-
         [JsonProperty("@context", Required = Required.Always)]
-        public GenericStringArray Context { get; set; } = string.Empty;
+        public GenericStringArray<string> Context { get; set; } = string.Empty;
 
         [JsonProperty("@type", Required = Required.Always)]
-        public GenericStringArray LdType { get; set; } = string.Empty;
+        public GenericStringArray<string> LdType { get; set; } = string.Empty;
 
         [JsonProperty("schemaDefinitions")]
         public Dictionary<string, BaseDataSchema> SchemaDefinitions { get; set; } = new Dictionary<string, BaseDataSchema>();
 
         [JsonProperty("security")]
-        public GenericStringArray Security { get; set; } = new GenericStringArray();
+        public GenericStringArray<string> Security { get; set; } = new GenericStringArray<string>();
 
         [JsonProperty("securityDefinitions")]
         public Dictionary<string, SecurityScheme> SecurityDefinitions { get; set; } = new Dictionary<string, SecurityScheme>();
@@ -56,7 +55,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Support { get; set; }
 
         [JsonProperty("links")]
-        public Link[] Links { get; set; }
+        public List<Link> Links { get; set; }
 
         [JsonProperty("properties")]
         private Dictionary<string, Property>? Properties { get; set; }
@@ -139,7 +138,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Href { get; set; }
 
         [JsonProperty("hreflang")]
-        public GenericStringArray? Hreflang { get; set; }
+        public GenericStringArray<string>? Hreflang { get; set; }
 
         [JsonProperty("rel")]
         public string? Rel { get; set; }

@@ -11,140 +11,214 @@
   "base": "coap://{{URL}}:3000",
   "title": "simulated Hotel Room",
   "properties": {
-    "brightness": {
-      "minimum": 0,
-      "maximum": 100,
-      "type": "integer",
-      "title": "Light Brightness",
-      "readOnly": false,
-      "observable": true,
+    "power": {
+      "title": "power",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean"
+        }
+      },
       "forms": [
         {
-          "href": "/light/Brightness",
-          "op": [
-            "observeproperty",
-            "readproperty",
-            "writeproperty"
-          ]
+          "op": "readproperty",
+          "contentType": "application/json;charset=utf-8",
+          "href": "power"
         }
       ]
     },
-    "color": {
-      "title": "Light Color",
+    "content": {
+      "title": "availableContent",
       "type": "string",
-      "readOnly": false,
-      "observable": true,
       "forms": [
         {
-          "href": "/light/{{ColorUrl}}",
-          "op": [
-            "readproperty",
-            "observeproperty",
-            "writeproperty"
-          ]
+          "op": "readproperty",
+          "contentType": "application/json;charset=utf-8",
+          "href": "content"
         }
       ]
     },
-    "goalTemperature": {
-      "minimum": 16.0,
-      "maximum": 28.0,
-      "title": "Goal Temperature",
-      "type": "number",
-      "readOnly": false,
-      "observable": true,
-      "forms": [
-        {
-          "href": "/aircon/{{golaUrl}}",
-          "op": [
-            "observeproperty",
-            "readproperty",
-            "writeproperty"
-          ]
-        }
-      ]
-    },
-    "currentTemperature": {
-      "title": "currentTemperature",
-      "type": "number",
+    "status": {
+      "type": "string",
+      "description": "Current car status (readyToCharge, charging, stopCharging)",
       "readOnly": true,
-      "observable": true,
+      "enum": [
+        "readyToCharge",
+        "charging",
+        "stopCharging"
+      ],
       "forms": [
         {
-          "href": "/aircon/currentTemperature",
-          "op": [
-            "readproperty",
-            "observeproperty"
-          ]
-        }
-      ]
-    },
-    "smoke": {
-      "title": "Smoke Detector",
-      "type": "boolean",
-      "readOnly": false,
-      "observable": true,
-      "forms": [
-        {
-          "href": "/smoke/isSmoke",
-          "op": [
-            "readproperty",
-            "observeproperty",
-            "writeproperty"
-          ]
-        }
-      ]
-    },
-    "roomnumber": {
-      "title": "Roomnumber",
-      "type": "integer",
-      "readOnly": true,
-      "observable": true,
-      "forms": [
-        {
-          "href": "/roomnumber/{{RoomNumber}}",
-          "op": [
-            "readproperty",
-            "observeproperty"
-          ]
+          "href": "/ecar/properties/status",
+          "contentType": "application/json",
+          "op": [ "readproperty" ]
         }
       ]
     }
   },
   "actions": {
-    "DimLight": {
-      "title": "DimLight",
+    "toggle": {
+      "safe": true,
+      "idempotent": false,
+      "title": "togglePowerStatus",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "toggle"
+        }
+      ]
+    },
+    "setVolume": {
+      "safe": true,
+      "idempotent": false,
+      "title": "setVolume",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "setvolume"
+        }
+      ]
+    },
+    "setBright": {
+      "safe": true,
+      "idempotent": false,
+      "title": "setBright",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "setbright"
+        }
+      ]
+    },
+    "showText": {
+      "safe": true,
+      "idempotent": false,
+      "title": "showText",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "showtext"
+        }
+      ]
+    },
+    "playVideo": {
+      "safe": true,
+      "idempotent": false,
+      "title": "playVideo",
+      "type": "playVOD",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "playvideo"
+        }
+      ],
       "input": {
         "type": "object",
         "properties": {
-          "brightness": {
-            "type": "integer",
-            "description": "An integer value that is equal to the lamps brightness in percent",
-            "minimum": 0,
-            "maximum": 100
+          "identifier": {
+            "type": "string"
           },
-          "duration": {
-            "type": "integer",
-            "description": "The amount of seconds the dimming should take",
-            "minimum": 2,
-            "maximum": 10
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
           }
-        },
-        "required": [
-          "brightness",
-          "duration"
-        ]
-      },
-      "output": {
-        "type": "string"
-      },
+        }
+      }
+    },
+    "pauseVideo": {
+      "safe": true,
+      "idempotent": false,
+      "title": "pauseVideo",
+      "type": "pauseVOD",
       "forms": [
         {
-          "href": "/dim_light",
-          "contentType": "application/json",
-          "cov:methodName": "POST",
-          "op": [
-            "invokeaction"
-          ]
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "pausevideo"
+        }
+      ]
+    },
+    "stopVideo": {
+      "safe": true,
+      "idempotent": false,
+      "title": "stopVideo",
+      "type": "stopVOD",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "stopvideo"
+        }
+      ]
+    },
+    "presentationWebApp": {
+      "safe": true,
+      "idempotent": false,
+      "title": "presentationWebApp",
+      "type": "presentationWebApp",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "presentationwebapp"
+        }
+      ],
+      "input": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "launchNewsApp": {
+      "safe": true,
+      "idempotent": false,
+      "title": "launchNewsApp",
+      "forms": [
+        {
+          "op": "invokeaction",
+          "contentType": "application/json;charset=utf-8",
+          "href": "launchnewsapp"
+        }
+      ]
+    }
+  },
+  "events": {
+    "weatherAlert": {
+      "title": "weatherAlert",
+      "data": { "type": "object" },
+      "forms": [
+        {
+          "op": "subscribeevent",
+          "contentType": "application/json;charset=utf-8",
+          "subprotocol": "longpoll",
+          "href": "weatheralert"
+        },
+        {
+          "op": "subscribeevent",
+          "contentType": "application/json;charset=utf-8",
+          "href": "ws://emulateddisplay.local:8888/weatheralert"
         }
       ]
     }

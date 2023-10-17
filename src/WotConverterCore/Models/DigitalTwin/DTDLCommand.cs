@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Models.DigitalTwin.Schema;
 
 namespace WotConverterCore.Models.DigitalTwin
 {
     public class DTDLCommand : BaseDTDLContent
     {
-        public DTDLCommand() : base() {}
+        public DTDLCommand() : base() { }
 
         [JsonProperty("@type")]
         public string Type => "Command";
@@ -35,7 +36,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string? Comment { get; set; }
 
         [JsonProperty("schema")]
-        public string? Schema { get; set; }
+        public DTDLBaseSchema? Schema { get; set; }
 
     }
 
@@ -60,7 +61,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string? Comment { get; set; }
 
         [JsonProperty("schema")]
-        public string? Schema { get; set; }
+        public DTDLBaseSchema? Schema { get; set; }
 
     }
 }

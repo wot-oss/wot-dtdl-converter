@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
-    public class BaseDataSchema
+    public class BaseDataSchema : ISerializable<DataSchemaSerializer>
     {
+        [JsonProperty("type")]
+        public TypeEnum? Type { get; protected set; }
+
         [JsonProperty("@type")]
         public string? LdType { get; set; }
 
@@ -24,9 +28,6 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("descriptions")]
         public Dictionary<string, string>? Descriptions { get; set; }
 
-        [JsonProperty("type")]
-        public TypeEnum? Type { get; protected set; }
-
         [JsonProperty("writeOnly")]
         public bool? WriteOnly { get; set; }
 
@@ -36,7 +37,10 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("const")]
         public bool? Const { get; set; }
 
-        internal static DataSchemaSerializer Serializer = new DataSchemaSerializer();
+        [JsonProperty("enum")]
+        public List<string>? Enum { get; set; }
+
+        internal static DataSchemaSerializer? Serializer = new DataSchemaSerializer();
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Models.DigitalTwin.Schema;
 
 namespace WotConverterCore.Models.DigitalTwin
 {
@@ -10,7 +11,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string Type => "Telemetry";
 
         [JsonProperty("schema")]
-        public string? Schema { get; set; }
+        public DTDLBaseSchema? Schema { get; set; }
 
     }
 }

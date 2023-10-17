@@ -1,17 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common;
+using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models.Serializers
 {
-    internal class DataSchemaSerializer : JsonConverter
+    internal class PropertySerializer : JsonConverter
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -22,8 +16,18 @@ namespace WotConverterCore.Models.Serializers
 
             var baseObject = new BaseDataSchema();
             var parsedType = jObject["type"]?.ToString();
+            var property = existingValue as Property ?? (Property)serializer.ContractResolver.ResolveContract(typeof(Property)).DefaultCreator();
+
             if (parsedType == null)
-                return null;
+            { 
+                 baseObject = existingValue as BaseDataSchema ?? (BaseDataSchema)serializer.ContractResolver.ResolveContract(typeof(BaseDataSchema)).DefaultCreator();
+                 property.DataSchema = baseObject;
+
+                using (var subReader = jObject.CreateReader())
+                    serializer.Populate(subReader, property);
+
+                return property;
+            }   
 
             var baseObjectType = Enum.Parse(typeof(TypeEnum), parsedType, true);
 
@@ -72,18 +76,40 @@ namespace WotConverterCore.Models.Serializers
                     break;
             }
 
-            using (var subReader = jObject.CreateReader())
-                serializer.Populate(subReader, baseObject); 
+            property.DataSchema = baseObject;
 
-            return baseObject;
+            using (var subReader = jObject.CreateReader())
+                serializer.Populate(subReader, property);
+
+            return property;
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
         {
-            serializer.Serialize(writer, untypedValue);
+            var jsonObjectProperty = JObject.FromObject(untypedValue);
+            var dataSchema = (JObject?)jsonObjectProperty["DataSchema"];
+            
+            if (dataSchema == null) {
+                serializer.Serialize(writer, untypedValue);
+                return;
+            }
+
+            if(jsonObjectProperty == null)
+            {
+                return;
+            }
+
+            jsonObjectProperty.Merge(dataSchema, new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Union,
+                MergeNullValueHandling = MergeNullValueHandling.Ignore
+            });
+
+            jsonObjectProperty.Remove("DataSchema");
+            serializer.Serialize(writer, jsonObjectProperty);
             return;
         }
 
-        public override bool CanConvert(Type t) => t == typeof(BaseDataSchema);
+        public override bool CanConvert(Type t) => t == typeof(Property);
     }
 }

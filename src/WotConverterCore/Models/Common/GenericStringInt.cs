@@ -1,8 +1,9 @@
-﻿using WotConverterCore.Models.Serializers;
+﻿using WotConverterCore.Models.Common.Interfaces;
+using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    public class GenericStringInt : IGenericString
+    public class GenericStringInt : IGenericString, ISerializable<GenericStringIntSerializer>
     {
 
         private int? integer;
@@ -26,6 +27,6 @@ namespace WotConverterCore.Models.Common
                 return stringInt.ToString();
             else
                 return "";
-        } 
+        }
     }
 }
