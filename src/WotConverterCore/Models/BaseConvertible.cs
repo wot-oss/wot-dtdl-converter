@@ -30,16 +30,16 @@ namespace WotConverterCore.Models
             return targetConvertible.IsAssignableFrom(typeof(T));
         }
 
-        protected static string SanitizeMustacheJson(string inputString)
+        public static string SanitizeMustacheJson(string inputString)
         {
             if (string.IsNullOrWhiteSpace(inputString))
                 return inputString;
 
             //Replace '{{' with '"{{'
-            inputString = Regex.Replace(inputString, @"(?<!""){1}(?<="" :)(?:\s *)(\{\{)(?!\""){1}", @"""{{");
+            inputString = Regex.Replace(inputString, @"(?<!""){1}(?<="":)(?:\s *)(\{\{)(?!""){1}", @"""{{");
 
             //Replace '}}' with '}}"'
-            inputString = Regex.Replace(inputString, @"(?<!""){1}(\}\})(?=\s*,)(?!\""){1}", @"}}""");
+            inputString = Regex.Replace(inputString, @"(?<!""){1}(\}\})(?=\s*,)(?!""){1}", @"}}""");
 
             return inputString;
         }

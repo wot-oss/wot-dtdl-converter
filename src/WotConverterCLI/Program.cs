@@ -53,6 +53,7 @@ foreach (var item in files)
             return 1;
 
         }
+
         var deserializedTm = System.Text.Json.JsonDocument.Parse(sourceTm);
         var res = schema.Evaluate(deserializedTm);
 

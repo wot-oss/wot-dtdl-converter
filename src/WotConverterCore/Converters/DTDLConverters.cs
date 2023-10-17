@@ -58,7 +58,7 @@ namespace WotConverterCore.Converters
                     {
                         Name = property.Key + formIndexName,
                         DisplayName = propertyValue.Title + formIndexDisplayName,
-                        Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' TM",
+                        Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model",
                         Schema = GetDTDLSchema(propertyValue.Type, propertyValue.Format),
                         Writable = form.Op?.Contains(Op.WriteProperty) ?? false
                     };
@@ -85,7 +85,7 @@ namespace WotConverterCore.Converters
                     {
                         Name = action.Key + formIndexName,
                         DisplayName = actionValue.Title + formIndexDisplayName,
-                        Description = actionValue.Description ?? $"Property obtained from '{tm.Title}' TM"
+                        Description = actionValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model"
                     };
 
                     if (actionValue.Input != null)
@@ -137,7 +137,7 @@ namespace WotConverterCore.Converters
                     {
                         Name = ev.Key + formIndexName,
                         DisplayName = eventValue.Title + formIndexDisplayName,
-                        Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' TM",
+                        Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' Thing Model",
                         Schema = GetDTDLSchema(eventValue.DataResponse?.Type , eventValue.DataResponse?.Format),
                     };
 
@@ -208,6 +208,10 @@ namespace WotConverterCore.Converters
                 }
 
                 comment?.TrimEnd(',');
+            }
+            else
+            {
+                comment = form.Href == null ? "" : $"Thing Model form href: {form.Href.OriginalString}";
             }
 
             return string.IsNullOrWhiteSpace(comment) ? null : comment;

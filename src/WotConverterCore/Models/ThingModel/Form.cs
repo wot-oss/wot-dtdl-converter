@@ -9,7 +9,7 @@ namespace WotConverterCore.Models.ThingModel
     public partial class Form
     {
         [JsonProperty("href")]
-        public Uri Href { get; set; } = new Uri("https://localhost");
+        public Uri Href { get; set; }
 
         [JsonProperty("op")]
         public List<Op>? Op { get; set; }

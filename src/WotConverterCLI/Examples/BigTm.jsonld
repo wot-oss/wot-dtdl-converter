@@ -36,7 +36,7 @@
       "observable": true,
       "forms": [
         {
-          "href": "/light/Color",
+          "href": "/light/{{ColorUrl}}",
           "op": [
             "readproperty",
             "observeproperty",
@@ -54,7 +54,7 @@
       "observable": true,
       "forms": [
         {
-          "href": "/aircon/goalTemperature",
+          "href": "/aircon/{{golaUrl}}",
           "op": [
             "observeproperty",
             "readproperty",
@@ -101,7 +101,7 @@
       "observable": true,
       "forms": [
         {
-          "href": "/roomnumber/Roomnumber",
+          "href": "/roomnumber/{{RoomNumber}}",
           "op": [
             "readproperty",
             "observeproperty"
