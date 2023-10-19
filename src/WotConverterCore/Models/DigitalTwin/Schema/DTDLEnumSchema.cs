@@ -5,6 +5,13 @@ namespace WotConverterCore.Models.DigitalTwin.Schema
 {
     public class DTDLEnumSchema : DTDLBaseSchema
     {
+
+        public DTDLEnumSchema()
+        {
+            Type = DTDLSchemaType.Enum;
+
+        }
+
         public DTDLEnumSchema(string valueSchema)
         {
             Type = DTDLSchemaType.Enum;
@@ -21,17 +28,17 @@ namespace WotConverterCore.Models.DigitalTwin.Schema
         public string? Description { get; set; }
 
         [JsonProperty("comment")]
-        public string? Comment { get; set; } 
-        
+        public string? Comment { get; set; }
+
         [JsonProperty("enumValues")]
         private List<DTDLEnumValue>? EnumValues { get; set; }
 
         public List<DTDLEnumValue>? GetEnumValues()
-            => EnumValues; 
-        
+            => EnumValues;
+
         public void AddEnumValue(DTDLEnumValue value)
         {
-            if(EnumValues == null)
+            if (EnumValues == null)
                 EnumValues = new List<DTDLEnumValue>();
 
             EnumValues.Add(value);

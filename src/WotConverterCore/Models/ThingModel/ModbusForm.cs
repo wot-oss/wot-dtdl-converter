@@ -32,6 +32,9 @@ namespace WotConverterCore.Models.ThingModel
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum ModbusEntity
     {
+        [JsonIgnore]
+        Unknown,
+
         [EnumMember(Value = "HoldingRegister")]
         Holdingregister,
 
@@ -49,6 +52,9 @@ namespace WotConverterCore.Models.ThingModel
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum ModbusFunction
     {
+        [JsonIgnore]
+        Unknown,
+
         [EnumMember(Value = "readCoil")]
         Readcoil,
 

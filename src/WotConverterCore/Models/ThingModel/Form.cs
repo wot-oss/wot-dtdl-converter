@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Linq;
 using System.Runtime.Serialization;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.DataSchema;
@@ -31,7 +30,7 @@ namespace WotConverterCore.Models.ThingModel
 
         [JsonProperty("uriVariables")]
         public Dictionary<string, BaseDataSchema>? UriVariables { get; set; }
-        
+
         public bool HasOpProperty(string key)
         {
             var enumValue = Enum.Parse<OpEnum>(key, true);
@@ -39,20 +38,23 @@ namespace WotConverterCore.Models.ThingModel
             var searchInString = Op?.String != null ? Enum.Parse<OpEnum>(Op.String, true) == enumValue : false;
             return searchInArray ?? searchInString;
         }
-        
+
         public bool HasOpProperty(OpEnum key)
         {
             var searchInArray = Op?.Array?.Contains(key);
             var searchInString = Op?.String != null ? Enum.Parse<OpEnum>(Op.String, true) == key : false;
             return searchInArray ?? searchInString;
         }
-           
-       
+
+
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum OpEnum
     {
+        [JsonIgnore]
+        Unknown, 
+
         [EnumMember(Value = "observeproperty")]
         Observeproperty,
 

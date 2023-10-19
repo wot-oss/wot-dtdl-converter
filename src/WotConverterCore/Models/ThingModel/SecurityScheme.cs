@@ -12,6 +12,9 @@ namespace WotConverterCore.Models.ThingModel
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum SecuritySchemeEnum
     {
+        [JsonIgnore]
+        Unknown,
+
         [EnumMember(Value = "nosec")]
         noSecurityScheme,
 

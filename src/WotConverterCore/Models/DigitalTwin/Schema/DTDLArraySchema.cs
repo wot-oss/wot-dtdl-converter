@@ -4,7 +4,11 @@ namespace WotConverterCore.Models.DigitalTwin.Schema
 {
     public class DTDLArraySchema : DTDLBaseSchema
     {
-        public DTDLArraySchema(string elementSchema)
+        public DTDLArraySchema()
+        {
+            Type = DTDLSchemaType.Array;
+        }
+        public DTDLArraySchema(string elementSchema )
         {
             Type = DTDLSchemaType.Array;
             ElementSchema = elementSchema;

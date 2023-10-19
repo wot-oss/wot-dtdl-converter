@@ -3,7 +3,7 @@ using WotConverterCore.Models.DigitalTwin.Schema;
 
 namespace WotConverterCore.Models.DigitalTwin
 {
-    public class DTDLProperty : BaseDTDLContent
+    public class DTDLProperty : DTDLBaseContent
     {
         public DTDLProperty() : base() { }
 

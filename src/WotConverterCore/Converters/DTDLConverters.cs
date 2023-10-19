@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using WotConverterCore.Models.DigitalTwin;
+﻿using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.DigitalTwin.Schema;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
@@ -105,12 +104,12 @@ namespace WotConverterCore.Converters
                         DisplayName = schema.Title,
                         Description = schema.Description
                     };
-                    
+
                     var castedTmArraySchema = (ArraySchema)schema;
-                    
+
                     if (castedTmArraySchema.Items != null)
                     {
-                        arrayResult.ElementSchema = TMSchema2DTDLSchema(castedTmArraySchema.Items);        
+                        arrayResult.ElementSchema = TMSchema2DTDLSchema(castedTmArraySchema.Items);
                     }
 
                     return arrayResult;
@@ -162,7 +161,7 @@ namespace WotConverterCore.Converters
                 DTDLCommand content = new()
                 {
                     Name = action.Key,
-                    DisplayName = actionValue.Title ,
+                    DisplayName = actionValue.Title,
                     Description = actionValue.Description ?? $"Command obtained from '{tm.Title}' Thing Model"
                 };
 
@@ -171,7 +170,7 @@ namespace WotConverterCore.Converters
                     var request = new DTDLCommandRequest
                     {
                         DisplayName = actionValue.Input.Title ?? action.Key + " Request",
-                        Name = action.Key + "Request" ,
+                        Name = action.Key + "Request",
                         Description = actionValue.Input.Description,
                         Schema = TMSchema2DTDLSchema(actionValue.Input)
                     };
@@ -207,7 +206,7 @@ namespace WotConverterCore.Converters
                 var eventValue = ev.Value;
                 DTDLTelemetry content = new()
                 {
-                    Name = ev.Key ,
+                    Name = ev.Key,
                     DisplayName = eventValue.Title ?? ev.Key,
                     Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' Thing Model",
                     Schema = TMSchema2DTDLSchema(eventValue.DataResponse),

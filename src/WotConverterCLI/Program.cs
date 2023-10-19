@@ -1,6 +1,5 @@
 ﻿using Json.Schema;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.ThingModel;
 

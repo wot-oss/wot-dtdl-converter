@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using WotConverterCore.Models.DigitalTwin.Schema;
 
-namespace WotConverterCore.Models.Serializers
+namespace WotConverterCore.Models.DigitalTwin.Serializers
 {
     internal class DTDLSchemaSerializer : JsonConverter
     {
@@ -11,17 +11,16 @@ namespace WotConverterCore.Models.Serializers
             if (reader.TokenType == JsonToken.Null)
                 return null;
 
-            JObject jObject = JObject.Load(reader);
-
             var baseObject = new DTDLBaseSchema();
-            if (jObject.Type == JTokenType.String)
-            {
-                baseObject = existingValue as string ?? (string)serializer.ContractResolver.ResolveContract(typeof(string)).DefaultCreator();
-                using (var subReader = jObject.CreateReader())
-                    serializer.Populate(subReader, baseObject);
 
+            if (reader.TokenType == JsonToken.String)
+            {
+                var stringValue = serializer.Deserialize<string>(reader);
+                baseObject = stringValue;
                 return baseObject;
             }
+
+            JObject jObject = JObject.Load(reader);
 
             var parsedType = jObject["@type"]?.ToString();
             var baseObjectType = Enum.Parse(typeof(DTDLSchemaType), parsedType, true);
@@ -50,10 +49,7 @@ namespace WotConverterCore.Models.Serializers
                     break;
                 case null:
                 default:
-                    baseObject = existingValue as string ?? (string)serializer.ContractResolver.ResolveContract(typeof(string)).DefaultCreator();
-                    using (var subReader = jObject.CreateReader())
-                        serializer.Populate(subReader, baseObject);
-                    break;
+                    return null;
             }
 
             return baseObject;
@@ -67,7 +63,7 @@ namespace WotConverterCore.Models.Serializers
             if (entry == null)
                 return;
 
-            switch (entry.Type)
+            switch (entry.GetSchemaType())
             {
                 case DTDLSchemaType.Array:
                 case DTDLSchemaType.Object:

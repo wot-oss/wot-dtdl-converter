@@ -26,12 +26,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Examples\BigTm.jsonld">
+    <None Update="Examples\DTDLs\DTDLExample.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\InvalidTM.jsonld">
+    <None Update="Examples\ThingModels\BigTm.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Examples\ThingModels\InvalidTM.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Examples\DTDLs\" />
   </ItemGroup>
 
 </Project>

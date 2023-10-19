@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.DigitalTwin.Schema
 {

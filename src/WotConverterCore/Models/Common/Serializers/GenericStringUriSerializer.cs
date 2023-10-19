@@ -14,10 +14,10 @@ namespace WotConverterCore.Models.Common.Serializers
             var isCreated = Uri.TryCreate(jsonProperty, UriKind.RelativeOrAbsolute, out var uri);
 
             if (isCreated)
-                return new GenericStringUri{ Uri = uri };
+                return new GenericStringUri { Uri = uri };
 
-            return new GenericStringUri {  StringUri = jsonProperty};
-            
+            return new GenericStringUri { StringUri = jsonProperty };
+
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)

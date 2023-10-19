@@ -1,6 +1,5 @@
 ﻿using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.ThingModel;
-using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Converters
 {

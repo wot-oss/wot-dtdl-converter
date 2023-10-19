@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Models.DigitalTwin.Serializers;
 
 namespace WotConverterCore.Models.DigitalTwin
 {
-    public class BaseDTDLContent
+    public class DTDLBaseContent
     {
         [JsonProperty("@id")]
         public string? Id { get; set; }
@@ -19,6 +20,7 @@ namespace WotConverterCore.Models.DigitalTwin
         [JsonProperty("comment")]
         public string? Comment { get; set; }
 
+        internal static DTDLBaseContentSerializer Serializer = new DTDLBaseContentSerializer();
 
     }
 

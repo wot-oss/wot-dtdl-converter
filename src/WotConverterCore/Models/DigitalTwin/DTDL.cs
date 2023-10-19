@@ -29,7 +29,7 @@ namespace WotConverterCore.Models.DigitalTwin
         public string? Comment { get; set; }
 
         [JsonProperty("contents")]
-        private List<BaseDTDLContent>? Contents { get; set; }
+        private List<DTDLBaseContent>? Contents { get; set; }
 
         public void ConvertFrom(TM value)
         {
@@ -47,7 +47,7 @@ namespace WotConverterCore.Models.DigitalTwin
             Contents = dtdl.GetDTDLContents();
         }
 
-        public List<BaseDTDLContent> GetDTDLContents(Func<BaseDTDLContent, bool>? query = null)
+        public List<DTDLBaseContent> GetDTDLContents(Func<DTDLBaseContent, bool>? query = null)
         {
             if (query != null)
                 return Contents?.Where(query)?.ToList() ?? new();
@@ -56,10 +56,10 @@ namespace WotConverterCore.Models.DigitalTwin
 
         }
 
-        public void Addcontent(BaseDTDLContent content)
+        public void Addcontent(DTDLBaseContent content)
         {
             if (Contents == null)
-                Contents = new List<BaseDTDLContent>();
+                Contents = new List<DTDLBaseContent>();
 
             Contents.Add(content);
         }

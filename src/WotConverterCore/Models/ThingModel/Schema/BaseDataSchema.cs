@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Serializers;
+using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
@@ -40,12 +41,15 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("enum")]
         public List<string>? Enum { get; set; }
 
-        internal static DataSchemaSerializer? Serializer = new DataSchemaSerializer();
+        internal static DataSchemaSerializer Serializer = new DataSchemaSerializer();
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum TypeEnum
     {
+        [JsonIgnore]
+        Unknown,
+
         [EnumMember(Value = "number")]
         Number,
 

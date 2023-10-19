@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common.Interfaces;
+﻿using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 
