@@ -84,7 +84,7 @@ namespace WotConverterCore.Models.Serializers
             return property;
         }
 
-        public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
             var jsonObjectProperty = JObject.FromObject(untypedValue);
             var dataSchema = (JObject?)jsonObjectProperty["DataSchema"];
@@ -102,7 +102,7 @@ namespace WotConverterCore.Models.Serializers
             jsonObjectProperty.Merge(dataSchema, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Union,
-                MergeNullValueHandling = MergeNullValueHandling.Ignore
+                MergeNullValueHandling = MergeNullValueHandling.Ignore,
             });
 
             jsonObjectProperty.Remove("DataSchema");

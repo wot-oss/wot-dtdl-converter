@@ -11,7 +11,7 @@ namespace WotConverterCore.Models.ThingModel
         public Property() : base() { }
 
         [JsonProperty("observable")]
-        public bool? Observable { get; set; } = false;
+        public bool? Observable { get; set; }
 
         public BaseDataSchema? DataSchema { get; set; }
 

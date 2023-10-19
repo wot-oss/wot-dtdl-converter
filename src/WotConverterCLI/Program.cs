@@ -1,5 +1,6 @@
 ﻿using Json.Schema;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.ThingModel;
 
@@ -74,14 +75,15 @@ foreach (var item in files)
         Console.WriteLine("Valid Tm File!");
 
         var thingModel = TM.Deserialize(sourceTm, true);
+
         if (thingModel == null)
         {
             Console.WriteLine("Unable to convert TM to DTDL");
             return 1;
+
         }
-
-        Console.WriteLine("TM properties: {0}", thingModel.GetProperties()?.Count() ?? 0);
-
+        var filename = Path.GetFileName(item).Replace(".jsonld", "");
+        thingModel.Title = thingModel.Title ?? filename;
         var dtdl = new DTDL();
         dtdl.ConvertFrom(thingModel);
 

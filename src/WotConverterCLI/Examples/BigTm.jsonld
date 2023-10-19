@@ -1,18 +1,19 @@
 {
   "@context": "https://www.w3.org/2019/wot/td/v1",
-  "id": "urn:HotelRoom",
+  "id": "urn:testModel",
   "@type": "tm:ThingModel",
+  "description" : "Thing Model Test",
   "securityDefinitions": {
     "nosec_sc": {
       "scheme": "nosec"
     }
   },
   "security": "nosec_sc",
-  "base": "coap://{{URL}}:3000",
-  "title": "simulated Hotel Room",
+  "base": "http://localhost:3000",
+  "title": "Test Model",
   "properties": {
     "power": {
-      "title": "power",
+      "title": "availablePower",
       "type": "object",
       "properties": {
         "status": {
@@ -29,12 +30,24 @@
     },
     "content": {
       "title": "availableContent",
+      "description": "Content of the Test Model",
       "type": "string",
       "forms": [
         {
           "op": "readproperty",
           "contentType": "application/json;charset=utf-8",
           "href": "content"
+        }
+      ]
+    },
+    "temperature": {
+      "title": "availableTemperature",
+      "type": "integer",
+      "forms": [
+        {
+          "op": "readproperty",
+          "contentType": "application/json;charset=utf-8",
+          "href": "temp"
         }
       ]
     },
@@ -54,6 +67,17 @@
           "op": [ "readproperty" ]
         }
       ]
+    },
+    "rgb": {
+      "title": "RGB color value",
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 255
+      },
+      "minItems": 3,
+      "maxItems": 3
     }
   },
   "actions": {
@@ -81,35 +105,26 @@
         }
       ]
     },
-    "setBright": {
-      "safe": true,
-      "idempotent": false,
-      "title": "setBright",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "setbright"
-        }
-      ]
-    },
-    "showText": {
-      "safe": true,
-      "idempotent": false,
-      "title": "showText",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "showtext"
-        }
-      ]
+    "reboot": {
+      "title": "SystemReboot",
+      "description": "Reboots the system at the specified time",
+      "input": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Reboot Time",
+        "description": "Requested time to reboot the device."
+      },
+      "output": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Scheduled Time",
+        "description": "Scheduled shutdown time"
+      }
     },
     "playVideo": {
       "safe": true,
       "idempotent": false,
       "title": "playVideo",
-      "type": "playVOD",
       "forms": [
         {
           "op": "invokeaction",
@@ -119,106 +134,61 @@
       ],
       "input": {
         "type": "object",
+        "description": "playVideo action request",
+        "title": "playVideo Request",
         "properties": {
           "identifier": {
-            "type": "string"
+            "type": "string",
+            "title": "Video Identifier",
+            "description": "The unique identifier of a Video"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "title": "Video Name",
+            "description": "The name of a Video file"
           },
-          "description": {
-            "type": "string"
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "Request Timestamp"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "title": "Video Url",
+            "description": "The Video Url"
           }
         }
-      }
-    },
-    "pauseVideo": {
-      "safe": true,
-      "idempotent": false,
-      "title": "pauseVideo",
-      "type": "pauseVOD",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "pausevideo"
-        }
-      ]
-    },
-    "stopVideo": {
-      "safe": true,
-      "idempotent": false,
-      "title": "stopVideo",
-      "type": "stopVOD",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "stopvideo"
-        }
-      ]
-    },
-    "presentationWebApp": {
-      "safe": true,
-      "idempotent": false,
-      "title": "presentationWebApp",
-      "type": "presentationWebApp",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "presentationwebapp"
-        }
-      ],
-      "input": {
+      },
+      "output": {
         "type": "object",
         "properties": {
-          "identifier": {
+          "stream": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
-    },
-    "launchNewsApp": {
-      "safe": true,
-      "idempotent": false,
-      "title": "launchNewsApp",
-      "forms": [
-        {
-          "op": "invokeaction",
-          "contentType": "application/json;charset=utf-8",
-          "href": "launchnewsapp"
-        }
-      ]
     }
   },
   "events": {
-    "weatherAlert": {
-      "title": "weatherAlert",
+    "alert": {
+      "title": "alert",
       "data": { "type": "object" },
       "forms": [
         {
           "op": "subscribeevent",
           "contentType": "application/json;charset=utf-8",
           "subprotocol": "longpoll",
-          "href": "weatheralert"
+          "href": "alrt"
         },
         {
           "op": "subscribeevent",
           "contentType": "application/json;charset=utf-8",
-          "href": "ws://emulateddisplay.local:8888/weatheralert"
+          "href": "ws://localhost:8888/alert"
         }
       ]
     }

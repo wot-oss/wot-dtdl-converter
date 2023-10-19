@@ -19,6 +19,7 @@ namespace WotConverterCore.Models
                 GenericStringDouble.Serializer,
                 GenericStringInt.Serializer,
                 GenericStringBool.Serializer,
+                GenericStringUri.Serializer,
                 BaseDataSchema.Serializer,
                 DTDLBaseSchema.Serializer,
                 Property.Serializer

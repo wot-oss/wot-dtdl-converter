@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.DigitalTwin;
+﻿using System.Reflection;
+using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.DigitalTwin.Schema;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
@@ -80,7 +81,7 @@ namespace WotConverterCore.Converters
 
                     var objectResult = new DTDLObjectSchema()
                     {
-                        DisplayName = schema.Title,
+                        DisplayName = schema.Title?.Replace(" ", ""),
                         Description = schema.Description,
                     };
 
@@ -135,23 +136,18 @@ namespace WotConverterCore.Converters
                 var propertyForms = property.Value.Forms;
                 var propertyValue = property.Value;
 
-                foreach (Form form in propertyForms)
+                DTDLProperty content = new()
                 {
-                    var formIndexName = (propertyForms.Count() > 1 ? $"_{propertyForms.IndexOf(form)}" : "");
-                    var formIndexDisplayName = (propertyForms.Count() > 1 ? $"({propertyForms.IndexOf(form)})" : "");
-                    DTDLProperty content = new()
-                    {
-                        Name = property.Key + formIndexName,
-                        DisplayName = propertyValue.Title + formIndexDisplayName,
-                        Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model",
-                        Schema = TMSchema2DTDLSchema(propertyValue.DataSchema),
-                        Writable = form.HasOpProperty(OpEnum.WriteProperty)
-                    };
+                    Name = property.Key,
+                    DisplayName = (propertyValue.Title ?? property.Key),
+                    Description = propertyValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model",
+                    Schema = TMSchema2DTDLSchema(propertyValue.DataSchema),
+                    Writable = propertyForms.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _)
+                };
 
-                    content.Comment = GetProtocolComment(form, tm.Base);
+                content.Comment = ComposeFormComment(propertyForms, tm.Base);
 
-                    dtdl.Addcontent(content);
-                }
+                dtdl.Addcontent(content);
             }
         }
         private static void CreateDTDLCommands(ref DTDL dtdl, TM tm)
@@ -159,50 +155,46 @@ namespace WotConverterCore.Converters
             var tmActions = tm.GetActions() ?? new();
             foreach (var action in tmActions)
             {
+
                 var actionForms = action.Value.Forms;
                 var actionValue = action.Value;
 
-                foreach (Form form in actionForms)
+                DTDLCommand content = new()
                 {
-                    var formIndexName = (actionForms.Count() > 1 ? $"_{actionForms.IndexOf(form)}" : "");
-                    var formIndexDisplayName = (actionForms.Count() > 1 ? $"({actionForms.IndexOf(form)})" : "");
-                    DTDLCommand content = new()
+                    Name = action.Key,
+                    DisplayName = actionValue.Title ,
+                    Description = actionValue.Description ?? $"Command obtained from '{tm.Title}' Thing Model"
+                };
+
+                if (actionValue.Input != null)
+                {
+                    var request = new DTDLCommandRequest
                     {
-                        Name = action.Key + formIndexName,
-                        DisplayName = actionValue.Title + formIndexDisplayName,
-                        Description = actionValue.Description ?? $"Property obtained from '{tm.Title}' Thing Model"
+                        DisplayName = actionValue.Input.Title ?? action.Key + " Request",
+                        Name = action.Key + "Request" ,
+                        Description = actionValue.Input.Description,
+                        Schema = TMSchema2DTDLSchema(actionValue.Input)
                     };
 
-                    if (actionValue.Input != null)
-                    {
-                        var request = new DTDLCommandRequest
-                        {
-                            DisplayName = actionValue.Input.Title ?? action.Key + " Request",
-                            Name = action.Key + "Request" + formIndexName,
-                            Description = actionValue.Input.Description,
-                            Schema = TMSchema2DTDLSchema(actionValue.Input)
-                        };
-
-                        content.Request = request;
-                    }
-
-                    if (actionValue.Output != null)
-                    {
-                        var response = new DTDLCommandResponse
-                        {
-                            DisplayName = actionValue.Output.Title ?? action.Key + " Response",
-                            Name = action.Key + "Response" + formIndexName,
-                            Description = actionValue.Output.Description,
-                            Schema = TMSchema2DTDLSchema(actionValue.Output)
-                        };
-
-                        content.Response = response;
-                    }
-
-                    content.Comment = GetProtocolComment(form, tm.Base);
-
-                    dtdl.Addcontent(content);
+                    content.Request = request;
                 }
+
+                if (actionValue.Output != null)
+                {
+                    var response = new DTDLCommandResponse
+                    {
+                        DisplayName = actionValue.Output.Title ?? action.Key + " Response",
+                        Name = action.Key + "Response",
+                        Description = actionValue.Output.Description,
+                        Schema = TMSchema2DTDLSchema(actionValue.Output)
+                    };
+
+                    content.Response = response;
+                }
+
+                content.Comment = ComposeFormComment(actionForms, tm.Base);
+
+                dtdl.Addcontent(content);
             }
         }
         private static void CreateDTDLTelemetry(ref DTDL dtdl, TM tm)
@@ -213,33 +205,47 @@ namespace WotConverterCore.Converters
             {
                 var eventForms = ev.Value.Forms;
                 var eventValue = ev.Value;
-
-                foreach (Form form in eventForms)
+                DTDLTelemetry content = new()
                 {
-                    var formIndexName = (eventForms.Count() > 1 ? $"_{eventForms.IndexOf(form)}" : "");
-                    var formIndexDisplayName = (eventForms.Count() > 1 ? $"({eventForms.IndexOf(form)})" : "");
-                    DTDLTelemetry content = new()
-                    {
-                        Name = ev.Key + formIndexName,
-                        DisplayName = eventValue.Title + formIndexDisplayName,
-                        Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' Thing Model",
-                        Schema = TMSchema2DTDLSchema(eventValue.DataResponse),
-                    };
+                    Name = ev.Key ,
+                    DisplayName = eventValue.Title ?? ev.Key,
+                    Description = eventValue.Description ?? $"Telemetry obtained from '{tm.Title}' Thing Model",
+                    Schema = TMSchema2DTDLSchema(eventValue.DataResponse),
+                };
 
-                    content.Comment = GetProtocolComment(form, tm.Base);
+                content.Comment = ComposeFormComment(eventForms, tm.Base);
 
-                    dtdl.Addcontent(content);
-                }
+                dtdl.Addcontent(content);
             }
         }
 
+        private static string? ComposeFormComment(List<Form> forms, string? baseaddress = null)
+        {
+            string result = "";
+
+            var formsCount = forms.Count();
+            var multipleforms = formsCount > 1;
+
+            if (formsCount > 0)
+                result += $"{formsCount} form{(multipleforms ? "s" : "")}: ";
+
+            foreach (Form form in forms)
+            {
+                var formIndexName = multipleforms ? (forms.IndexOf(form) + 1).ToString() : "1";
+                result += $"{formIndexName} - {GetProtocolComment(form, baseaddress)}{(multipleforms ? " / " : "")}";
+            }
+
+            return string.IsNullOrWhiteSpace(result) ? null : result;
+        }
 
         private static string? GetProtocolComment(Form form, string? baseAddress = null)
         {
             var comment = string.Empty;
 
-            if ((baseAddress?.ToLower().StartsWith("modbus://") ?? false) || (form.Href?.OriginalString.ToLower().StartsWith("modbus://") ?? false))
+            if ((baseAddress?.ToLower().StartsWith("modbus://") ?? false) || (form.Href?.ToString().ToLower().StartsWith("modbus://") ?? false))
             {
+                comment = $"modbus: href={form.Href}, ";
+
                 if (form.ModbusFunction.HasValue)
                 {
                     comment?.Trim(':');
@@ -268,7 +274,7 @@ namespace WotConverterCore.Converters
             }
             else
             {
-                comment = form.Href == null ? "" : $"Thing Model form href: {form.Href.OriginalString}";
+                comment = form.Href == null ? "" : $"href: {form.Href}";
             }
 
             return string.IsNullOrWhiteSpace(comment) ? null : comment;
