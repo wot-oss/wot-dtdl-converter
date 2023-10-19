@@ -15,7 +15,7 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringInt(int integer) => new GenericStringInt { Integer = integer };
         public static implicit operator GenericStringInt(string stringInt) => new GenericStringInt { StringInt = stringInt };
 
-        internal static readonly GenericStringIntSerializer Serializer = new GenericStringIntSerializer();
+        public static readonly GenericStringIntSerializer Serializer = new GenericStringIntSerializer();
 
         public bool isString() => stringInt != null;
 

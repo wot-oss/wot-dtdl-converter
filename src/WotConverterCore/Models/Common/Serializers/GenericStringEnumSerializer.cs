@@ -1,15 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.DigitalTwin.Schema;
 
 namespace WotConverterCore.Models.Common.Serializers
 {
-    internal class GenericStringEnumSerializer<T> : JsonConverter where T : struct
+    public class GenericStringEnumSerializer<T> : JsonConverter where T : struct
     {
         public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -19,11 +12,12 @@ namespace WotConverterCore.Models.Common.Serializers
             var jsonString = serializer.Deserialize<string>(reader) ?? "";
             var isEnum = Enum.TryParse(typeof(T), jsonString, out var enumerator);
 
-            if (isEnum) { 
+            if (isEnum)
+            {
                 var enumValue = Enum.Parse<T>(jsonString);
-                return new GenericStringEnum<T> { Enumerator = enumValue};
+                return new GenericStringEnum<T> { Enumerator = enumValue };
             }
-            
+
             return new GenericStringEnum<T> { StringEnumerator = jsonString };
         }
 

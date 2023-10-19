@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common.Interfaces;
+﻿using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 
@@ -21,7 +16,7 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringEnum<T>(T enumerator) => new GenericStringEnum<T> { Enumerator = enumerator };
         public static implicit operator GenericStringEnum<T>(string stringInt) => new GenericStringEnum<T> { StringEnumerator = stringInt };
 
-        internal static readonly GenericStringEnumSerializer<T> Serializer = new GenericStringEnumSerializer<T>();
+        public static readonly GenericStringEnumSerializer<T> Serializer = new GenericStringEnumSerializer<T>();
 
         public bool isString() => stringEnum != null;
 

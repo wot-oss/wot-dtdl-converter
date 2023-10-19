@@ -1,14 +1,11 @@
-﻿
-namespace WotConverterCore.Models.DigitalTwin
-{
-    using Newtonsoft.Json;
-    using System.Collections.Generic;
-    using WotConverterCore.Converters;
-    using WotConverterCore.Interfaces;
-    using WotConverterCore.Models;
-    using WotConverterCore.Models.ThingModel;
+﻿using Newtonsoft.Json;
+using WotConverterCore.Converters;
+using WotConverterCore.Interfaces;
+using WotConverterCore.Models.ThingModel;
 
-    public class DTDL : BaseConvertible<DTDL>, IConvertible<TM>
+namespace DTDLWotConverter.DigitalTwin
+{
+    public partial class DTDL : ITmConvertible<DTDL>
     {
         [JsonProperty("@context")]
         public string Context { get; set; }
@@ -31,22 +28,6 @@ namespace WotConverterCore.Models.DigitalTwin
         [JsonProperty("contents")]
         private List<DTDLBaseContent>? Contents { get; set; }
 
-        public void ConvertFrom(TM value)
-        {
-            var dtdl = DTDLConverters.ThingModel2DTDL(value);
-
-            if (dtdl is null)
-                return;
-
-            Context = dtdl.Context;
-            Id = dtdl.Id;
-            Type = dtdl.Type;
-            DisplayName = dtdl.DisplayName;
-            Description = dtdl.Description;
-            Comment = dtdl.Comment;
-            Contents = dtdl.GetDTDLContents();
-        }
-
         public List<DTDLBaseContent> GetDTDLContents(Func<DTDLBaseContent, bool>? query = null)
         {
             if (query != null)
@@ -62,6 +43,21 @@ namespace WotConverterCore.Models.DigitalTwin
                 Contents = new List<DTDLBaseContent>();
 
             Contents.Add(content);
+        }
+
+        public static DTDL? ConvertFromTm(TM thingModel)
+        {
+            var dtdl = Tm2DTDL.ThingModel2DTDL(thingModel);
+
+            if (dtdl is null)
+                return null;
+
+            return dtdl;
+        }
+
+        public TM ConvertToTm()
+        {
+            throw new NotImplementedException();
         }
 
     }

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using DTDLWotConverter.DigitalTwin.Schema;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WotConverterCore.Models.DigitalTwin.Schema;
 
-namespace WotConverterCore.Models.DigitalTwin.Serializers
+namespace DTDLWotConverter.DigitalTwin.Serializers
 {
     internal class DTDLSchemaSerializer : JsonConverter
     {

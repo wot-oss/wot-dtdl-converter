@@ -11,3 +11,5 @@
 /src/.vs/
 /src/.vs/ProjectEvaluation/wotconverter.metadata.v7.bin
 /src/.vs/ProjectEvaluation/wotconverter.projects.v7.bin
+/src/DTDLWotConverter/obj
+/src/DTDLWotConverter/bin/Debug/net6.0

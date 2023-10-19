@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using WotConverterCore.Models.DigitalTwin.Serializers;
+﻿using DTDLWotConverter.DigitalTwin.Serializers;
+using Newtonsoft.Json;
 
-namespace WotConverterCore.Models.DigitalTwin
+namespace DTDLWotConverter.DigitalTwin
 {
     public class DTDLBaseContent
     {

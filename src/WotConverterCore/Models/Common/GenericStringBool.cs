@@ -15,7 +15,7 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringBool(bool boolean) => new GenericStringBool { Bool = boolean };
         public static implicit operator GenericStringBool(string stringBool) => new GenericStringBool { StringBool = stringBool };
 
-        internal static readonly GenericStringBoolSerializer Serializer = new GenericStringBoolSerializer();
+        public static readonly GenericStringBoolSerializer Serializer = new GenericStringBoolSerializer();
         public bool isString() => stringBoolean != null;
 
         public override string ToString()

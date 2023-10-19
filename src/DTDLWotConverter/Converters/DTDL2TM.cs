@@ -1,9 +1,9 @@
-﻿using WotConverterCore.Models.DigitalTwin;
+﻿using DTDLWotConverter.DigitalTwin;
 using WotConverterCore.Models.ThingModel;
 
-namespace WotConverterCore.Converters
+namespace DTDLWotConverter.Converters
 {
-    internal class ThingModelConverters
+    public class DTDL2TM
     {
         public static TM? DTDL2ThingModel(DTDL dtdl)
         {

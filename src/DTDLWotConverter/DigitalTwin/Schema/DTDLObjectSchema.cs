@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WotConverterCore.Models.DigitalTwin.Schema
+namespace DTDLWotConverter.DigitalTwin.Schema
 {
     public class DTDLObjectSchema : DTDLBaseSchema
     {

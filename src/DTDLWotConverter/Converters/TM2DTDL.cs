@@ -1,11 +1,11 @@
-﻿using WotConverterCore.Models.DigitalTwin;
-using WotConverterCore.Models.DigitalTwin.Schema;
+﻿using DTDLWotConverter.DigitalTwin;
+using DTDLWotConverter.DigitalTwin.Schema;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Converters
 {
-    internal static class DTDLConverters
+    internal static class Tm2DTDL
     {
         public static DTDL? ThingModel2DTDL(TM tm)
         {
@@ -124,7 +124,6 @@ namespace WotConverterCore.Converters
                     return "string";
             }
         }
-
         private static void CreateDTDLProperties(ref DTDL dtdl, TM tm)
         {
             var tmProperties = tm.GetProperties() ?? new();
@@ -217,7 +216,6 @@ namespace WotConverterCore.Converters
                 dtdl.Addcontent(content);
             }
         }
-
         private static string? ComposeFormComment(List<Form> forms, string? baseaddress = null)
         {
             string result = "";
@@ -236,7 +234,6 @@ namespace WotConverterCore.Converters
 
             return string.IsNullOrWhiteSpace(result) ? null : result;
         }
-
         private static string? GetProtocolComment(Form form, string? baseAddress = null)
         {
             var comment = string.Empty;

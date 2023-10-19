@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Serializers;
 using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema

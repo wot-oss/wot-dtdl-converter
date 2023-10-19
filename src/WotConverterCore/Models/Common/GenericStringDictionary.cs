@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common.Interfaces;
+﻿using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 
@@ -21,7 +16,7 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringDictionary(Dictionary<string, string> dictionary) => new GenericStringDictionary { Dictionary = dictionary };
         public static implicit operator GenericStringDictionary(string value) => new GenericStringDictionary { stringValue = value };
 
-        internal static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
+        public static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
         public bool isString() => String != null;
 
         public override string ToString()

@@ -1,14 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DTDLWotConverter.DigitalTwin.Schema;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.DigitalTwin.Schema;
-using WotConverterCore.Models.ThingModel.Serializers;
+using Newtonsoft.Json.Linq;
 
-namespace WotConverterCore.Models.DigitalTwin.Serializers
+namespace DTDLWotConverter.DigitalTwin.Serializers
 {
     internal class DTDLBaseContentSerializer : JsonConverter
     {
@@ -39,7 +33,7 @@ namespace WotConverterCore.Models.DigitalTwin.Serializers
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
                     break;
-            
+
                 case null:
                 default:
                     return null;

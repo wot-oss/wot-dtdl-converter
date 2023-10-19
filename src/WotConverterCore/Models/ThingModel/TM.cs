@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using Json.Schema;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using WotConverterCore.Converters;
-using WotConverterCore.Interfaces;
+using System.Reflection;
 using WotConverterCore.Models.Common;
-using WotConverterCore.Models.DigitalTwin;
 using WotConverterCore.Models.ThingModel.DataSchema;
+using static WotConverterCore.Models.Common.Constants.Strings;
 
 namespace WotConverterCore.Models.ThingModel
 {
-    public class TM : BaseConvertible<TM>, IConvertible<DTDL>
+    public partial class TM
     {
         [JsonProperty("@context", Required = Required.Always)]
         public GenericStringArray<string> Context { get; set; } = string.Empty;
@@ -66,11 +66,6 @@ namespace WotConverterCore.Models.ThingModel
         [JsonProperty("events")]
         private Dictionary<string, Event>? Events { get; set; }
 
-
-        public void ConvertFrom(DTDL value)
-        {
-            var tm = ThingModelConverters.DTDL2ThingModel(value);
-        }
         public Dictionary<string, Property> GetProperties(Func<KeyValuePair<string, Property>, bool>? query = null)
         {
             if (query != null)
@@ -119,6 +114,24 @@ namespace WotConverterCore.Models.ThingModel
                 Events = new Dictionary<string, Event>();
 
             Events.Add(key, tmEvent);
+        }
+
+
+        public static bool Validate(string thingModelJson)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream? stream = assembly.GetManifestResourceStream(SchemaPath()))
+            using (StreamReader schemaSr = new StreamReader(stream))
+            {
+                var schema = JsonSchema.FromStream(schemaSr.BaseStream).Result;
+                var deserializedTm = System.Text.Json.JsonDocument.Parse(thingModelJson);
+                var res = schema.Evaluate(deserializedTm);
+
+                if (!res.IsValid)
+                    return false;
+
+                return true;
+            }
         }
     }
 

@@ -53,7 +53,7 @@ namespace WotConverterCore.Models.ThingModel
     public enum OpEnum
     {
         [JsonIgnore]
-        Unknown, 
+        Unknown,
 
         [EnumMember(Value = "observeproperty")]
         Observeproperty,

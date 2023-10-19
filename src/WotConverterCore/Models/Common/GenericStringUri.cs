@@ -15,7 +15,7 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringUri(Uri uri) => new GenericStringUri { Uri = uri };
         public static implicit operator GenericStringUri(string stringUri) => new GenericStringUri { StringUri = stringUri };
 
-        internal static readonly GenericStringUriSerializer Serializer = new GenericStringUriSerializer();
+        public static readonly GenericStringUriSerializer Serializer = new GenericStringUriSerializer();
         public bool isString() => stringUri != null;
 
         public override string ToString()

@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using DTDLWotConverter.DigitalTwin.Serializers;
+using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.DigitalTwin.Serializers;
 
-namespace WotConverterCore.Models.DigitalTwin.Schema
+namespace DTDLWotConverter.DigitalTwin.Schema
 {
     public class DTDLBaseSchema : ISerializable<DTDLSchemaSerializer>
     {
@@ -22,9 +22,9 @@ namespace WotConverterCore.Models.DigitalTwin.Schema
 
         public DTDLSchemaType? GetSchemaType()
         {
-            if (Type.Enumerator != null) 
+            if (Type.Enumerator != null)
                 return Type.Enumerator;
-            
+
             return null;
         }
     }
@@ -34,7 +34,7 @@ namespace WotConverterCore.Models.DigitalTwin.Schema
     {
         [JsonIgnore]
         Unknown,
-        
+
         [EnumMember(Value = "string")]
         String,
 

@@ -1,6 +1,5 @@
-﻿using Json.Schema;
-using System.Reflection;
-using WotConverterCore.Models.DigitalTwin;
+﻿using DTDLWotConverter.DigitalTwin;
+using Newtonsoft.Json;
 using WotConverterCore.Models.ThingModel;
 
 Console.WriteLine("======== WOT TD CONVERTER =======");
@@ -14,8 +13,6 @@ if (args.Length < 0)
 var pathToTm = args[0];
 string tmSchema = string.Empty;
 
-var assembly = Assembly.GetExecutingAssembly();
-var resourceName = "WotConverterCLI.Examples.Schema.Schema.jsonld";
 var dtdls = new List<DTDL>();
 var files = new List<string>();
 
@@ -41,55 +38,34 @@ foreach (var item in files)
 {
     Console.WriteLine($"\n--- TM {item}");
 
-    using (Stream? stream = assembly.GetManifestResourceStream(resourceName))
-    using (StreamReader schemaSr = new StreamReader(stream))
-    using (var tmSr = new StreamReader(item))
+    using (var itmeStream = new StreamReader(item))
     {
-        var sourceTm = tmSr.ReadToEnd();
-        var schema = await JsonSchema.FromStream(schemaSr.BaseStream);
-        if (schema == null)
+        var filename = Path.GetFileName(item);
+        var fileContent = itmeStream.ReadToEnd();
+        var istmValid = TM.Validate(fileContent);
+
+        if (!istmValid)
         {
-            Console.WriteLine("Unable to parse source schema validation! ");
-            return 1;
-
-        }
-
-        var deserializedTm = System.Text.Json.JsonDocument.Parse(sourceTm);
-        var res = schema.Evaluate(deserializedTm);
-
-        if (!res.IsValid)
-        {
-            Console.WriteLine($"The TM file: {item} is not a valid TM file! ");
-            if (res.Errors?.Any() ?? false)
-            {
-                Console.WriteLine("ERRORS:");
-                foreach (var err in res.Errors)
-                {
-                    Console.WriteLine($"\t- {err.Key} => {err.Value}");
-                }
-            }
+            Console.WriteLine($"The file {filename} is not a valid TM !");
             continue;
         }
 
-        Console.WriteLine("Valid Tm File!");
-
-        var thingModel = TM.Deserialize(sourceTm, true);
+        var thingModel = TM.Deserialize(fileContent);
 
         if (thingModel == null)
         {
-            Console.WriteLine("Unable to convert TM to DTDL");
-            return 1;
-
+            Console.WriteLine($"Unable to parse TM  {filename}");
+            continue;
         }
-        var filename = Path.GetFileName(item).Replace(".jsonld", "");
-        thingModel.Title = thingModel.Title ?? filename;
-        var dtdl = new DTDL();
-        dtdl.ConvertFrom(thingModel);
 
-        dtdls.Add(dtdl);
+        thingModel.Title ??= filename.Replace("jsonld", "");
+
+        var dtdl = DTDL.ConvertFromTm(thingModel);
+
+        if (dtdl != null)
+            dtdls.Add(dtdl);
     }
 }
-
 
 bool exists = Directory.Exists("./dtdls");
 

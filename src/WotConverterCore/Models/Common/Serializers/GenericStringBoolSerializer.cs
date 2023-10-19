@@ -3,7 +3,7 @@ using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.Serializers
 {
-    internal class GenericStringBoolSerializer : JsonConverter
+    public class GenericStringBoolSerializer : JsonConverter
     {
 
         public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
