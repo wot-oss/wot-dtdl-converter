@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace WotConverterCore.Models.Common.Serializers
 {
@@ -6,7 +8,25 @@ namespace WotConverterCore.Models.Common.Serializers
     {
         public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
-            return new GenericStringDictionary { Dictionary = new Dictionary<string, string>() };
+
+            if (reader.TokenType == JsonToken.Null)
+                return null;
+;
+            var baseObject = new GenericStringDictionary();
+
+            if (reader.TokenType == JsonToken.String)
+            {
+                var stringValue = serializer.Deserialize<string>(reader);
+                baseObject = stringValue;
+                return baseObject;
+            }
+
+            JObject jObject = JObject.Load(reader);
+            var dictValue = existingValue as Dictionary<string, string> ?? (Dictionary<string,string>)serializer.ContractResolver.ResolveContract(typeof(Dictionary<string,string>)).DefaultCreator();
+            using (var subReader = jObject.CreateReader())
+                serializer.Populate(subReader, dictValue);
+
+            return new GenericStringDictionary { Dictionary = dictValue };
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
@@ -26,6 +46,9 @@ namespace WotConverterCore.Models.Common.Serializers
             return;
         }
 
-        public override bool CanConvert(Type t) => t == typeof(GenericStringDouble);
+        public override bool CanConvert(Type t) => t == typeof(GenericStringDictionary);
+
+        public static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
+
     }
 }

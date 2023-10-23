@@ -1,10 +1,11 @@
-﻿using DTDLWotConverter.DigitalTwin.Serializers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.Common.Interfaces;
+using WotConverterDTDL.DigitalTwin.Serializers;
 
-namespace DTDLWotConverter.DigitalTwin.Schema
+namespace WotConverterDTDL.DigitalTwin.Schema
 {
     public class DTDLBaseSchema : ISerializable<DTDLSchemaSerializer>
     {
@@ -14,7 +15,16 @@ namespace DTDLWotConverter.DigitalTwin.Schema
         [JsonProperty("@type")]
         public GenericStringEnum<DTDLSchemaType> Type { get; protected set; }
 
-        internal static DTDLSchemaSerializer Serializer = new DTDLSchemaSerializer();
+        [JsonProperty("displayName")]
+        public GenericStringDictionary? DisplayName { get; set; }
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+
+        [JsonProperty("description")]
+        public GenericStringDictionary? Description { get; set; }
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+
+        [JsonProperty("comment")]
+        public string? Comment { get; set; }
 
         public static implicit operator DTDLBaseSchema(DTDLSchemaType type) => new DTDLBaseSchema { Type = type };
         public static implicit operator DTDLBaseSchema(string type) => new DTDLBaseSchema { Type = Enum.Parse<DTDLSchemaType>(type, true) };
@@ -27,6 +37,7 @@ namespace DTDLWotConverter.DigitalTwin.Schema
 
             return null;
         }
+
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

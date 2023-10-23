@@ -2,7 +2,15 @@
   "@context": "https://www.w3.org/2019/wot/td/v1",
   "id": "urn:testModel",
   "@type": "tm:ThingModel",
-  "description" : "Thing Model Test",
+  "title": "Thing Model Test",
+  "description" : "Thing Model used for testing",
+  "descriptions": {
+
+    "en": "Thing Model used for testing",
+    "it": "Modello utilizzato a fini di test",
+    "fr": "Modèle utilisé à des fins d'esasai'",
+    "de": "Zu Testzwecken verwendetes Modell"
+  },
   "securityDefinitions": {
     "nosec_sc": {
       "scheme": "nosec"
@@ -10,14 +18,19 @@
   },
   "security": "nosec_sc",
   "base": "http://localhost:3000",
-  "title": "Test Model",
+  "titles": {
+
+    "en": "Thing Model Test",
+    "it": "Modello di Test",
+    "fr": "Modèle de test",
+    "de": "Testmodel"
+  },
   "properties": {
     "power": {
       "title": "availablePower",
       "type": "object",
       "properties": {
         "status": {
-          "type": "boolean"
         }
       },
       "forms": [
@@ -30,6 +43,12 @@
     },
     "content": {
       "title": "availableContent",
+      "titles": {
+        "en": "availableContent",
+        "it": "contenutoDisponibile",
+        "fr": "contenuDisponible",
+        "de": "verfügbarerInhalt"
+      },
       "description": "Content of the Test Model",
       "type": "string",
       "forms": [

@@ -3,7 +3,7 @@ using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    public class GenericStringArray<T> : IGenericString, ISerializable<GenericStringArraySerializer<T>>
+    public class GenericStringArray<T> : IGenericString
     {
         private List<T>? array;
         private string? stringValue;
@@ -13,8 +13,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringArray<T>(string String) => new GenericStringArray<T> { String = String };
         public static implicit operator GenericStringArray<T>(List<T> array) => new GenericStringArray<T> { Array = array };
-
-        public static readonly GenericStringArraySerializer<T> Serializer = new GenericStringArraySerializer<T>();
 
         public bool isString() => stringValue != null;
         public override string ToString()

@@ -1,52 +1,39 @@
-﻿using DTDLWotConverter.DigitalTwin.Schema;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WotConverterDTDL.DigitalTwin.Schema;
 
-namespace DTDLWotConverter.DigitalTwin.Serializers
+namespace WotConverterDTDL.DigitalTwin.Serializers
 {
-    internal class DTDLSchemaSerializer : JsonConverter
+    internal class DTDLBaseContentSerializer : JsonConverter
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
                 return null;
 
-            var baseObject = new DTDLBaseSchema();
-
-            if (reader.TokenType == JsonToken.String)
-            {
-                var stringValue = serializer.Deserialize<string>(reader);
-                baseObject = stringValue;
-                return baseObject;
-            }
-
             JObject jObject = JObject.Load(reader);
 
+            var baseObject = new DTDLBaseContent();
             var parsedType = jObject["@type"]?.ToString();
-            var baseObjectType = Enum.Parse(typeof(DTDLSchemaType), parsedType, true);
 
-            switch (baseObjectType)
+            switch (parsedType)
             {
-                case DTDLSchemaType.Array:
-                    baseObject = existingValue as DTDLArraySchema ?? (DTDLArraySchema)serializer.ContractResolver.ResolveContract(typeof(DTDLArraySchema)).DefaultCreator();
+                case "Telemetry":
+                    baseObject = existingValue as DTDLTelemetry ?? (DTDLTelemetry)serializer.ContractResolver.ResolveContract(typeof(DTDLTelemetry)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
                     break;
-                case DTDLSchemaType.Object:
-                    baseObject = existingValue as DTDLObjectSchema ?? (DTDLObjectSchema)serializer.ContractResolver.ResolveContract(typeof(DTDLObjectSchema)).DefaultCreator();
+                case "Property":
+                    baseObject = existingValue as DTDLProperty ?? (DTDLProperty)serializer.ContractResolver.ResolveContract(typeof(DTDLProperty)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
                     break;
-                case DTDLSchemaType.Enum:
-                    baseObject = existingValue as DTDLEnumSchema ?? (DTDLEnumSchema)serializer.ContractResolver.ResolveContract(typeof(DTDLEnumSchema)).DefaultCreator();
+                case "Command":
+                    baseObject = existingValue as DTDLCommand ?? (DTDLCommand)serializer.ContractResolver.ResolveContract(typeof(DTDLCommand)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
                     break;
-                case DTDLSchemaType.Map:
-                    baseObject = existingValue as DTDLMapSchema ?? (DTDLMapSchema)serializer.ContractResolver.ResolveContract(typeof(DTDLMapSchema)).DefaultCreator();
-                    using (var subReader = jObject.CreateReader())
-                        serializer.Populate(subReader, baseObject);
-                    break;
+
                 case null:
                 default:
                     return null;
@@ -78,6 +65,10 @@ namespace DTDLWotConverter.DigitalTwin.Serializers
             }
         }
 
-        public override bool CanConvert(Type t) => t == typeof(DTDLBaseSchema);
+        public override bool CanConvert(Type t) => t == typeof(DTDLBaseContent);
+
+        internal static DTDLBaseContentSerializer Serializer = new DTDLBaseContentSerializer();
+
+
     }
 }

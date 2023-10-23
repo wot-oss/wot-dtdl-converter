@@ -5,7 +5,7 @@ using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
-    public class BaseDataSchema : ISerializable<DataSchemaSerializer>
+    public class BaseDataSchema : ISerializable<BaseDataSchemaSerializer>
     {
         [JsonProperty("type")]
         public TypeEnum? Type { get; protected set; }
@@ -40,7 +40,7 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("enum")]
         public List<string>? Enum { get; set; }
 
-        internal static DataSchemaSerializer Serializer = new DataSchemaSerializer();
+
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

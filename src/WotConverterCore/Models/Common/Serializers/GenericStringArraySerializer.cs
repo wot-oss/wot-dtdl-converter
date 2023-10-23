@@ -39,5 +39,8 @@ namespace WotConverterCore.Models.Serializers
         }
 
         public override bool CanConvert(Type t) => t == typeof(GenericStringArray<T>);
+
+        public static readonly GenericStringArraySerializer<T> Serializer = new GenericStringArraySerializer<T>();
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using DTDLWotConverter.DigitalTwin.Schema;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
+using WotConverterDTDL.DigitalTwin.Schema;
 
-namespace DTDLWotConverter.DigitalTwin
+namespace WotConverterDTDL.DigitalTwin
 {
     public class DTDLCommand : DTDLBaseContent
     {
@@ -27,10 +29,12 @@ namespace DTDLWotConverter.DigitalTwin
         public string Name { get; set; }
 
         [JsonProperty("displayName")]
-        public string DisplayName { get; set; }
+        public GenericStringDictionary? DisplayName { get; set; }
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
 
         [JsonProperty("description")]
-        public string? Description { get; set; }
+        public GenericStringDictionary? Description { get; set; }
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -52,10 +56,13 @@ namespace DTDLWotConverter.DigitalTwin
         public string Name { get; set; }
 
         [JsonProperty("displayName")]
-        public string DisplayName { get; set; }
+        public GenericStringDictionary? DisplayName { get; set; }
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+
 
         [JsonProperty("description")]
-        public string? Description { get; set; }
+        public GenericStringDictionary? Description { get; set; } 
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

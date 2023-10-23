@@ -1,8 +1,11 @@
-﻿using DTDLWotConverter.DigitalTwin.Schema;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using WotConverterCore.Models.Common;
+using WotConverterCore.Models.Common.Serializers;
+using WotConverterCore.Models.Serializers;
+using WotConverterDTDL.DigitalTwin.Schema;
+using WotConverterDTDL.DigitalTwin.Serializers;
 
-namespace DTDLWotConverter.DigitalTwin
+namespace WotConverterDTDL.DigitalTwin
 {
     public partial class DTDL
     {
@@ -10,10 +13,11 @@ namespace DTDLWotConverter.DigitalTwin
         {
             Converters =
             {
-                GenericStringEnum<DTDLSchemaType>.Serializer,
-                GenericStringInt.Serializer,
-                DTDLBaseSchema.Serializer,
-                DTDLBaseContent.Serializer
+                GenericStringEnumSerializer<DTDLSchemaType>.Serializer,
+                GenericStringIntSerializer.Serializer,
+                GenericStringDictionarySerializer.Serializer,
+                DTDLBaseContentSerializer.Serializer,
+                DTDLBaseContentSerializer.Serializer
             },
             NullValueHandling = NullValueHandling.Ignore
         };

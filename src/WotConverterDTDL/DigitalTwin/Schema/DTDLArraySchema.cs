@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
 
-namespace DTDLWotConverter.DigitalTwin.Schema
+namespace WotConverterDTDL.DigitalTwin.Schema
 {
     public class DTDLArraySchema : DTDLBaseSchema
     {
@@ -18,10 +20,13 @@ namespace DTDLWotConverter.DigitalTwin.Schema
         public DTDLBaseSchema? ElementSchema { get; set; }
 
         [JsonProperty("displayName")]
-        public string? DisplayName { get; set; }
+        public GenericStringDictionary? DisplayName { get; set; }
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
 
         [JsonProperty("description")]
-        public string? Description { get; set; }
+        public GenericStringDictionary? Description { get; set; }
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

@@ -37,5 +37,8 @@ namespace WotConverterCore.Models.Serializers
             return;
         }
         public override bool CanConvert(Type t) => t == typeof(GenericStringInt);
+
+        public static readonly GenericStringIntSerializer Serializer = new GenericStringIntSerializer();
+
     }
 }

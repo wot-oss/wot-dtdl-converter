@@ -1,10 +1,11 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
+﻿using System;
+using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    internal class GenericStringDictionary : IGenericString, ISerializable<GenericStringDoubleSerializer>
+    public class GenericStringDictionary : IGenericString
     {
 
         private Dictionary<string, string>? dictionary;
@@ -15,8 +16,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringDictionary(Dictionary<string, string> dictionary) => new GenericStringDictionary { Dictionary = dictionary };
         public static implicit operator GenericStringDictionary(string value) => new GenericStringDictionary { stringValue = value };
-
-        public static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
         public bool isString() => String != null;
 
         public override string ToString()

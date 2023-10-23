@@ -3,7 +3,7 @@ using WotConverterCore.Models.Serializers;
 
 namespace WotConverterCore.Models.Common
 {
-    public class GenericStringInt : IGenericString, ISerializable<GenericStringIntSerializer>
+    public class GenericStringInt : IGenericString
     {
 
         private int? integer;
@@ -14,8 +14,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringInt(int integer) => new GenericStringInt { Integer = integer };
         public static implicit operator GenericStringInt(string stringInt) => new GenericStringInt { StringInt = stringInt };
-
-        public static readonly GenericStringIntSerializer Serializer = new GenericStringIntSerializer();
 
         public bool isString() => stringInt != null;
 

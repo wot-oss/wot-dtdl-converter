@@ -1,7 +1,7 @@
-﻿using DTDLWotConverter.DigitalTwin.Schema;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using WotConverterDTDL.DigitalTwin.Schema;
 
-namespace DTDLWotConverter.DigitalTwin
+namespace WotConverterDTDL.DigitalTwin
 {
     public class DTDLTelemetry : DTDLBaseContent
     {

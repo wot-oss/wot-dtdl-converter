@@ -4,7 +4,7 @@ using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models.ThingModel.Serializers
 {
-    internal class DataSchemaSerializer : JsonConverter
+    internal class BaseDataSchemaSerializer : JsonConverter
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -75,5 +75,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
         }
 
         public override bool CanConvert(Type t) => t == typeof(BaseDataSchema);
+
+        internal static BaseDataSchemaSerializer Serializer = new BaseDataSchemaSerializer();
     }
 }

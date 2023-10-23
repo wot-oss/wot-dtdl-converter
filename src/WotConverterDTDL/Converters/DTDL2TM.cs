@@ -1,7 +1,7 @@
-﻿using DTDLWotConverter.DigitalTwin;
-using WotConverterCore.Models.ThingModel;
+﻿using WotConverterCore.Models.ThingModel;
+using WotConverterDTDL.DigitalTwin;
 
-namespace DTDLWotConverter.Converters
+namespace WotConverterDTDL.Converters
 {
     public class DTDL2TM
     {
@@ -12,8 +12,6 @@ namespace DTDLWotConverter.Converters
                 TM tm = new()
                 {
                     Context = "https://www.w3.org/2019/wot/td/v1",
-                    Title = dtdl.DisplayName,
-                    Description = dtdl.Description ?? $"Creted from {dtdl.DisplayName} DTDL",
                 };
 
                 //DTDL Properties
@@ -34,8 +32,13 @@ namespace DTDLWotConverter.Converters
             }
         }
 
-        private static void CreateTMProperties(ref TM tm, DTDL dtdl) { }
+        private static void CreateTMProperties(ref TM tm, DTDL dtdl) 
+        {
+        
+        }
+
         private static void CreateTMActions(ref TM tm, DTDL dtdl) { }
+        
         private static void CreateTMEvents(ref TM tm, DTDL dtdl) { }
     }
 }

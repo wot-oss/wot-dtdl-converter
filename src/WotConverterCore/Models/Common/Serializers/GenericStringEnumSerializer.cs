@@ -39,5 +39,8 @@ namespace WotConverterCore.Models.Common.Serializers
         }
 
         public override bool CanConvert(Type t) => t == typeof(GenericStringEnum<T>);
+
+        public static readonly GenericStringEnumSerializer<T> Serializer = new GenericStringEnumSerializer<T>();
+
     }
 }

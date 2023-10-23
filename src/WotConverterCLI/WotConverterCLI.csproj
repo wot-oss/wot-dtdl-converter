@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DTDLWotConverter\DTDLWotConverter.csproj" />
     <ProjectReference Include="..\WotConverterCore\WotConverterCore.csproj" />
+    <ProjectReference Include="..\WotConverterDTDL\WotConverterDTDL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

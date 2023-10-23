@@ -14,7 +14,5 @@ namespace WotConverterCore.Models.ThingModel
 
         public BaseDataSchema? DataSchema { get; set; }
 
-        internal static PropertySerializer Serializer = new PropertySerializer();
-
     }
 }

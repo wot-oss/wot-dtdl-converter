@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using WotConverterCore.Models.Common;
+using WotConverterCore.Models.Common.Serializers;
+using WotConverterCore.Models.Serializers;
 using WotConverterCore.Models.ThingModel.DataSchema;
+using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel
 {
@@ -10,14 +13,14 @@ namespace WotConverterCore.Models.ThingModel
         {
             Converters =
             {
-                GenericStringArray<string>.Serializer,
-                GenericStringArray<OpEnum>.Serializer,
-                GenericStringDouble.Serializer,
-                GenericStringInt.Serializer,
-                GenericStringBool.Serializer,
-                GenericStringUri.Serializer,
-                BaseDataSchema.Serializer,
-                Property.Serializer
+                GenericStringArraySerializer<string>.Serializer,
+                GenericStringArraySerializer<OpEnum>.Serializer,
+                GenericStringDoubleSerializer.Serializer,
+                GenericStringIntSerializer.Serializer,
+                GenericStringBoolSerializer.Serializer,
+                GenericStringUriSerializer.Serializer,
+                BaseDataSchemaSerializer.Serializer,
+                PropertySerializer.Serializer
             },
             NullValueHandling = NullValueHandling.Ignore
         };

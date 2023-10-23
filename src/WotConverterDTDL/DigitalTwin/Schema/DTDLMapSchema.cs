@@ -1,4 +1,4 @@
-﻿namespace DTDLWotConverter.DigitalTwin.Schema
+﻿namespace WotConverterDTDL.DigitalTwin.Schema
 {
     public class DTDLMapSchema : DTDLBaseSchema
     {

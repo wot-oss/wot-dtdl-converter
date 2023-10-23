@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
-using WotConverterCore.Converters;
+using WotConverterCore.Extensions;
 using WotConverterCore.Interfaces;
+using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel;
+using WotConverterDTDL.Converters;
 
-namespace DTDLWotConverter.DigitalTwin
+namespace WotConverterDTDL.DigitalTwin
 {
-    public partial class DTDL : ITmConvertible<DTDL>
+    public partial class DTDL : IConvertible<DTDL>
     {
         [JsonProperty("@context")]
         public string Context { get; set; }
@@ -17,10 +19,12 @@ namespace DTDLWotConverter.DigitalTwin
         public string Type { get; set; } = "Interface";
 
         [JsonProperty("displayName")]
-        public string DisplayName { get; set; }
-
+        public GenericStringDictionary? DisplayName { get; set; }
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        
         [JsonProperty("description")]
-        public string Description { get; set; }
+        public GenericStringDictionary? Description { get; set; }
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -47,7 +51,7 @@ namespace DTDLWotConverter.DigitalTwin
 
         public static DTDL? ConvertFromTm(TM thingModel)
         {
-            var dtdl = Tm2DTDL.ThingModel2DTDL(thingModel);
+            var dtdl = TM2DTDL.ThingModel2DTDL(thingModel);
 
             if (dtdl is null)
                 return null;

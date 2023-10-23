@@ -6,8 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WotConverterCore", "WotConverterCore\WotConverterCore.csproj", "{6CEDEA2C-4EB2-46A1-A948-3B3F537208F9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WotConverterCLI", "WotConverterCLI\WotConverterCLI.csproj", "{803B24E1-509A-4E90-B6A8-857344C7D2C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8603F0F5-3D23-407A-8587-8DCA727B816E} = {8603F0F5-3D23-407A-8587-8DCA727B816E}
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTDLWotConverter", "DTDLWotConverter\DTDLWotConverter.csproj", "{9EB4F5DC-1CEC-4959-80E2-7A451CA8BED0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WotConverterDTDL", "WotConverterDTDL\WotConverterDTDL.csproj", "{8603F0F5-3D23-407A-8587-8DCA727B816E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +26,10 @@ Global
 		{803B24E1-509A-4E90-B6A8-857344C7D2C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{803B24E1-509A-4E90-B6A8-857344C7D2C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{803B24E1-509A-4E90-B6A8-857344C7D2C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EB4F5DC-1CEC-4959-80E2-7A451CA8BED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EB4F5DC-1CEC-4959-80E2-7A451CA8BED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EB4F5DC-1CEC-4959-80E2-7A451CA8BED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EB4F5DC-1CEC-4959-80E2-7A451CA8BED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8603F0F5-3D23-407A-8587-8DCA727B816E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8603F0F5-3D23-407A-8587-8DCA727B816E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8603F0F5-3D23-407A-8587-8DCA727B816E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8603F0F5-3D23-407A-8587-8DCA727B816E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

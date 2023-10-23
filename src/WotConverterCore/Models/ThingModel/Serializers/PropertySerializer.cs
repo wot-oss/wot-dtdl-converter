@@ -111,5 +111,8 @@ namespace WotConverterCore.Models.ThingModel.Serializers
         }
 
         public override bool CanConvert(Type t) => t == typeof(Property);
+
+        internal static PropertySerializer Serializer = new PropertySerializer();
+
     }
 }
