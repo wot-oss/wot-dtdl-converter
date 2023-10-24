@@ -20,11 +20,9 @@ namespace WotConverterDTDL.DigitalTwin
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
-        
+
         [JsonProperty("description")]
         public GenericStringDictionary? Description { get; set; }
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -64,6 +62,10 @@ namespace WotConverterDTDL.DigitalTwin
             throw new NotImplementedException();
         }
 
+        //Should Serialize (Avoid empty objects during serialization)
+
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
     }
 
 }

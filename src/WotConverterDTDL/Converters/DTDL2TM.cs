@@ -32,13 +32,13 @@ namespace WotConverterDTDL.Converters
             }
         }
 
-        private static void CreateTMProperties(ref TM tm, DTDL dtdl) 
+        private static void CreateTMProperties(ref TM tm, DTDL dtdl)
         {
-        
+
         }
 
         private static void CreateTMActions(ref TM tm, DTDL dtdl) { }
-        
+
         private static void CreateTMEvents(ref TM tm, DTDL dtdl) { }
     }
 }

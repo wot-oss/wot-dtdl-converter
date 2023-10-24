@@ -14,7 +14,6 @@ namespace WotConverterDTDL.DigitalTwin
 
         public DTDLCommandRequest? Request { get; set; }
         public DTDLCommandResponse? Response { get; set; }
-
     }
 
     public class DTDLCommandRequest
@@ -30,11 +29,9 @@ namespace WotConverterDTDL.DigitalTwin
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
 
         [JsonProperty("description")]
         public GenericStringDictionary? Description { get; set; }
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -42,6 +39,10 @@ namespace WotConverterDTDL.DigitalTwin
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
 
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeSchema() => !Schema.IsEmpty();
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
     }
 
     public class DTDLCommandResponse
@@ -57,18 +58,19 @@ namespace WotConverterDTDL.DigitalTwin
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
-
 
         [JsonProperty("description")]
-        public GenericStringDictionary? Description { get; set; } 
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+        public GenericStringDictionary? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
 
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
+
+        public bool ShouldSerializeSchema() => !Schema.IsEmpty();
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
     }
 }

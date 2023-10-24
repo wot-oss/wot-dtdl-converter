@@ -7,11 +7,7 @@ namespace WotConverterDTDL.DigitalTwin.Schema
     public class DTDLEnumSchema : DTDLBaseSchema
     {
 
-        public DTDLEnumSchema()
-        {
-            Type = DTDLSchemaType.Enum;
-
-        }
+        public DTDLEnumSchema() => Type = DTDLSchemaType.Enum;
 
         public DTDLEnumSchema(string valueSchema)
         {
@@ -21,17 +17,6 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
         [JsonProperty("valueSchema")]
         public string ValueSchema { get; set; }
-
-        [JsonProperty("displayName")]
-        public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
-
-        [JsonProperty("description")]
-        public GenericStringDictionary? Description { get; set; }
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
-
-        [JsonProperty("comment")]
-        public string? Comment { get; set; }
 
         [JsonProperty("enumValues")]
         private List<DTDLEnumValue>? EnumValues { get; set; }
@@ -47,6 +32,7 @@ namespace WotConverterDTDL.DigitalTwin.Schema
             EnumValues.Add(value);
         }
 
+        //String Oerator 
         public static implicit operator DTDLEnumSchema(string type)
         {
             if (type == null)
@@ -80,6 +66,6 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         public string? Comment { get; set; }
 
         [JsonProperty("enumValue")]
-        public GenericStringInt? EnumValue { get; set; } 
+        public GenericStringInt? EnumValue { get; set; }
     }
 }

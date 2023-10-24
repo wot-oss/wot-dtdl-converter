@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.DataSchema;
 using static WotConverterCore.Models.Common.Constants.Strings;
@@ -161,6 +162,9 @@ namespace WotConverterCore.Models.ThingModel
 
         [JsonProperty("sizes")]
         public string? Sizes { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeHreflang() => !Hreflang.IsEmpty();
     }
 
 }

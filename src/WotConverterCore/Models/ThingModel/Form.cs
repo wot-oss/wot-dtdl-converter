@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
@@ -46,6 +47,12 @@ namespace WotConverterCore.Models.ThingModel
             return searchInArray ?? searchInString;
         }
 
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeHref() => !Href.IsEmpty();
+        public bool ShouldSerializeOp() => !Op.IsEmpty();
+        public bool ShouldSerializeSecurity() => !Security.IsEmpty();
+        public bool ShouldSerializeScopes() => !Scopes.IsEmpty();
+        public bool ShouldSerializeUriVariables() => !UriVariables.IsEmpty();
 
     }
 

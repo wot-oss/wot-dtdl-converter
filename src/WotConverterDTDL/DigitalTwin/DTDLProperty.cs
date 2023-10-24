@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
 using WotConverterDTDL.DigitalTwin.Schema;
 
 namespace WotConverterDTDL.DigitalTwin
@@ -15,6 +16,9 @@ namespace WotConverterDTDL.DigitalTwin
 
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeSchema() => !Schema.IsEmpty();
 
     }
 }

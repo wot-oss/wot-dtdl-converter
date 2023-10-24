@@ -24,6 +24,7 @@ namespace WotConverterDTDL.DigitalTwin.Schema
             Fields.Add(value);
         }
 
+        //String Oerator 
         public static implicit operator DTDLObjectSchema(string stringRepresentation) => new DTDLObjectSchema { };
     }
 
@@ -37,19 +38,22 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
 
         [JsonProperty("name")]
         public string? Name { get; set; }
 
         [JsonProperty("description")]
         public GenericStringDictionary? Description { get; set; }
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
 
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeSchema() => !Schema.IsEmpty();
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
     public class GenericStringEnum<T> : IGenericString where T : struct
     {

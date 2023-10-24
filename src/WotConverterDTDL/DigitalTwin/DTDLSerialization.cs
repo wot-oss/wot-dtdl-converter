@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using WotConverterCore.Models.Common;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 using WotConverterDTDL.DigitalTwin.Schema;
@@ -16,7 +15,7 @@ namespace WotConverterDTDL.DigitalTwin
                 GenericStringEnumSerializer<DTDLSchemaType>.Serializer,
                 GenericStringIntSerializer.Serializer,
                 GenericStringDictionarySerializer.Serializer,
-                DTDLBaseContentSerializer.Serializer,
+                DTDLBaseSchemaSerializer.Serializer,
                 DTDLBaseContentSerializer.Serializer
             },
             NullValueHandling = NullValueHandling.Ignore

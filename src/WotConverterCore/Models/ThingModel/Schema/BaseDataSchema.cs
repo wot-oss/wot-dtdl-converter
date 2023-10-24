@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
-using WotConverterCore.Models.Common.Interfaces;
 using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
-    public class BaseDataSchema : ISerializable<BaseDataSchemaSerializer>
+    public class BaseDataSchema 
     {
         [JsonProperty("type")]
         public TypeEnum? Type { get; protected set; }

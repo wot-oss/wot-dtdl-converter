@@ -4,7 +4,7 @@ using WotConverterDTDL.DigitalTwin.Schema;
 
 namespace WotConverterDTDL.DigitalTwin.Serializers
 {
-    internal class DTDLSchemaSerializer : JsonConverter
+    internal class DTDLBaseSchemaSerializer : JsonConverter
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -80,7 +80,7 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
 
         public override bool CanConvert(Type t) => t == typeof(DTDLBaseSchema);
 
-        internal static DTDLSchemaSerializer Serializer = new DTDLSchemaSerializer();
+        internal static DTDLBaseSchemaSerializer Serializer = new DTDLBaseSchemaSerializer();
 
     }
 }

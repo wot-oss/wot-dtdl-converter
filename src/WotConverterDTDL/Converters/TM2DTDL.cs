@@ -1,10 +1,8 @@
-﻿using System;
-using WotConverterCore.Models.Common;
+﻿using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 using WotConverterDTDL.DigitalTwin;
 using WotConverterDTDL.DigitalTwin.Schema;
-using static System.Collections.Specialized.BitVector32;
 
 namespace WotConverterDTDL.Converters
 {
@@ -54,7 +52,7 @@ namespace WotConverterDTDL.Converters
                 DTDLProperty content = new()
                 {
                     Name = property.Key,
-                    DisplayName = GetDTDLLocalizedString( propertyValue.Title, propertyValue.Titles, property.Key),
+                    DisplayName = GetDTDLLocalizedString(propertyValue.Title, propertyValue.Titles, property.Key),
                     Description = GetDTDLLocalizedString(propertyValue.Description, propertyValue.Descriptions, $"Property obtained from '{tm.Title}' Thing Model"),
                     Schema = GetDTDLSchema(propertyValue.DataSchema),
                     Writable = propertyForms.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _)
@@ -87,7 +85,7 @@ namespace WotConverterDTDL.Converters
                     {
                         DisplayName = GetDTDLLocalizedString(actionValue.Input.Title, actionValue.Input.Titles, $"{action.Key} Request"),
                         Name = action.Key + "Request",
-                        Description = GetDTDLLocalizedString(actionValue.Input.Description, actionValue.Input.Descriptions ),
+                        Description = GetDTDLLocalizedString(actionValue.Input.Description, actionValue.Input.Descriptions),
                         Schema = GetDTDLSchema(actionValue.Input)
                     };
 
@@ -177,8 +175,8 @@ namespace WotConverterDTDL.Converters
                     var objectResult = new DTDLObjectSchema()
                     {
                         DisplayName = GetDTDLLocalizedString(
-                            schema.Title?.Replace(" ", ""), 
-                            schema.Titles?.ToDictionary( _=> _.Key, _ => _.Value.Replace(" ", ""))),
+                            schema.Title?.Replace(" ", ""),
+                            schema.Titles?.ToDictionary(_ => _.Key, _ => _.Value.Replace(" ", ""))),
                         Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions)
                     };
 

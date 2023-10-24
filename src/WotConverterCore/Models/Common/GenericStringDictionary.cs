@@ -1,15 +1,10 @@
-﻿using System;
-using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
     public class GenericStringDictionary : IGenericString
     {
 
-        private Dictionary<string, string>? dictionary;
-        private string? stringValue;
+        private Dictionary<string, string>? dictionary = null;
+        private string? stringValue = null;
         public Dictionary<string, string>? Dictionary { get { return dictionary; } set { stringValue = null; dictionary = value; } }
 
         public string? String { get { return stringValue; } set { dictionary = null; stringValue = value; } }

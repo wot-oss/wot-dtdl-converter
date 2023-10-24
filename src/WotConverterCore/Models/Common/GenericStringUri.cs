@@ -1,8 +1,4 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
     public class GenericStringUri : IGenericString
     {

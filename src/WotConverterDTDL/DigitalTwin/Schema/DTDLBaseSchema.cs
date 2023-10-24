@@ -2,12 +2,11 @@
 using System.Runtime.Serialization;
 using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
-using WotConverterCore.Models.Common.Interfaces;
 using WotConverterDTDL.DigitalTwin.Serializers;
 
 namespace WotConverterDTDL.DigitalTwin.Schema
 {
-    public class DTDLBaseSchema : ISerializable<DTDLSchemaSerializer>
+    public class DTDLBaseSchema
     {
         [JsonProperty("@id")]
         public string? Id { get; set; }
@@ -17,18 +16,12 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
-        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
 
         [JsonProperty("description")]
         public GenericStringDictionary? Description { get; set; }
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
-
-        public static implicit operator DTDLBaseSchema(DTDLSchemaType type) => new DTDLBaseSchema { Type = type };
-        public static implicit operator DTDLBaseSchema(string type) => new DTDLBaseSchema { Type = Enum.Parse<DTDLSchemaType>(type, true) };
-
 
         public DTDLSchemaType? GetSchemaType()
         {
@@ -37,6 +30,15 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
             return null;
         }
+
+        //String Oerators
+        public static implicit operator DTDLBaseSchema(DTDLSchemaType type) => new DTDLBaseSchema { Type = type };
+        public static implicit operator DTDLBaseSchema(string type) => new DTDLBaseSchema { Type = Enum.Parse<DTDLSchemaType>(type, true) };
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+        public bool ShouldSerializeType() => !Type.IsEmpty();
 
     }
 

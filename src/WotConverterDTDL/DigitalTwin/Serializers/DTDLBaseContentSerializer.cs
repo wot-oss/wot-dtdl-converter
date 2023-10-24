@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WotConverterDTDL.DigitalTwin.Schema;
 
 namespace WotConverterDTDL.DigitalTwin.Serializers
 {
@@ -44,25 +43,8 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
         {
-
-            var entry = (DTDLBaseSchema?)untypedValue;
-
-            if (entry == null)
-                return;
-
-            switch (entry.GetSchemaType())
-            {
-                case DTDLSchemaType.Array:
-                case DTDLSchemaType.Object:
-                case DTDLSchemaType.Enum:
-                case DTDLSchemaType.Map:
-                    serializer.Serialize(writer, untypedValue);
-                    return;
-                default:
-                    serializer.Serialize(writer, entry.Type);
-                    return;
-
-            }
+            serializer.Serialize(writer, untypedValue);
+            return;
         }
 
         public override bool CanConvert(Type t) => t == typeof(DTDLBaseContent);
