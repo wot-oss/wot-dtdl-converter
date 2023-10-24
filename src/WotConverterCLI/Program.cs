@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.ThingModel;
+﻿using Newtonsoft.Json.Linq;
+using WotConverterCore.Models.ThingModel;
 using WotConverterDTDL.DigitalTwin;
 
 internal class Program
@@ -13,22 +14,23 @@ internal class Program
             return 1;
         }
 
-        var pathToTm = args[0];
+        var pathToJsonLds = args[0];
         string tmSchema = string.Empty;
 
         var dtdls = new List<DTDL>();
+        var tms = new List<TM>();
         var files = new List<string>();
 
-        if (!((File.GetAttributes(pathToTm) & FileAttributes.Directory) == FileAttributes.Directory))
+        if (!((File.GetAttributes(pathToJsonLds) & FileAttributes.Directory) == FileAttributes.Directory))
         {
-            files.Add(pathToTm);
+            files.Add(pathToJsonLds);
         }
         else
         {
-            files = Directory.GetFiles(pathToTm).ToList();
+            files = Directory.GetFiles(pathToJsonLds).ToList();
             if (!files.Any(_ => _.EndsWith(".jsonld")))
             {
-                Console.WriteLine($"No valid Jsonld files contained in: {pathToTm}");
+                Console.WriteLine($"No valid Jsonld files contained in: {pathToJsonLds}");
                 return 1;
             }
 
@@ -39,34 +41,66 @@ internal class Program
 
         foreach (var item in files)
         {
-            Console.WriteLine($"\n--- TM {item}");
 
             using (var itmeStream = new StreamReader(item))
             {
                 var filename = Path.GetFileName(item);
                 var fileContent = itmeStream.ReadToEnd();
-                var istmValid = TM.Validate(fileContent);
+                var jDocument = JObject.Parse(fileContent);
 
-                if (!istmValid)
-                {
-                    Console.WriteLine($"The file {filename} is not a valid TM !");
+                var type = jDocument["@type"];
+
+                if (type == null)
                     continue;
+
+                if(type.ToString().ToLowerInvariant() == "interface")
+                {
+                    Console.WriteLine($"\n--- DTDL {item}");
+
+                    var dtdl = DTDL.Deserialize(fileContent);
+
+                    if (dtdl == null)
+                    {
+                        Console.WriteLine($"Unable to parse DTDL {filename}");
+                        continue;
+                    }
+
+                    dtdl.DisplayName ??= filename.Replace("jsonld", "");
+
+                    var tm = dtdl.ConvertToTm();
+
+                    if (tm != null)
+                        tms.Add(tm);
                 }
 
-                var thingModel = TM.Deserialize(fileContent);
-
-                if (thingModel == null)
+                if (type.ToString().ToLowerInvariant() == "tm:thingmodel")
                 {
-                    Console.WriteLine($"Unable to parse TM  {filename}");
-                    continue;
+                    Console.WriteLine($"\n--- TM {item}");
+
+                    var istmValid = TM.Validate(fileContent);
+
+                    if (!istmValid)
+                    {
+                        Console.WriteLine($"The file {filename} is not a valid TM !");
+                        continue;
+                    }
+
+                    var thingModel = TM.Deserialize(fileContent);
+
+                    if (thingModel == null)
+                    {
+                        Console.WriteLine($"Unable to parse TM  {filename}");
+                        continue;
+                    }
+
+                    thingModel.Title ??= filename.Replace("jsonld", "");
+
+                    var dtdl = DTDL.ConvertFromTm(thingModel);
+
+                    if (dtdl != null)
+                        dtdls.Add(dtdl);
+
                 }
-
-                thingModel.Title ??= filename.Replace("jsonld", "");
-
-                var dtdl = DTDL.ConvertFromTm(thingModel);
-
-                if (dtdl != null)
-                    dtdls.Add(dtdl);
             }
         }
 
@@ -75,7 +109,13 @@ internal class Program
         if (!exists)
             Directory.CreateDirectory("./dtdls");
 
-        Console.WriteLine("\n=== Writing DTDLS... \n");
+        exists = Directory.Exists("./tms");
+
+        if (!exists)
+            Directory.CreateDirectory("./tms");
+
+        if(dtdls.Any())
+            Console.WriteLine("\n=== Writing DTDLS... \n");
 
         foreach (var dtdl in dtdls)
         {
@@ -83,6 +123,18 @@ internal class Program
             {
                 await outputFile.WriteAsync(dtdl.Serialize());
                 Console.WriteLine("New DTDL file output: {0} \n ---", ((FileStream)outputFile.BaseStream).Name);
+            }
+        }   
+        
+        if(tms.Any())
+            Console.WriteLine("\n=== Writing TMS... \n");
+
+        foreach (var tm in tms)
+        {
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine("./tms", tm.Title.Replace(" ", "") + ".jsonld")))
+            {
+                await outputFile.WriteAsync(tm.Serialize());
+                Console.WriteLine("New TM file output: {0} \n ---", ((FileStream)outputFile.BaseStream).Name);
             }
         }
 

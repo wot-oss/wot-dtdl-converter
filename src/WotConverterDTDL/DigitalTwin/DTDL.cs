@@ -10,7 +10,7 @@ namespace WotConverterDTDL.DigitalTwin
     public partial class DTDL : IConvertible<DTDL>
     {
         [JsonProperty("@context")]
-        public string Context { get; set; }
+        public GenericStringArray<string>? Context { get; set; }
 
         [JsonProperty("@id")]
         public string Id { get; set; }
@@ -59,13 +59,19 @@ namespace WotConverterDTDL.DigitalTwin
 
         public TM ConvertToTm()
         {
-            throw new NotImplementedException();
+            var tm = DTDL2TM.DTDL2ThingModel(this);
+
+            if (tm is null)
+                return null;
+
+            return tm;
         }
 
         //Should Serialize (Avoid empty objects during serialization)
 
         public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
-        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();    
+        public bool ShouldSerializeContext() => !Description.IsEmpty();
     }
 
 }

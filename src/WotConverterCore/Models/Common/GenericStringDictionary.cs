@@ -17,7 +17,8 @@
         {
             if (String != null)
                 return String;
-
+            if(Dictionary != null)
+                return Dictionary.First().Value;
             return "";
         }
 

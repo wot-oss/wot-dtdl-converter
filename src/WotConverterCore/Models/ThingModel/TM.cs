@@ -18,16 +18,17 @@ namespace WotConverterCore.Models.ThingModel
         public GenericStringArray<string> LdType { get; set; } = string.Empty;
 
         [JsonProperty("schemaDefinitions")]
-        public Dictionary<string, BaseDataSchema> SchemaDefinitions { get; set; } = new Dictionary<string, BaseDataSchema>();
+        public Dictionary<string, BaseDataSchema>? SchemaDefinitions { get; set; }
 
         [JsonProperty("security")]
-        public GenericStringArray<string> Security { get; set; } = new GenericStringArray<string>();
+        public GenericStringArray<string>? Security { get; set; }
 
         [JsonProperty("securityDefinitions")]
-        public Dictionary<string, SecurityScheme> SecurityDefinitions { get; set; } = new Dictionary<string, SecurityScheme>();
+        public Dictionary<string, SecurityScheme>? SecurityDefinitions { get; set; }
 
         [JsonProperty("description")]
         public string? Description { get; set; }
+
         [JsonProperty("title")]
         public string? Title { get; set; }
 

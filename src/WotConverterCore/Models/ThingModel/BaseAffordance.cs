@@ -21,6 +21,6 @@ namespace WotConverterCore.Models.ThingModel
         public Dictionary<string, string>? Descriptions { get; set; }
 
         [JsonProperty("forms")]
-        public List<Form> Forms { get; set; } = new List<Form>();
+        public List<Form>? Forms { get; set; }
     }
 }

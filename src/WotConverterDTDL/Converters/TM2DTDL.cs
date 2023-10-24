@@ -46,7 +46,7 @@ namespace WotConverterDTDL.Converters
             //TODO: Enum, Object, Map values
             foreach (var property in tmProperties)
             {
-                var propertyForms = property.Value.Forms;
+                var propertyForms = property.Value.Forms ?? new();
                 var propertyValue = property.Value;
 
                 DTDLProperty content = new()
@@ -55,7 +55,7 @@ namespace WotConverterDTDL.Converters
                     DisplayName = GetDTDLLocalizedString(propertyValue.Title, propertyValue.Titles, property.Key),
                     Description = GetDTDLLocalizedString(propertyValue.Description, propertyValue.Descriptions, $"Property obtained from '{tm.Title}' Thing Model"),
                     Schema = GetDTDLSchema(propertyValue.DataSchema),
-                    Writable = propertyForms.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _)
+                    Writable = propertyForms?.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _) ?? false
                 };
 
                 content.Comment = GetFormsComment(propertyForms, tm.Base);
@@ -69,7 +69,7 @@ namespace WotConverterDTDL.Converters
             foreach (var action in tmActions)
             {
 
-                var actionForms = action.Value.Forms;
+                var actionForms = action.Value.Forms ?? new();
                 var actionValue = action.Value;
 
                 DTDLCommand content = new()
@@ -116,7 +116,7 @@ namespace WotConverterDTDL.Converters
 
             foreach (var ev in tmEvents)
             {
-                var eventForms = ev.Value.Forms;
+                var eventForms = ev.Value.Forms ?? new();
                 var eventValue = ev.Value;
                 DTDLTelemetry content = new()
                 {
@@ -181,7 +181,7 @@ namespace WotConverterDTDL.Converters
                     };
 
                     var castedTmObjectSchema = (ObjectSchema)schema;
-                    foreach (var item in castedTmObjectSchema?.Properties ?? new())
+                    foreach (var item in castedTmObjectSchema?.GetObjectProperties() ?? new())
                     {
                         objectResult.AddObjectField(new DTDLObjectField
                         {

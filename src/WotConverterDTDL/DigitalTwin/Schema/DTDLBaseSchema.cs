@@ -53,12 +53,21 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
         [EnumMember(Value = "double")]
         Double,
+        
+        [EnumMember(Value = "long")]
+        Long,
+        
+        [EnumMember(Value = "float")]
+        Float,
 
         [EnumMember(Value = "integer")]
         Integer,
 
         [EnumMember(Value = "dateTime")]
         DateTime,
+
+        [EnumMember(Value = "time")]
+        Time,
 
         [EnumMember(Value = "boolean")]
         Boolean,

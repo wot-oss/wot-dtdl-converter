@@ -8,7 +8,7 @@ namespace WotConverterDTDL.DigitalTwin
     {
         public DTDLTelemetry() : base() { }
 
-        [JsonProperty("type")]
+        [JsonProperty("@type")]
         public string Type => "Telemetry";
 
         [JsonProperty("schema")]
