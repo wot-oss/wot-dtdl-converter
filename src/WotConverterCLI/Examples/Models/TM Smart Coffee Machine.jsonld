@@ -3,7 +3,7 @@
     "https://www.w3.org/2019/wot/td/v1"
   ],
   "@type": "tm:ThingModel",
-  "title": "Smart-Coffee-Machine Model - {{GLOBAL_TITLE}}",
+  "title": "Smart-Coffee-Machine Model {{GLOBAL_TITLE}}",
   "description": "A smart coffee machine with a range of capabilities. {{GLOBAL_DESCRIPTION}}",
   "support": "git://github.com/eclipse/thingweb.node-wot.git",
   "properties": {
