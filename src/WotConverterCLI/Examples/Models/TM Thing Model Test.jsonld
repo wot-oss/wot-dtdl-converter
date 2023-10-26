@@ -1,6 +1,5 @@
 {
   "@context": "https://www.w3.org/2019/wot/td/v1",
-  "id": "urn:testModel",
   "@type": "tm:ThingModel",
   "title": "Thing Model Test",
   "description" : "Thing Model used for testing",
