@@ -9,7 +9,7 @@ namespace WotConverterCore.Models.ThingModel
     public partial class Form
     {
         [JsonProperty("href")]
-        public GenericStringUri? Href { get; set; }
+        public GenericStringUri Href { get; set; }
 
         [JsonProperty("op")]
         public GenericStringArray<OpEnum>? Op { get; set; }

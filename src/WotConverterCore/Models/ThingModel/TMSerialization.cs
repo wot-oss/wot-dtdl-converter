@@ -20,11 +20,12 @@ namespace WotConverterCore.Models.ThingModel
                 BaseDataSchemaSerializer.Serializer,
                 PropertySerializer.Serializer
             },
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented
         };
 
         public string Serialize() =>
-            JsonConvert.SerializeObject(this, Formatting.Indented, SerializationSettings);
+            JsonConvert.SerializeObject(this, SerializationSettings);
 
         public static TM? Deserialize(string inputString) =>
             JsonConvert.DeserializeObject<TM>(inputString, SerializationSettings);

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Models.Common;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
 using WotConverterDTDL.DigitalTwin.Schema;
@@ -13,16 +14,18 @@ namespace WotConverterDTDL.DigitalTwin
             Converters =
             {
                 GenericStringEnumSerializer<DTDLSchemaType>.Serializer,
+                GenericStringArraySerializer<string>.Serializer,
                 GenericStringIntSerializer.Serializer,
                 GenericStringDictionarySerializer.Serializer,
                 DTDLBaseSchemaSerializer.Serializer,
                 DTDLBaseContentSerializer.Serializer
             },
-            NullValueHandling = NullValueHandling.Ignore
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented
         };
 
         public string Serialize() =>
-            JsonConvert.SerializeObject(this, Formatting.Indented, SerializationSettings);
+            JsonConvert.SerializeObject(this, SerializationSettings);
 
         public static DTDL? Deserialize(string inputString) =>
             JsonConvert.DeserializeObject<DTDL>(inputString, SerializationSettings);

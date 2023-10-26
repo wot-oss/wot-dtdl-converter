@@ -28,7 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Examples\Models\BigTm.jsonld">
+    <None Update="Examples\Models\DTDLExample.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\DTDLExample2.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\TMExample.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Models\InvalidTM.jsonld">

@@ -1,0 +1,215 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:thing:model:test;1",
+  "@type": "Interface",
+  "displayName": {
+    "en": "Thing Model Test",
+    "it": "Modello di Test",
+    "fr": "Modèle de test",
+    "de": "Testmodel"
+  },
+  "description": {
+    "en": "Thing Model used for testing",
+    "it": "Modello utilizzato a fini di test",
+    "fr": "Modèle utilisé à des fins d'esasai'",
+    "de": "Zu Testzwecken verwendetes Modell"
+  },
+  "comment": "http://localhost:3000",
+  "contents": [
+    {
+      "@type": "Property",
+      "writable": false,
+      "schema": {
+        "fields": [
+          {
+            "@type": "Field",
+            "name": "status"
+          }
+        ],
+        "@type": "Object",
+        "displayName": "availablePower"
+      },
+      "name": "power",
+      "displayName": "availablePower",
+      "description": "Property obtained from 'Thing Model Test' Thing Model",
+      "comment": "1 form: 1 - href: power"
+    },
+    {
+      "@type": "Property",
+      "writable": false,
+      "schema": "string",
+      "name": "content",
+      "displayName": {
+        "en": "availableContent",
+        "it": "contenutoDisponibile",
+        "fr": "contenuDisponible",
+        "de": "verfügbarerInhalt"
+      },
+      "description": "Content of the Test Model",
+      "comment": "1 form: 1 - href: content"
+    },
+    {
+      "@type": "Property",
+      "writable": false,
+      "schema": "integer",
+      "name": "temperature",
+      "displayName": "availableTemperature",
+      "description": "Property obtained from 'Thing Model Test' Thing Model",
+      "comment": "1 form: 1 - href: temp"
+    },
+    {
+      "@type": "Property",
+      "writable": false,
+      "schema": {
+        "valueSchema": "string",
+        "enumValues": [
+          {
+            "@type": "EnumValue",
+            "displayName": "readyToCharge",
+            "name": "readyToCharge",
+            "enumValue": "readyToCharge"
+          },
+          {
+            "@type": "EnumValue",
+            "displayName": "charging",
+            "name": "charging",
+            "enumValue": "charging"
+          },
+          {
+            "@type": "EnumValue",
+            "displayName": "stopCharging",
+            "name": "stopCharging",
+            "enumValue": "stopCharging"
+          }
+        ],
+        "@type": "Enum",
+        "description": "Current car status (readyToCharge, charging, stopCharging)"
+      },
+      "name": "status",
+      "displayName": "status",
+      "description": "Current car status (readyToCharge, charging, stopCharging)",
+      "comment": "1 form: 1 - href: /ecar/properties/status"
+    },
+    {
+      "@type": "Property",
+      "writable": false,
+      "schema": {
+        "elementSchema": "double",
+        "@type": "Array",
+        "displayName": "RGB color value"
+      },
+      "name": "rgb",
+      "displayName": "RGB color value",
+      "description": "Property obtained from 'Thing Model Test' Thing Model"
+    },
+    {
+      "@type": "Command",
+      "name": "toggle",
+      "displayName": "togglePowerStatus",
+      "description": "Command obtained from 'Thing Model Test' Thing Model",
+      "comment": "1 form: 1 - href: toggle"
+    },
+    {
+      "@type": "Command",
+      "name": "setVolume",
+      "displayName": "setVolume",
+      "description": "Command obtained from 'Thing Model Test' Thing Model",
+      "comment": "1 form: 1 - href: setvolume"
+    },
+    {
+      "@type": "Command",
+      "Request": {
+        "@type": "CommandRequest",
+        "name": "rebootRequest",
+        "displayName": "Reboot Time",
+        "description": "Requested time to reboot the device.",
+        "schema": "dateTime"
+      },
+      "Response": {
+        "@type": "CommandResponse",
+        "name": "rebootResponse",
+        "displayName": "Scheduled Time",
+        "description": "Scheduled shutdown time",
+        "schema": "dateTime"
+      },
+      "name": "reboot",
+      "displayName": "SystemReboot",
+      "description": "Reboots the system at the specified time"
+    },
+    {
+      "@type": "Command",
+      "Request": {
+        "@type": "CommandRequest",
+        "name": "playVideoRequest",
+        "displayName": "playVideo Request",
+        "description": "playVideo action request",
+        "schema": {
+          "fields": [
+            {
+              "@type": "Field",
+              "displayName": "VideoIdentifier",
+              "name": "identifier",
+              "description": "The unique identifier of a Video",
+              "schema": "string"
+            },
+            {
+              "@type": "Field",
+              "displayName": "VideoName",
+              "name": "name",
+              "description": "The name of a Video file",
+              "schema": "string"
+            },
+            {
+              "@type": "Field",
+              "displayName": "Timestamp",
+              "name": "timestamp",
+              "description": "Request Timestamp",
+              "schema": "dateTime"
+            },
+            {
+              "@type": "Field",
+              "displayName": "VideoUrl",
+              "name": "url",
+              "description": "The Video Url",
+              "schema": "string"
+            }
+          ],
+          "@type": "Object",
+          "displayName": "playVideoRequest",
+          "description": "playVideo action request"
+        }
+      },
+      "Response": {
+        "@type": "CommandResponse",
+        "name": "playVideoResponse",
+        "displayName": "playVideo Response",
+        "schema": {
+          "fields": [
+            {
+              "@type": "Field",
+              "name": "stream",
+              "schema": "string"
+            },
+            {
+              "@type": "Field",
+              "name": "timestamp",
+              "schema": "dateTime"
+            }
+          ],
+          "@type": "Object"
+        }
+      },
+      "name": "playVideo",
+      "displayName": "playVideo",
+      "description": "Command obtained from 'Thing Model Test' Thing Model",
+      "comment": "1 form: 1 - href: playvideo"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "alert",
+      "displayName": "alert",
+      "description": "Telemetry obtained from 'Thing Model Test' Thing Model",
+      "comment": "2 forms: 1 - href: alrt / 2 - href: ws://localhost:8888/alert / "
+    }
+  ]
+}

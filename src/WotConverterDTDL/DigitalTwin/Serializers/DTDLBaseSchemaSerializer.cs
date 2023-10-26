@@ -19,7 +19,6 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
                 baseObject = stringValue;
                 return baseObject;
             }
-
             JObject jObject = JObject.Load(reader);
 
             var parsedType = jObject["@type"]?.ToString();

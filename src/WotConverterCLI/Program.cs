@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Text;
 using WotConverterCore.Models.ThingModel;
 using WotConverterDTDL.DigitalTwin;
 
@@ -42,7 +43,7 @@ internal class Program
         foreach (var item in files)
         {
 
-            using (var itmeStream = new StreamReader(item))
+            using (var itmeStream = new StreamReader(item, Encoding.Latin1))
             {
                 var filename = Path.GetFileName(item);
                 var fileContent = itmeStream.ReadToEnd();
@@ -119,9 +120,11 @@ internal class Program
 
         foreach (var dtdl in dtdls)
         {
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine("./dtdls", dtdl.Id.Replace(":", "") + ".jsonld")))
+            using (StreamWriter outputFile = new StreamWriter(
+                Path.Combine("./dtdls" , $"{dtdl.Id?.Replace(":", "") ?? Guid.NewGuid().ToString()}.jsonld"), false, Encoding.Latin1))
             {
-                await outputFile.WriteAsync(dtdl.Serialize());
+                var serializeddtdl = dtdl.Serialize();
+                await outputFile.WriteAsync(serializeddtdl);
                 Console.WriteLine("New DTDL file output: {0} \n ---", ((FileStream)outputFile.BaseStream).Name);
             }
         }   
@@ -131,9 +134,11 @@ internal class Program
 
         foreach (var tm in tms)
         {
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine("./tms", tm.Title.Replace(" ", "") + ".jsonld")))
+            using (StreamWriter outputFile = new StreamWriter(
+                Path.Combine($"./tms", $"{tm.Title?.Replace(" ", "") ?? tm.Titles?.FirstOrDefault().Value ?? Guid.NewGuid().ToString()}.jsonld"), false, Encoding.Latin1))
             {
-                await outputFile.WriteAsync(tm.Serialize());
+                var serializedTm = tm.Serialize();
+                await outputFile.WriteAsync(serializedTm);
                 Console.WriteLine("New TM file output: {0} \n ---", ((FileStream)outputFile.BaseStream).Name);
             }
         }

@@ -23,6 +23,9 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         [JsonProperty("comment")]
         public string? Comment { get; set; }
 
+        [JsonProperty("unit")]
+        public string? Unit { get; set; }
+
         public DTDLSchemaType? GetSchemaType()
         {
             if (Type.Enumerator != null)
@@ -33,7 +36,14 @@ namespace WotConverterDTDL.DigitalTwin.Schema
 
         //String Oerators
         public static implicit operator DTDLBaseSchema(DTDLSchemaType type) => new DTDLBaseSchema { Type = type };
-        public static implicit operator DTDLBaseSchema(string type) => new DTDLBaseSchema { Type = Enum.Parse<DTDLSchemaType>(type, true) };
+        public static implicit operator DTDLBaseSchema(string type) {
+            var isParsed = Enum.TryParse<DTDLSchemaType>(type, true, out var result);
+
+            if(isParsed)
+                return result;
+
+            return DTDLSchemaType.Unknown;  
+        }
 
         //Should Serialize (Avoid empty objects during serialization)
         public bool ShouldSerializeDescription() => !Description.IsEmpty();

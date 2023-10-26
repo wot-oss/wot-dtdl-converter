@@ -16,7 +16,7 @@ namespace WotConverterDTDL.DigitalTwin
         public string Id { get; set; }
 
         [JsonProperty("@type")]
-        public string Type { get; set; } = "Interface";
+        public GenericStringArray<string> Type { get; set; } = "Interface";
 
         [JsonProperty("displayName")]
         public GenericStringDictionary? DisplayName { get; set; }
@@ -26,6 +26,9 @@ namespace WotConverterDTDL.DigitalTwin
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
+        
+        [JsonProperty("extends")]
+        public GenericStringArray<string> ? Extends { get; set; }
 
         [JsonProperty("contents")]
         private List<DTDLBaseContent>? Contents { get; set; }

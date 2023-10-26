@@ -13,32 +13,65 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
             JObject jObject = JObject.Load(reader);
 
             var baseObject = new DTDLBaseContent();
-            var parsedType = jObject["@type"]?.ToString();
+            var tokenType = jObject.SelectToken("@type");
 
-            switch (parsedType)
+            if (tokenType?.Type == JTokenType.Array)
             {
-                case "Telemetry":
+                var parsedType = tokenType.ToObject<List<string>>();
+
+                if (parsedType?.Contains("Telemetry") ?? false)
+                {
                     baseObject = existingValue as DTDLTelemetry ?? (DTDLTelemetry)serializer.ContractResolver.ResolveContract(typeof(DTDLTelemetry)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
-                    break;
-                case "Property":
+                    return baseObject;
+                }
+                if (parsedType?.Contains("Property") ?? false)
+                {
                     baseObject = existingValue as DTDLProperty ?? (DTDLProperty)serializer.ContractResolver.ResolveContract(typeof(DTDLProperty)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
-                    break;
-                case "Command":
+                    return baseObject;
+                }
+                if (parsedType?.Contains("Command") ?? false)
+                {
                     baseObject = existingValue as DTDLCommand ?? (DTDLCommand)serializer.ContractResolver.ResolveContract(typeof(DTDLCommand)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
-                    break;
+                    return baseObject;
+                }
 
-                case null:
-                default:
-                    return null;
+                return null;
+            }
+            else if (tokenType?.Type == JTokenType.String)
+            {
+                var parsedType = tokenType.ToObject<string>();
+
+                switch (parsedType)
+                {
+                    case "Telemetry":
+                        baseObject = existingValue as DTDLTelemetry ?? (DTDLTelemetry)serializer.ContractResolver.ResolveContract(typeof(DTDLTelemetry)).DefaultCreator();
+                        using (var subReader = jObject.CreateReader())
+                            serializer.Populate(subReader, baseObject);
+                        return baseObject;
+                    case "Property":
+                        baseObject = existingValue as DTDLProperty ?? (DTDLProperty)serializer.ContractResolver.ResolveContract(typeof(DTDLProperty)).DefaultCreator();
+                        using (var subReader = jObject.CreateReader())
+                            serializer.Populate(subReader, baseObject);
+                        return baseObject;
+                    case "Command":
+                        baseObject = existingValue as DTDLCommand ?? (DTDLCommand)serializer.ContractResolver.ResolveContract(typeof(DTDLCommand)).DefaultCreator();
+                        using (var subReader = jObject.CreateReader())
+                            serializer.Populate(subReader, baseObject);
+                        return baseObject;
+                    case null:
+                    default:
+                        return null;
+                }
+
             }
 
-            return baseObject;
+            return null;
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)

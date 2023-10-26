@@ -10,8 +10,7 @@ namespace WotConverterDTDL.DigitalTwin
         public DTDLCommand() : base() { }
 
         [JsonProperty("@type")]
-        public string Type => "Command";
-
+        public GenericStringArray<string> Type { get; set; } = "Command";
         public DTDLCommandRequest? Request { get; set; }
         public DTDLCommandResponse? Response { get; set; }
     }
@@ -19,7 +18,7 @@ namespace WotConverterDTDL.DigitalTwin
     public class DTDLCommandRequest
     {
         [JsonProperty("@type")]
-        public string Type => "CommandRequest";
+        public GenericStringArray<string> Type => "CommandRequest";
 
         [JsonProperty("@id")]
         public string? Id { get; set; }
@@ -48,7 +47,7 @@ namespace WotConverterDTDL.DigitalTwin
     public class DTDLCommandResponse
     {
         [JsonProperty("@type")]
-        public string Type => "CommandResponse";
+        public GenericStringArray<string> Type => "CommandResponse";
 
         [JsonProperty("@id")]
         public string? Id { get; set; }

@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WotConverterCore.Models.Common;
+using WotConverterCore.Models.Common.Serializers;
+using WotConverterCore.Models.Serializers;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models.ThingModel.Serializers
@@ -85,16 +88,24 @@ namespace WotConverterCore.Models.ThingModel.Serializers
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
-            var jsonObjectProperty = JToken.FromObject(untypedValue);
-            var dataSchema = jsonObjectProperty["DataSchema"];
-
-            if (dataSchema == null)
+            var property = (Property)untypedValue;
+            var propertyJson = JsonConvert.SerializeObject(untypedValue, Formatting.None, new JsonSerializerSettings
             {
-                serializer.Serialize(writer, untypedValue);
-                return;
-            }
+                Converters = { 
+                    GenericStringUriSerializer.Serializer,
+                    GenericStringArraySerializer<OpEnum>.Serializer,
+                    GenericStringArraySerializer<string>.Serializer,
+                    BaseDataSchemaSerializer.Serializer
+                }
+            });
 
+            JToken jsonObjectProperty = JObject.Parse(propertyJson);
             jsonObjectProperty = RemoveEmptyChildren(jsonObjectProperty);
+
+            if (property.DataSchema == null)
+                serializer.Serialize(writer, jsonObjectProperty);
+
+            var dataSchema = JToken.FromObject(property.DataSchema);
             dataSchema = RemoveEmptyChildren(dataSchema);
 
             var jsonObjectPropertyObject = (JObject)jsonObjectProperty;
@@ -108,6 +119,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
 
             jsonObjectPropertyObject.Remove("DataSchema");
             serializer.Serialize(writer, jsonObjectPropertyObject);
+
             return;
         }
 

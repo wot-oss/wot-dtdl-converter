@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
 using WotConverterDTDL.DigitalTwin.Schema;
 
 namespace WotConverterDTDL.DigitalTwin
@@ -9,7 +10,7 @@ namespace WotConverterDTDL.DigitalTwin
         public DTDLProperty() : base() { }
 
         [JsonProperty("@type")]
-        public string Type => "Property";
+        public GenericStringArray<string> Type { get; set; } = "Property";
 
         [JsonProperty("writable")]
         public bool? Writable { get; set; }

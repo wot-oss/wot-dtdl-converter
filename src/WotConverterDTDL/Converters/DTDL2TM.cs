@@ -1,4 +1,5 @@
-﻿using WotConverterCore.Models.Common;
+﻿using Newtonsoft.Json.Linq;
+using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 using WotConverterDTDL.DigitalTwin;
@@ -16,7 +17,7 @@ namespace WotConverterDTDL.Converters
                 {
                     Title = dtdl.DisplayName?.String,
                     Titles = dtdl.DisplayName?.Dictionary,
-                    Description = dtdl.Description?.String,
+                    Description = dtdl.Description?.String ?? $"Creted from {dtdl.DisplayName ?? "a"} DTDL model",
                     Descriptions = dtdl.Description?.Dictionary,
                     Context = "https://www.w3.org/2019/wot/td/v1",
                     LdType = "tm:ThingModel"
@@ -62,7 +63,7 @@ namespace WotConverterDTDL.Converters
                 };
 
                 var key = castedProperty.Name ?? castedProperty.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
-
+                tmProperty.Forms = new();
                 Form tmForm = new()
                 {
                     Href = $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}",
@@ -77,6 +78,7 @@ namespace WotConverterDTDL.Converters
                 if (castedProperty.Writable ?? false)
                     tmForm.Op.Array.Add(OpEnum.WriteProperty);
 
+                tmProperty.Forms.Add(tmForm);
                 tm.AddProperty(key, tmProperty);
             }
         }
@@ -162,7 +164,7 @@ namespace WotConverterDTDL.Converters
                 };
 
                 var key = castedTelemetry.Name ?? castedTelemetry.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
-
+                tmEvent.Forms = new();
                 Form tmForm = new()
                 {
                     Href = $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}",
@@ -171,9 +173,10 @@ namespace WotConverterDTDL.Converters
 
                 tmForm.Op.Array = new()
                 {
-                        OpEnum.Subscribeevent
+                   OpEnum.Subscribeevent
                 };
 
+                tmEvent.Forms.Add(tmForm);
                 tm.AddEvent(key, tmEvent);
             }
         }
