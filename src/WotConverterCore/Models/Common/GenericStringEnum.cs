@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    public class GenericStringEnum<T> : IGenericString, ISerializable<GenericStringIntSerializer> where T : struct
+    public class GenericStringEnum<T> : IGenericString where T : struct
     {
 
         private T? enumerator;
@@ -20,8 +11,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringEnum<T>(T enumerator) => new GenericStringEnum<T> { Enumerator = enumerator };
         public static implicit operator GenericStringEnum<T>(string stringInt) => new GenericStringEnum<T> { StringEnumerator = stringInt };
-
-        internal static readonly GenericStringEnumSerializer<T> Serializer = new GenericStringEnumSerializer<T>();
 
         public bool isString() => stringEnum != null;
 
@@ -34,5 +23,6 @@ namespace WotConverterCore.Models.Common
             else
                 return "";
         }
+
     }
 }

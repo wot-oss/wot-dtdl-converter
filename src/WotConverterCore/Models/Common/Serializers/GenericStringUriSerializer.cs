@@ -2,7 +2,7 @@
 
 namespace WotConverterCore.Models.Common.Serializers
 {
-    internal class GenericStringUriSerializer : JsonConverter
+    public class GenericStringUriSerializer : JsonConverter
     {
         public override object? ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -37,5 +37,8 @@ namespace WotConverterCore.Models.Common.Serializers
             return;
         }
         public override bool CanConvert(Type t) => t == typeof(GenericStringUri);
+
+        public static readonly GenericStringUriSerializer Serializer = new GenericStringUriSerializer();
+
     }
 }

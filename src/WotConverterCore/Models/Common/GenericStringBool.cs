@@ -1,11 +1,7 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    public class GenericStringBool : IGenericString, ISerializable<GenericStringBoolSerializer>
+    public class GenericStringBool : IGenericString
     {
-
         private bool? boolean;
         private string? stringBoolean;
 
@@ -14,8 +10,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringBool(bool boolean) => new GenericStringBool { Bool = boolean };
         public static implicit operator GenericStringBool(string stringBool) => new GenericStringBool { StringBool = stringBool };
-
-        internal static readonly GenericStringBoolSerializer Serializer = new GenericStringBoolSerializer();
         public bool isString() => stringBoolean != null;
 
         public override string ToString()

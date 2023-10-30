@@ -3,7 +3,7 @@ using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.Serializers
 {
-    internal class GenericStringDoubleSerializer : JsonConverter
+    public class GenericStringDoubleSerializer : JsonConverter
     {
         public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -38,5 +38,7 @@ namespace WotConverterCore.Models.Serializers
         }
 
         public override bool CanConvert(Type t) => t == typeof(GenericStringDouble);
+
+        public static readonly GenericStringDoubleSerializer Serializer = new GenericStringDoubleSerializer();
     }
 }

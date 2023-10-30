@@ -1,9 +1,6 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    public class GenericStringArray<T> : IGenericString, ISerializable<GenericStringArraySerializer<T>>
+    public class GenericStringArray<T> : IGenericString
     {
         private List<T>? array;
         private string? stringValue;
@@ -14,7 +11,13 @@ namespace WotConverterCore.Models.Common
         public static implicit operator GenericStringArray<T>(string String) => new GenericStringArray<T> { String = String };
         public static implicit operator GenericStringArray<T>(List<T> array) => new GenericStringArray<T> { Array = array };
 
-        internal static readonly GenericStringArraySerializer<T> Serializer = new GenericStringArraySerializer<T>();
+        public void Add(T value)
+        {
+            if (array == null)
+                array = new();
+
+            array.Add(value);
+        }
 
         public bool isString() => stringValue != null;
         public override string ToString()

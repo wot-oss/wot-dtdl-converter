@@ -19,26 +19,36 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WotConverterCore\WotConverterCore.csproj" />
+    <ProjectReference Include="..\WotConverterDTDL\WotConverterDTDL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="JsonSchema.Net" Version="5.2.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Examples\DTDLs\DTDLExample.jsonld">
+    <None Update="Examples\Models\DTDL Fan.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\ThingModels\BigTm.jsonld">
+    <None Update="Examples\Models\DTDL Heathing Method.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\ThingModels\InvalidTM.jsonld">
+    <None Update="Examples\Models\DTDLTenant Unit.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Examples\DTDLs\" />
+    <None Update="Examples\Models\InvalidTM.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\TM Pac.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\TM Smart Coffee Machine.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\TM Thing Model Test.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

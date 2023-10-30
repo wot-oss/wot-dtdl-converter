@@ -1,7 +1,12 @@
-﻿namespace WotConverterCore.Interfaces
+﻿using WotConverterCore.Models.ThingModel;
+
+namespace WotConverterCore.Interfaces
 {
-    public interface IConvertible<K> : IGenericConvertible
+    public interface IConvertible<K> where K : class
     {
-        void ConvertFrom(K value) { }
+        TM ConvertToTm();
+
+        static K? ConvertFromTm(TM thingModel) => throw new NotImplementedException();
+
     }
 }

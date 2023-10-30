@@ -1,9 +1,6 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    public class GenericStringDouble : IGenericString, ISerializable<GenericStringDoubleSerializer>
+    public class GenericStringDouble : IGenericString
     {
 
         private double? doubleValue;
@@ -14,8 +11,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringDouble(double number) => new GenericStringDouble { Double = number };
         public static implicit operator GenericStringDouble(string stringDouble) => new GenericStringDouble { Stringdouble = stringDouble };
-
-        internal static readonly GenericStringDoubleSerializer Serializer = new GenericStringDoubleSerializer();
         public bool isString() => stringDouble != null;
 
         public override string ToString()

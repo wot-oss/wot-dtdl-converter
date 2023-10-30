@@ -3,14 +3,15 @@
 ################################################################################
 
 /src/.vs/WotConverter
-/src/WotConverterCLI/obj
-/src/WotConverterCore/obj
-/src/WotConverterCLI/bin
-/src/WotConverterCore/bin
-/.vs/
-/src/.vs/
-/src/.vs/ProjectEvaluation/wotconverter.metadata.v7.bin
-/src/.vs/ProjectEvaluation/wotconverter.projects.v7.bin
-/src/DTDLWotConverter/bin/Debug/net6.0
-/src/DTDLWotConverter/obj/Debug/net6.0
+/src/WotConverterCLI/obj/*
+/src/WotConverterCore/obj/*
+/src/WotConverterCLI/bin/*
+/src/WotConverterCore/bin/*
+/.vs/*
+/src/.vs/*
 /src/DTDLWotConverter/obj
+/src/DTDLWotConverter/bin/*
+/src/WotConverterDTDL/bin/*
+/src/WotConverterDTDL/obj/*
+/src/realease/*
+/src/WotConverterDTDL/bin/*

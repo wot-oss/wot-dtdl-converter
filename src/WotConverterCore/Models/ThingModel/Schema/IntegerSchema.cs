@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
@@ -24,5 +25,12 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
 
         [JsonProperty("multipleOf")]
         public GenericStringInt? MultipleOf { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeMinimum() => !Minimum.IsEmpty();
+        public bool ShouldSerializeExclusiveMinimum() => !ExclusiveMinimum.IsEmpty();
+        public bool ShouldSerializeMaximum() => !Maximum.IsEmpty();
+        public bool ShouldSerializeExclusiveMaximum() => !ExclusiveMaximum.IsEmpty();
+        public bool ShouldSerializeMultipleOf() => !MultipleOf.IsEmpty();
     }
 }

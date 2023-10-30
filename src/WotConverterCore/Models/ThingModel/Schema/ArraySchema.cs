@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
@@ -18,6 +19,12 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
 
         [JsonProperty("maxItems")]
         public GenericStringInt? MaxItems { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+
+        public bool ShouldSerializeMinItems() => !MinItems.IsEmpty();
+        public bool ShouldSerializeItems() => !Items.IsEmpty();
+        public bool ShouldSerializeMaxItems() => !MaxItems.IsEmpty();
 
     }
 }

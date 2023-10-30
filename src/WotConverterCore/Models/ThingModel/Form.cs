@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
@@ -8,7 +9,7 @@ namespace WotConverterCore.Models.ThingModel
     public partial class Form
     {
         [JsonProperty("href")]
-        public GenericStringUri? Href { get; set; }
+        public GenericStringUri Href { get; set; }
 
         [JsonProperty("op")]
         public GenericStringArray<OpEnum>? Op { get; set; }
@@ -29,7 +30,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Type { get; set; }
 
         [JsonProperty("uriVariables")]
-        public Dictionary<string, BaseDataSchema>? UriVariables { get; set; }
+        public GenericStringDictionary<BaseDataSchema>? UriVariables { get; set; }
 
         public bool HasOpProperty(string key)
         {
@@ -46,6 +47,12 @@ namespace WotConverterCore.Models.ThingModel
             return searchInArray ?? searchInString;
         }
 
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeHref() => !Href.IsEmpty();
+        public bool ShouldSerializeOp() => !Op.IsEmpty();
+        public bool ShouldSerializeSecurity() => !Security.IsEmpty();
+        public bool ShouldSerializeScopes() => !Scopes.IsEmpty();
+        public bool ShouldSerializeUriVariables() => !UriVariables.IsEmpty();
 
     }
 
@@ -53,7 +60,7 @@ namespace WotConverterCore.Models.ThingModel
     public enum OpEnum
     {
         [JsonIgnore]
-        Unknown, 
+        Unknown,
 
         [EnumMember(Value = "observeproperty")]
         Observeproperty,

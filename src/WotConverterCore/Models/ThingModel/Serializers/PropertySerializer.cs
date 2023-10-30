@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WotConverterCore.Models.Common;
+using WotConverterCore.Models.Common.Serializers;
+using WotConverterCore.Models.Serializers;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models.ThingModel.Serializers
@@ -85,31 +88,91 @@ namespace WotConverterCore.Models.ThingModel.Serializers
 
         public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
         {
-            var jsonObjectProperty = JObject.FromObject(untypedValue);
-            var dataSchema = (JObject?)jsonObjectProperty["DataSchema"];
-
-            if (dataSchema == null)
+            var property = (Property)untypedValue;
+            var propertyJson = JsonConvert.SerializeObject(untypedValue, Formatting.None, new JsonSerializerSettings
             {
-                serializer.Serialize(writer, untypedValue);
-                return;
-            }
+                Converters = { 
+                    GenericStringUriSerializer.Serializer,
+                    GenericStringArraySerializer<OpEnum>.Serializer,
+                    GenericStringArraySerializer<string>.Serializer,
+                    GenericStringArraySerializer<Form>.Serializer,
+                    GenericStringDictionarySerializer<string>.Serializer,
+                    GenericStringDictionarySerializer<BaseDataSchema>.Serializer,
+                    BaseDataSchemaSerializer.Serializer
+                }
+            });
 
-            if (jsonObjectProperty == null)
-            {
-                return;
-            }
+            JToken jsonObjectProperty = JObject.Parse(propertyJson);
+            jsonObjectProperty = RemoveEmptyChildren(jsonObjectProperty);
 
-            jsonObjectProperty.Merge(dataSchema, new JsonMergeSettings
+            if (property.DataSchema == null)
+                serializer.Serialize(writer, jsonObjectProperty);
+
+            var dataSchema = JToken.FromObject(property.DataSchema);
+            dataSchema = RemoveEmptyChildren(dataSchema);
+
+            var jsonObjectPropertyObject = (JObject)jsonObjectProperty;
+            var dataObject = (JObject)dataSchema;
+
+            jsonObjectPropertyObject.Merge(dataObject, new JsonMergeSettings
             {
                 MergeArrayHandling = MergeArrayHandling.Union,
                 MergeNullValueHandling = MergeNullValueHandling.Ignore,
             });
 
-            jsonObjectProperty.Remove("DataSchema");
-            serializer.Serialize(writer, jsonObjectProperty);
+            jsonObjectPropertyObject.Remove("DataSchema");
+            serializer.Serialize(writer, jsonObjectPropertyObject);
+
             return;
         }
 
         public override bool CanConvert(Type t) => t == typeof(Property);
+
+        internal static PropertySerializer Serializer = new PropertySerializer();
+        private static JToken RemoveEmptyChildren(JToken token)
+        {
+            if (token.Type == JTokenType.Object)
+            {
+                JObject copy = new JObject();
+                foreach (JProperty prop in token.Children<JProperty>())
+                {
+                    JToken child = prop.Value;
+                    if (child.HasValues)
+                    {
+                        child = RemoveEmptyChildren(child);
+                    }
+                    if (!IsEmptyJToken(child))
+                    {
+                        copy.Add(prop.Name, child);
+                    }
+                }
+                return copy;
+            }
+            else if (token.Type == JTokenType.Array)
+            {
+                JArray copy = new JArray();
+                foreach (JToken item in token.Children())
+                {
+                    JToken child = item;
+                    if (child.HasValues)
+                    {
+                        child = RemoveEmptyChildren(child);
+                    }
+                    if (!IsEmptyJToken(child))
+                    {
+                        copy.Add(child);
+                    }
+                }
+                return copy;
+            }
+            return token;
+        }
+
+        private static bool IsEmptyJToken(JToken token)
+        {
+            return (token.Type == JTokenType.Null) ||
+               (token.Type == JTokenType.Array && !token.HasValues) ||
+               (token.Type == JTokenType.Object && !token.HasValues);
+        }
     }
 }

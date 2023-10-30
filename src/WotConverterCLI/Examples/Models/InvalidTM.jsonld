@@ -1,0 +1,5 @@
+{
+  "$comment": "absence of @type",
+  "title": "Invalid model 1",
+  "@type": "tm:ThingModel"
+}

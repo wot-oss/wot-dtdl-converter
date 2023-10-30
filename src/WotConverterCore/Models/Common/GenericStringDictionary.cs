@@ -1,34 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    internal class GenericStringDictionary : IGenericString, ISerializable<GenericStringDoubleSerializer>
+    public class GenericStringDictionary<T> : IGenericString
     {
 
-        private Dictionary<string, string>? dictionary;
-        private string? stringValue;
-        public Dictionary<string, string>? Dictionary { get { return dictionary; } set { stringValue = null; dictionary = value; } }
+        private Dictionary<string, T>? dictionary = null;
+        private string? stringValue = null;
+        public Dictionary<string, T>? Dictionary { get { return dictionary; } set { stringValue = null; dictionary = value; } }
 
         public string? String { get { return stringValue; } set { dictionary = null; stringValue = value; } }
 
-        public static implicit operator GenericStringDictionary(Dictionary<string, string> dictionary) => new GenericStringDictionary { Dictionary = dictionary };
-        public static implicit operator GenericStringDictionary(string value) => new GenericStringDictionary { stringValue = value };
+        public static implicit operator GenericStringDictionary<T>(Dictionary<string, T> dictionary) => new GenericStringDictionary<T> { Dictionary = dictionary };
+        public static implicit operator GenericStringDictionary<T>(string value) => new GenericStringDictionary<T> { stringValue = value };
+        public bool isString() => String != null; 
 
-        internal static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
-        public bool isString() => String != null;
+        public void Add(string key, T value)
+        {
+            if(dictionary == null)
+                dictionary = new Dictionary<string, T>();
+
+            dictionary.Add(key,value);
+        }
 
         public override string ToString()
         {
             if (String != null)
                 return String;
-
+            if(Dictionary != null)
+                return Dictionary.FirstOrDefault().Value?.ToString() ?? "";
             return "";
         }
 

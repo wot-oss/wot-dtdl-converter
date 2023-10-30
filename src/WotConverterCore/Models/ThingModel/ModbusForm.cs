@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.ThingModel
@@ -26,6 +27,13 @@ namespace WotConverterCore.Models.ThingModel
 
         [JsonProperty("modbus:zeroBasedAddressing")]
         public bool? ModbusZeroBaseaddressing { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeModbusUnitId() => !ModbusUnitId.IsEmpty();
+        public bool ShouldSerializeModbusQuantity() => !ModbusQuantity.IsEmpty();
+        public bool ShouldSerializeModbusAddress() => !ModbusAddress.IsEmpty();
+        public bool ShouldSerializeModbusPollingTime() => !ModbusPollingTime.IsEmpty();
+
     }
 
 

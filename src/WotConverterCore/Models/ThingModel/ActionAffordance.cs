@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
 using WotConverterCore.Models.ThingModel.DataSchema;
 
 namespace WotConverterCore.Models.ThingModel
@@ -23,6 +24,11 @@ namespace WotConverterCore.Models.ThingModel
 
         [JsonProperty("synchronous")]
         public bool? Synchronous { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeInput() => !Input.IsEmpty();
+        public bool ShouldSerializeOutput() => !Output.IsEmpty();
+
     }
 
 }

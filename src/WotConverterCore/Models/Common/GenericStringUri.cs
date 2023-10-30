@@ -1,10 +1,6 @@
-﻿using WotConverterCore.Models.Common.Interfaces;
-using WotConverterCore.Models.Common.Serializers;
-using WotConverterCore.Models.Serializers;
-
-namespace WotConverterCore.Models.Common
+﻿namespace WotConverterCore.Models.Common
 {
-    public class GenericStringUri : IGenericString, ISerializable<GenericStringIntSerializer>
+    public class GenericStringUri : IGenericString
     {
         private Uri? uriValue;
         private string? stringUri;
@@ -14,8 +10,6 @@ namespace WotConverterCore.Models.Common
 
         public static implicit operator GenericStringUri(Uri uri) => new GenericStringUri { Uri = uri };
         public static implicit operator GenericStringUri(string stringUri) => new GenericStringUri { StringUri = stringUri };
-
-        internal static readonly GenericStringUriSerializer Serializer = new GenericStringUriSerializer();
         public bool isString() => stringUri != null;
 
         public override string ToString()
