@@ -11,6 +11,14 @@
         public static implicit operator GenericStringArray<T>(string String) => new GenericStringArray<T> { String = String };
         public static implicit operator GenericStringArray<T>(List<T> array) => new GenericStringArray<T> { Array = array };
 
+        public void Add(T value)
+        {
+            if (array == null)
+                array = new();
+
+            array.Add(value);
+        }
+
         public bool isString() => stringValue != null;
         public override string ToString()
         {

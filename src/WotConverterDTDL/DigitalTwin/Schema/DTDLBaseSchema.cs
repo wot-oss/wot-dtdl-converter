@@ -15,10 +15,10 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         public GenericStringEnum<DTDLSchemaType> Type { get; protected set; }
 
         [JsonProperty("displayName")]
-        public GenericStringDictionary? DisplayName { get; set; }
+        public GenericStringDictionary<string>? DisplayName { get; set; }
 
         [JsonProperty("description")]
-        public GenericStringDictionary? Description { get; set; }
+        public GenericStringDictionary<string>? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

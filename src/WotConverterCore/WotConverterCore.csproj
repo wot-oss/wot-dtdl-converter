@@ -18,9 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DTDLParser" Version="1.0.52" />
     <PackageReference Include="JsonSchema.Net" Version="5.2.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 

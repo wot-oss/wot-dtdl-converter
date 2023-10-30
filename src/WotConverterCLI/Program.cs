@@ -135,7 +135,7 @@ internal class Program
         foreach (var tm in tms)
         {
             using (StreamWriter outputFile = new StreamWriter(
-                Path.Combine($"./tms", $"{tm.Title?.Replace(" ", "") ?? tm.Titles?.FirstOrDefault().Value ?? Guid.NewGuid().ToString()}.jsonld"), false, Encoding.Latin1))
+                Path.Combine($"./tms", $"{tm.Title?.Replace(" ", "") ?? tm.Titles?.Dictionary?.FirstOrDefault().Value ?? Guid.NewGuid().ToString()}.jsonld"), false, Encoding.Latin1))
             {
                 var serializedTm = tm.Serialize();
                 await outputFile.WriteAsync(serializedTm);

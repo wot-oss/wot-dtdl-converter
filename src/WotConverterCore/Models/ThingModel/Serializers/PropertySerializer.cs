@@ -95,6 +95,9 @@ namespace WotConverterCore.Models.ThingModel.Serializers
                     GenericStringUriSerializer.Serializer,
                     GenericStringArraySerializer<OpEnum>.Serializer,
                     GenericStringArraySerializer<string>.Serializer,
+                    GenericStringArraySerializer<Form>.Serializer,
+                    GenericStringDictionarySerializer<string>.Serializer,
+                    GenericStringDictionarySerializer<BaseDataSchema>.Serializer,
                     BaseDataSchemaSerializer.Serializer
                 }
             });
@@ -138,7 +141,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
                     {
                         child = RemoveEmptyChildren(child);
                     }
-                    if (!IsEmpty(child))
+                    if (!IsEmptyJToken(child))
                     {
                         copy.Add(prop.Name, child);
                     }
@@ -155,7 +158,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
                     {
                         child = RemoveEmptyChildren(child);
                     }
-                    if (!IsEmpty(child))
+                    if (!IsEmptyJToken(child))
                     {
                         copy.Add(child);
                     }
@@ -165,7 +168,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
             return token;
         }
 
-        private static bool IsEmpty(JToken token)
+        private static bool IsEmptyJToken(JToken token)
         {
             return (token.Type == JTokenType.Null) ||
                (token.Type == JTokenType.Array && !token.HasValues) ||

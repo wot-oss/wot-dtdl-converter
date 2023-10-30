@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace WotConverterCore.Models.Common.Serializers
 {
-    public class GenericStringDictionarySerializer : JsonConverter
+    public class GenericStringDictionarySerializer<T> : JsonConverter
     {
         public override object ReadJson(JsonReader reader, Type t, object? existingValue, JsonSerializer serializer)
         {
@@ -12,7 +12,7 @@ namespace WotConverterCore.Models.Common.Serializers
             if (reader.TokenType == JsonToken.Null)
                 return null;
 ;
-            var baseObject = new GenericStringDictionary();
+            var baseObject = new GenericStringDictionary<T>();
 
             if (reader.TokenType == JsonToken.String)
             {
@@ -22,16 +22,16 @@ namespace WotConverterCore.Models.Common.Serializers
             }
 
             JObject jObject = JObject.Load(reader);
-            var dictValue = existingValue as Dictionary<string, string> ?? (Dictionary<string,string>)serializer.ContractResolver.ResolveContract(typeof(Dictionary<string,string>)).DefaultCreator();
+            var dictValue = existingValue as Dictionary<string, T> ?? (Dictionary<string,T>)serializer.ContractResolver.ResolveContract(typeof(Dictionary<string,T>)).DefaultCreator();
             using (var subReader = jObject.CreateReader())
                 serializer.Populate(subReader, dictValue);
 
-            return new GenericStringDictionary { Dictionary = dictValue };
+            return new GenericStringDictionary<T> { Dictionary = dictValue };
         }
 
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
         {
-            var value = (GenericStringDictionary?)untypedValue ?? new GenericStringDictionary();
+            var value = (GenericStringDictionary<T>?)untypedValue ?? new GenericStringDictionary<T>();
             if (value.Dictionary != null)
             {
                 serializer.Serialize(writer, value.Dictionary);
@@ -46,9 +46,9 @@ namespace WotConverterCore.Models.Common.Serializers
             return;
         }
 
-        public override bool CanConvert(Type t) => t == typeof(GenericStringDictionary);
+        public override bool CanConvert(Type t) => t == typeof(GenericStringDictionary<T>);
 
-        public static readonly GenericStringDictionarySerializer Serializer = new GenericStringDictionarySerializer();
+        public static readonly GenericStringDictionarySerializer<T> Serializer = new GenericStringDictionarySerializer<T>();
 
     }
 }

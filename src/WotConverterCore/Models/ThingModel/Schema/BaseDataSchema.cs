@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
@@ -19,13 +21,13 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         public string? Title { get; set; }
 
         [JsonProperty("titles")]
-        public Dictionary<string, string>? Titles { get; set; }
+        public GenericStringDictionary<string>? Titles { get; set; }
 
         [JsonProperty("description")]
         public string? Description { get; set; }
 
         [JsonProperty("descriptions")]
-        public Dictionary<string, string>? Descriptions { get; set; }
+        public GenericStringDictionary<string>? Descriptions { get; set; }
 
         [JsonProperty("writeOnly")]
         public bool? WriteOnly { get; set; }
@@ -37,9 +39,11 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         public bool? Const { get; set; }
 
         [JsonProperty("enum")]
-        public List<string>? Enum { get; set; }
+        public GenericStringArray<string>? Enum { get; set; }
 
-
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeTitles() => !Titles.IsEmpty();
+        public bool ShouldSerializeDescriptions() => !Descriptions.IsEmpty();
     }
 
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]

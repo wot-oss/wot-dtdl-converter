@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel.Interfaces;
 
 namespace WotConverterCore.Models.ThingModel
@@ -12,15 +14,21 @@ namespace WotConverterCore.Models.ThingModel
         public string? Title { get; set; }
 
         [JsonProperty("titles")]
-        public Dictionary<string, string>? Titles { get; set; }
+        public GenericStringDictionary<string>? Titles { get; set; }
 
         [JsonProperty("description")]
         public string? Description { get; set; }
 
         [JsonProperty("descriptions")]
-        public Dictionary<string, string>? Descriptions { get; set; }
+        public GenericStringDictionary<string>? Descriptions { get; set; }
 
         [JsonProperty("forms")]
-        public List<Form>? Forms { get; set; }
+        public GenericStringArray<Form>? Forms { get; set; }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeTitles() => !Titles.IsEmpty();
+        public bool ShouldSerializeDescriptions() => !Descriptions.IsEmpty();
+        public bool ShouldSerializeFroms() => !Forms.IsEmpty();
+
     }
 }

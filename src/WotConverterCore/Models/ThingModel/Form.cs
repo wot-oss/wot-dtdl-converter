@@ -30,7 +30,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Type { get; set; }
 
         [JsonProperty("uriVariables")]
-        public Dictionary<string, BaseDataSchema>? UriVariables { get; set; }
+        public GenericStringDictionary<BaseDataSchema>? UriVariables { get; set; }
 
         public bool HasOpProperty(string key)
         {

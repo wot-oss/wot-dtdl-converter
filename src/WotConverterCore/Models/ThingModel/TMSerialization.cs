@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using WotConverterCore.Models.Common.Serializers;
 using WotConverterCore.Models.Serializers;
+using WotConverterCore.Models.ThingModel.DataSchema;
 using WotConverterCore.Models.ThingModel.Serializers;
 
 namespace WotConverterCore.Models.ThingModel
@@ -13,6 +14,15 @@ namespace WotConverterCore.Models.ThingModel
             {
                 GenericStringArraySerializer<string>.Serializer,
                 GenericStringArraySerializer<OpEnum>.Serializer,
+                GenericStringArraySerializer<Uri>.Serializer,
+                GenericStringArraySerializer<Link>.Serializer,
+                GenericStringArraySerializer<BaseDataSchema>.Serializer,
+                GenericStringArraySerializer<Form>.Serializer,
+                GenericStringDictionarySerializer<string>.Serializer,
+                GenericStringDictionarySerializer<BaseDataSchema>.Serializer,
+                GenericStringDictionarySerializer<Event>.Serializer,
+                GenericStringDictionarySerializer<Property>.Serializer,
+                GenericStringDictionarySerializer<Action>.Serializer,
                 GenericStringDoubleSerializer.Serializer,
                 GenericStringIntSerializer.Serializer,
                 GenericStringBoolSerializer.Serializer,

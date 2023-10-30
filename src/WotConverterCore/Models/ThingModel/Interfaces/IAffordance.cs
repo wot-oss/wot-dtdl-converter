@@ -1,4 +1,6 @@
-﻿namespace WotConverterCore.Models.ThingModel.Interfaces
+﻿using WotConverterCore.Models.Common;
+
+namespace WotConverterCore.Models.ThingModel.Interfaces
 {
     public interface IAffordance
     {
@@ -6,12 +8,12 @@
 
         string? Title { get; set; }
 
-        Dictionary<string, string>? Titles { get; set; }
+        GenericStringDictionary<string>? Titles { get; set; }
 
         string? Description { get; set; }
 
-        Dictionary<string, string>? Descriptions { get; set; }
+        GenericStringDictionary<string>? Descriptions { get; set; }
 
-        List<Form> Forms { get; set; }
+        GenericStringArray<Form> Forms { get; set; }
     }
 }

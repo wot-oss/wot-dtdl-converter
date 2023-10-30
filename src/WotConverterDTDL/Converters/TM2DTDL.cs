@@ -15,10 +15,10 @@ namespace WotConverterDTDL.Converters
                 DTDL dtdl = new()
                 {
                     Context = "dtmi:dtdl:context;3",
-                    Id = $"dtmi:{tm.Title?.ToLowerInvariant().Replace(' ', ':')};1" ?? $"dtmi:{Guid.NewGuid()};1",
+                    Id = $"dtmi:{tm.Title?.Replace('-',' ').Replace(@"\s+", " ").Replace(' ', ':')};1" ?? $"dtmi:{Guid.NewGuid()};1",
                     Type = "Interface",
-                    Description = GetDTDLLocalizedString(tm.Description, tm.Descriptions, $"Creted from {tm.Title} thing model"),
-                    DisplayName = GetDTDLLocalizedString(tm.Title, tm.Titles),
+                    Description = GetDTDLLocalizedString(tm.Description, tm.Descriptions?.Dictionary, $"Creted from {tm.Title} thing model"),
+                    DisplayName = GetDTDLLocalizedString(tm.Title, tm.Titles?.Dictionary),
                     Comment = tm.Base
                 };
 
@@ -52,13 +52,13 @@ namespace WotConverterDTDL.Converters
                 DTDLProperty content = new()
                 {
                     Name = property.Key,
-                    DisplayName = GetDTDLLocalizedString(propertyValue.Title, propertyValue.Titles, property.Key),
-                    Description = GetDTDLLocalizedString(propertyValue.Description, propertyValue.Descriptions, $"Property obtained from '{tm.Title}' Thing Model"),
+                    DisplayName = GetDTDLLocalizedString(propertyValue.Title, propertyValue.Titles?.Dictionary, property.Key),
+                    Description = GetDTDLLocalizedString(propertyValue.Description, propertyValue.Descriptions?.Dictionary, $"Property obtained from '{tm.Title}' Thing Model"),
                     Schema = GetDTDLSchema(propertyValue.DataSchema),
-                    Writable = propertyForms?.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _) ?? false
+                    Writable = propertyForms?.Array?.Select(_ => _.HasOpProperty(OpEnum.WriteProperty)).Any(_ => _) ?? false
                 };
 
-                content.Comment = GetFormsComment(propertyForms, tm.Base);
+                content.Comment = GetFormsComment(propertyForms?.Array, tm.Base);
 
                 dtdl.Addcontent(content);
             }
@@ -75,17 +75,17 @@ namespace WotConverterDTDL.Converters
                 DTDLCommand content = new()
                 {
                     Name = action.Key,
-                    DisplayName = GetDTDLLocalizedString(actionValue.Title, actionValue.Titles),
-                    Description = GetDTDLLocalizedString(actionValue.Description, actionValue.Descriptions, $"Command obtained from '{tm.Title}' Thing Model")
+                    DisplayName = GetDTDLLocalizedString(actionValue.Title, actionValue.Titles?.Dictionary),
+                    Description = GetDTDLLocalizedString(actionValue.Description, actionValue.Descriptions?.Dictionary, $"Command obtained from '{tm.Title}' Thing Model")
                 };
 
                 if (actionValue.Input != null)
                 {
                     var request = new DTDLCommandRequest
                     {
-                        DisplayName = GetDTDLLocalizedString(actionValue.Input.Title, actionValue.Input.Titles, $"{action.Key} Request"),
+                        DisplayName = GetDTDLLocalizedString(actionValue.Input.Title, actionValue.Input.Titles?.Dictionary, $"{action.Key} Request"),
                         Name = action.Key + "Request",
-                        Description = GetDTDLLocalizedString(actionValue.Input.Description, actionValue.Input.Descriptions),
+                        Description = GetDTDLLocalizedString(actionValue.Input.Description, actionValue.Input.Descriptions?.Dictionary),
                         Schema = GetDTDLSchema(actionValue.Input)
                     };
 
@@ -96,16 +96,16 @@ namespace WotConverterDTDL.Converters
                 {
                     var response = new DTDLCommandResponse
                     {
-                        DisplayName = GetDTDLLocalizedString(actionValue.Output.Title, actionValue.Output.Titles, $"{action.Key} Response"),
+                        DisplayName = GetDTDLLocalizedString(actionValue.Output.Title, actionValue.Output.Titles?.Dictionary, $"{action.Key} Response"),
                         Name = action.Key + "Response",
-                        Description = GetDTDLLocalizedString(actionValue.Output.Description, actionValue.Output.Descriptions),
+                        Description = GetDTDLLocalizedString(actionValue.Output.Description, actionValue.Output.Descriptions?.Dictionary),
                         Schema = GetDTDLSchema(actionValue.Output)
                     };
 
                     content.Response = response;
                 }
 
-                content.Comment = GetFormsComment(actionForms, tm.Base);
+                content.Comment = GetFormsComment(actionForms?.Array, tm.Base);
 
                 dtdl.Addcontent(content);
             }
@@ -121,12 +121,12 @@ namespace WotConverterDTDL.Converters
                 DTDLTelemetry content = new()
                 {
                     Name = ev.Key,
-                    DisplayName = GetDTDLLocalizedString(eventValue.Title, eventValue.Titles, ev.Key),
-                    Description = GetDTDLLocalizedString(eventValue.Description, eventValue.Descriptions, $"Telemetry obtained from '{tm.Title}' Thing Model"),
+                    DisplayName = GetDTDLLocalizedString(eventValue.Title, eventValue.Titles?.Dictionary, ev.Key),
+                    Description = GetDTDLLocalizedString(eventValue.Description, eventValue.Descriptions?.Dictionary, $"Telemetry obtained from '{tm.Title}' Thing Model"),
                     Schema = GetDTDLSchema(eventValue.DataResponse),
                 };
 
-                content.Comment = GetFormsComment(eventForms, tm.Base);
+                content.Comment = GetFormsComment(eventForms?.Array, tm.Base);
 
                 dtdl.Addcontent(content);
             }
@@ -141,16 +141,16 @@ namespace WotConverterDTDL.Converters
             {
                 case TypeEnum.String:
 
-                    if (schema.Enum?.Any() ?? false)
+                    if (schema.Enum?.Array?.Any() ?? false)
                     {
                         var enumResult = new DTDLEnumSchema("string")
                         {
-                            DisplayName = GetDTDLLocalizedString(schema.Title, schema.Titles),
-                            Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions)
+                            DisplayName = GetDTDLLocalizedString(schema.Title, schema.Titles?.Dictionary),
+                            Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions?.Dictionary)
                         };
 
 
-                        foreach (var item in schema.Enum)
+                        foreach (var item in schema.Enum?.Array ?? new())
                         {
                             enumResult.AddEnumValue(new DTDLEnumValue
                             {
@@ -159,6 +159,14 @@ namespace WotConverterDTDL.Converters
                                 EnumValue = item
                             });
                         }
+
+                        if ((!enumResult.GetEnumValues()?.Any() ?? false) && (schema.Enum?.String != null))
+                            enumResult.AddEnumValue(new DTDLEnumValue { 
+                                DisplayName = schema.Enum.String,
+                                Name = schema.Enum.String, 
+                                EnumValue = schema.Enum.String 
+                            
+                            });
 
                         return enumResult;
                     }
@@ -176,8 +184,8 @@ namespace WotConverterDTDL.Converters
                     {
                         DisplayName = GetDTDLLocalizedString(
                             schema.Title?.Replace(" ", ""),
-                            schema.Titles?.ToDictionary(_ => _.Key, _ => _.Value.Replace(" ", ""))),
-                        Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions)
+                            schema.Titles?.Dictionary?.ToDictionary(_ => _.Key, _ => _.Value.Replace(" ", ""))),
+                        Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions?.Dictionary)
                     };
 
                     var castedTmObjectSchema = (ObjectSchema)schema;
@@ -185,11 +193,11 @@ namespace WotConverterDTDL.Converters
                     {
                         objectResult.AddObjectField(new DTDLObjectField
                         {
-                            Description = GetDTDLLocalizedString(item.Value?.Description, item.Value?.Descriptions),
+                            Description = GetDTDLLocalizedString(item.Value?.Description, item.Value?.Descriptions?.Dictionary),
                             Name = item.Key,
                             DisplayName = GetDTDLLocalizedString(
                                item.Value?.Title?.Replace(" ", ""),
-                               item.Value?.Titles?.ToDictionary(_ => _.Key, _ => _.Value.Replace(" ", ""))),
+                               item.Value?.Titles?.Dictionary?.ToDictionary(_ => _.Key, _ => _.Value.Replace(" ", ""))),
                             Schema = GetDTDLSchema(item.Value)
                         });
                     }
@@ -199,8 +207,8 @@ namespace WotConverterDTDL.Converters
                 case TypeEnum.Array:
                     var arrayResult = new DTDLArraySchema("string")
                     {
-                        DisplayName = GetDTDLLocalizedString(schema.Title, schema.Titles),
-                        Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions)
+                        DisplayName = GetDTDLLocalizedString(schema.Title, schema.Titles?.Dictionary),
+                        Description = GetDTDLLocalizedString(schema.Description, schema.Descriptions?.Dictionary)
                     };
 
                     var castedTmArraySchema = (ArraySchema)schema;
@@ -222,7 +230,7 @@ namespace WotConverterDTDL.Converters
                     return "string";
             }
         }
-        private static GenericStringDictionary? GetDTDLLocalizedString(string? value = null, Dictionary<string, string>? values = null, string? defaultValue = null)
+        private static GenericStringDictionary<string>? GetDTDLLocalizedString(string? value = null, Dictionary<string, string>? values = null, string? defaultValue = null)
         {
             if (values?.Any() ?? false)
                 return values;
@@ -231,8 +239,11 @@ namespace WotConverterDTDL.Converters
             else
                 return defaultValue;
         }
-        private static string? GetFormsComment(List<Form> forms, string? baseaddress = null)
+        private static string? GetFormsComment(List<Form>? forms, string? baseaddress = null)
         {
+            if (forms == null)
+                return null;
+
             string result = "";
 
             var formsCount = forms.Count();
@@ -253,7 +264,7 @@ namespace WotConverterDTDL.Converters
         {
             var comment = string.Empty;
 
-            if ((baseAddress?.ToLower().StartsWith("modbus://") ?? false) || (form.Href?.ToString().ToLower().StartsWith("modbus://") ?? false))
+            if ((baseAddress?.ToLower().StartsWith("modbus") ?? false) || (form.Href?.ToString().ToLower().StartsWith("modbus") ?? false))
             {
                 comment = $"modbus: href={form.Href}, ";
 
@@ -266,19 +277,19 @@ namespace WotConverterDTDL.Converters
                 if (form.ModbusAddress != null)
                 {
                     comment?.Trim(':');
-                    comment = $"adress={form.ModbusAddress}, ";
+                    comment += $"adress={form.ModbusAddress}, ";
                 }
 
                 if (form.ModbusQuantity != null)
                 {
                     comment?.Trim(':');
-                    comment = $"quantity={form.ModbusQuantity}, ";
+                    comment += $"quantity={form.ModbusQuantity}, ";
                 }
 
                 if (form.ModbusUnitId != null)
                 {
                     comment?.Trim(':');
-                    comment = $"unitId={form.ModbusUnitId}";
+                    comment += $"unitId={form.ModbusUnitId}";
                 }
 
                 comment?.TrimEnd(',');

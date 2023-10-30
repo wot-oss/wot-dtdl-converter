@@ -16,7 +16,7 @@ namespace WotConverterDTDL.DigitalTwin
                 GenericStringEnumSerializer<DTDLSchemaType>.Serializer,
                 GenericStringArraySerializer<string>.Serializer,
                 GenericStringIntSerializer.Serializer,
-                GenericStringDictionarySerializer.Serializer,
+                GenericStringDictionarySerializer<string>.Serializer,
                 DTDLBaseSchemaSerializer.Serializer,
                 DTDLBaseContentSerializer.Serializer
             },

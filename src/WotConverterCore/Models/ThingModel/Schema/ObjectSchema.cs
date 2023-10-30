@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using WotConverterCore.Extensions;
+using WotConverterCore.Models.Common;
 
 namespace WotConverterCore.Models.ThingModel.DataSchema
 {
@@ -10,13 +12,13 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         }
 
         [JsonProperty("properties")]
-        private Dictionary<string, BaseDataSchema>? Properties { get; set; }
+        private GenericStringDictionary<BaseDataSchema>? Properties { get; set; }
 
         [JsonProperty("required")]
         public string[]? Required { get; set; }
 
         public Dictionary<string, BaseDataSchema>?  GetObjectProperties()
-          => Properties;
+          => Properties?.Dictionary;
 
         public void AddObjectProperty(KeyValuePair<string, BaseDataSchema> value)
         {
@@ -25,5 +27,8 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
 
             Properties.Add(value.Key, value.Value);
         }
+
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeProperties() => !Properties.IsEmpty();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Json.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
 using System.Reflection;
 using WotConverterCore.Extensions;
 using WotConverterCore.Models.Common;
@@ -18,13 +19,13 @@ namespace WotConverterCore.Models.ThingModel
         public GenericStringArray<string> LdType { get; set; } = string.Empty;
 
         [JsonProperty("schemaDefinitions")]
-        public Dictionary<string, BaseDataSchema>? SchemaDefinitions { get; set; }
+        public GenericStringDictionary<BaseDataSchema>? SchemaDefinitions { get; set; }
 
         [JsonProperty("security")]
         public GenericStringArray<string>? Security { get; set; }
 
         [JsonProperty("securityDefinitions")]
-        public Dictionary<string, SecurityScheme>? SecurityDefinitions { get; set; }
+        public GenericStringDictionary<SecurityScheme>? SecurityDefinitions { get; set; }
 
         [JsonProperty("description")]
         public string? Description { get; set; }
@@ -36,13 +37,13 @@ namespace WotConverterCore.Models.ThingModel
         public string? Base { get; set; }
 
         [JsonProperty("id")]
-        public Uri? Id { get; set; }
+        public GenericStringUri? Id { get; set; }
 
         [JsonProperty("titles")]
-        public Dictionary<string, string>? Titles { get; set; }
+        public GenericStringDictionary<string>? Titles { get; set; }
 
         [JsonProperty("descriptions")]
-        public Dictionary<string, string>? Descriptions { get; set; }
+        public GenericStringDictionary<string>? Descriptions { get; set; }
 
         [JsonProperty("version")]
         public TmVersion? Version { get; set; }
@@ -57,39 +58,48 @@ namespace WotConverterCore.Models.ThingModel
         public string? Support { get; set; }
 
         [JsonProperty("links")]
-        public List<Link> Links { get; set; }
+        public GenericStringArray<Link> Links { get; set; }
 
         [JsonProperty("properties")]
-        private Dictionary<string, Property>? Properties { get; set; }
+        private GenericStringDictionary<Property>? Properties { get; set; }
 
         [JsonProperty("actions")]
-        private Dictionary<string, Action>? Actions { get; set; }
+        private GenericStringDictionary<Action>? Actions { get; set; }
 
         [JsonProperty("events")]
-        private Dictionary<string, Event>? Events { get; set; }
+        private GenericStringDictionary<Event>? Events { get; set; }
 
+        //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeSchemaDefinitions() => !SchemaDefinitions.IsEmpty();
+        public bool ShouldSerializeSecurityDefinitions() => !SecurityDefinitions.IsEmpty();
+        public bool ShouldSerializeTitles() => !Titles.IsEmpty();
+        public bool ShouldSerializeDescriptions() => !Descriptions.IsEmpty();
+        public bool ShouldSerializeLinks() => !Links.IsEmpty();
+        public bool ShouldSerializeProperties() => !Properties.IsEmpty();
+        public bool ShouldSerializeActions() => !Actions.IsEmpty();
+        public bool ShouldSerializeEvents() => !Events.IsEmpty();
         public Dictionary<string, Property> GetProperties(Func<KeyValuePair<string, Property>, bool>? query = null)
         {
             if (query != null)
-                return Properties?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+                return Properties?.Dictionary?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
 
-            return Properties?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+            return Properties?.Dictionary?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
         }
 
         public Dictionary<string, Action> GetActions(Func<KeyValuePair<string, Action>, bool>? query = null)
         {
             if (query != null)
-                return Actions?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+                return Actions?.Dictionary?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
 
-            return Actions?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+            return Actions?.Dictionary?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
         }
 
         public Dictionary<string, Event> GetEvents(Func<KeyValuePair<string, Event>, bool>? query = null)
         {
             if (query != null)
-                return Events?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+                return Events?.Dictionary?.Where(query)?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
 
-            return Events?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
+            return Events?.Dictionary?.ToDictionary(_ => _.Key, _ => _.Value) ?? new();
         }
 
         public void AddAction(string key, Action tmAction)
@@ -98,7 +108,7 @@ namespace WotConverterCore.Models.ThingModel
                 Actions = new Dictionary<string, Action>();
 
             if (!string.IsNullOrWhiteSpace(key))
-                Actions.Add(key, tmAction);
+                Actions.Dictionary?.Add(key, tmAction);
         }
 
         public void AddProperty(string key, Property tmProperty)
@@ -107,7 +117,7 @@ namespace WotConverterCore.Models.ThingModel
                 Properties = new Dictionary<string, Property>();
 
             if (!string.IsNullOrEmpty(key))
-                Properties.Add(key, tmProperty);
+                Properties.Dictionary?.Add(key, tmProperty);
         }
 
         public void AddEvent(string key, Event tmEvent)
@@ -115,7 +125,7 @@ namespace WotConverterCore.Models.ThingModel
             if (Events == null)
                 Events = new Dictionary<string, Event>();
 
-            Events.Add(key, tmEvent);
+            Events.Dictionary?.Add(key, tmEvent);
         }
 
 
@@ -143,7 +153,6 @@ namespace WotConverterCore.Models.ThingModel
         public string Instance { get; set; }
     }
 
-
     public class Link
     {
         [JsonProperty("anchor")]
@@ -153,7 +162,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Href { get; set; }
 
         [JsonProperty("hreflang")]
-        public GenericStringArray<string>? Hreflang { get; set; }
+        public GenericStringArray<Uri>? Hreflang { get; set; }
 
         [JsonProperty("rel")]
         public string? Rel { get; set; }

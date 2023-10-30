@@ -27,10 +27,10 @@ namespace WotConverterDTDL.DigitalTwin
         public string Name { get; set; }
 
         [JsonProperty("displayName")]
-        public GenericStringDictionary? DisplayName { get; set; }
+        public GenericStringDictionary<string>? DisplayName { get; set; }
 
         [JsonProperty("description")]
-        public GenericStringDictionary? Description { get; set; }
+        public GenericStringDictionary<string>? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }
@@ -56,10 +56,10 @@ namespace WotConverterDTDL.DigitalTwin
         public string Name { get; set; }
 
         [JsonProperty("displayName")]
-        public GenericStringDictionary? DisplayName { get; set; }
+        public GenericStringDictionary<string>? DisplayName { get; set; }
 
         [JsonProperty("description")]
-        public GenericStringDictionary? Description { get; set; }
+        public GenericStringDictionary<string>? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

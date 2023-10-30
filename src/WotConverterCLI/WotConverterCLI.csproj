@@ -28,22 +28,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\Models\DTDL Fan.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Models\DTDL Heathing Method.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Models\DTDLTenant Unit.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Examples\Models\DTDL Fan.jsonld">
+    <None Update="Examples\Models\InvalidTM.jsonld">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\Models\TM Pac.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Models\TM Smart Coffee Machine.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Examples\Models\TM Thing Model Test.jsonld">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Examples\Models\InvalidTM.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
