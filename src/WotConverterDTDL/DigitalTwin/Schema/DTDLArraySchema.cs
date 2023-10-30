@@ -20,9 +20,6 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         [JsonProperty("elementSchema")]
         public DTDLBaseSchema? ElementSchema { get; set; }
 
-        [JsonProperty("comment")]
-        public string? Comment { get; set; }
-
 
         //String Oerator 
         public static implicit operator DTDLArraySchema(string elementSchema) => new DTDLArraySchema(elementSchema);

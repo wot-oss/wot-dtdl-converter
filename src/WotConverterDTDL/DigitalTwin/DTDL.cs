@@ -7,13 +7,13 @@ using WotConverterDTDL.Converters;
 
 namespace WotConverterDTDL.DigitalTwin
 {
-    public partial class DTDL : IConvertible<DTDL>
+    public partial class DTDL : IConvertible<DTDL, TMDefaultConversionParameters>
     {
         [JsonProperty("@context")]
         public GenericStringArray<string>? Context { get; set; }
 
         [JsonProperty("@id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [JsonProperty("@type")]
         public GenericStringArray<string> Type { get; set; } = "Interface";
@@ -60,9 +60,9 @@ namespace WotConverterDTDL.DigitalTwin
             return dtdl;
         }
 
-        public TM ConvertToTm()
+        public TM? ConvertToTm(TMDefaultConversionParameters? p = null)
         {
-            var tm = DTDL2TM.DTDL2ThingModel(this);
+            var tm = DTDL2TM.DTDL2ThingModel(this, p);
 
             if (tm is null)
                 return null;

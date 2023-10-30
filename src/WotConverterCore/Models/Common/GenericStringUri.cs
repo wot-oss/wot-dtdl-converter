@@ -8,8 +8,8 @@
 
         public string? StringUri { get { return stringUri; } set { uriValue = null; stringUri = value; } }
 
-        public static implicit operator GenericStringUri(Uri uri) => new GenericStringUri { Uri = uri };
-        public static implicit operator GenericStringUri(string stringUri) => new GenericStringUri { StringUri = stringUri };
+        public static implicit operator GenericStringUri(Uri? uri) => new GenericStringUri { Uri = uri };
+        public static implicit operator GenericStringUri(string? stringUri) => new GenericStringUri { StringUri = stringUri };
         public bool isString() => stringUri != null;
 
         public override string ToString()

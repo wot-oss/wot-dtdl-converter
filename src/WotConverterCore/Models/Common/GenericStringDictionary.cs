@@ -9,8 +9,8 @@
 
         public string? String { get { return stringValue; } set { dictionary = null; stringValue = value; } }
 
-        public static implicit operator GenericStringDictionary<T>(Dictionary<string, T> dictionary) => new GenericStringDictionary<T> { Dictionary = dictionary };
-        public static implicit operator GenericStringDictionary<T>(string value) => new GenericStringDictionary<T> { stringValue = value };
+        public static implicit operator GenericStringDictionary<T>(Dictionary<string, T>? dictionary) => new GenericStringDictionary<T> { Dictionary = dictionary };
+        public static implicit operator GenericStringDictionary<T>(string? value) => new GenericStringDictionary<T> { stringValue = value };
         public bool isString() => String != null; 
 
         public void Add(string key, T value)

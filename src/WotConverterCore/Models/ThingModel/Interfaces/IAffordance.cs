@@ -14,6 +14,6 @@ namespace WotConverterCore.Models.ThingModel.Interfaces
 
         GenericStringDictionary<string>? Descriptions { get; set; }
 
-        GenericStringArray<Form> Forms { get; set; }
+        GenericStringArray<Form>? Forms { get; set; }
     }
 }
