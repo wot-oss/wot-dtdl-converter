@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using WotConverterCore.Interfaces;
 using WotConverterCore.Models.Common;
 using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
@@ -9,7 +10,7 @@ namespace WotConverterDTDL.Converters
 {
     public class DTDL2TM
     {
-        public static TM? DTDL2ThingModel(DTDL dtdl)
+        public static TM? DTDL2ThingModel(DTDL dtdl, TMDefaultConversionParameters? p = null)
         {
             try
             {
@@ -24,13 +25,13 @@ namespace WotConverterDTDL.Converters
                 };
 
                 //DTDL Properties
-                CreateTMProperties(ref tm, dtdl);
+                CreateTMProperties(ref tm, dtdl, p);
 
                 //DTDL Commands
-                CreateTMActions(ref tm, dtdl);
+                CreateTMActions(ref tm, dtdl, p);
 
                 //DTDL Telemetry
-                CreateTMEvents(ref tm, dtdl);
+                CreateTMEvents(ref tm, dtdl, p);
 
                 return tm;
             }
@@ -41,7 +42,7 @@ namespace WotConverterDTDL.Converters
             }
         }
 
-        private static void CreateTMProperties(ref TM tm, DTDL dtdl)
+        private static void CreateTMProperties(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
         {
             var dtldlProperties = dtdl
                 .GetDTDLContents()
@@ -63,10 +64,11 @@ namespace WotConverterDTDL.Converters
                 };
 
                 var key = castedProperty.Name ?? castedProperty.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
+
                 tmProperty.Forms = new();
                 Form tmForm = new()
                 {
-                    Href = $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}",
+                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
                     Op = new GenericStringArray<OpEnum>()
                 };
 
@@ -79,11 +81,12 @@ namespace WotConverterDTDL.Converters
                     tmForm.Op.Array.Add(OpEnum.WriteProperty);
 
                 tmProperty.Forms.Add(tmForm);
+
                 tm.AddProperty(key, tmProperty);
             }
         }
 
-        private static void CreateTMActions(ref TM tm, DTDL dtdl)
+        private static void CreateTMActions(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
         {
             var dtdlCommands = dtdl
                 .GetDTDLContents()
@@ -104,16 +107,20 @@ namespace WotConverterDTDL.Converters
 
                 var key = castedCommand.Name ?? castedCommand.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
+                tmAction.Forms = new();
                 Form tmForm = new()
                 {
-                    Href = $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}",
+                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
                     Op = new GenericStringArray<OpEnum>()
                 };
 
                 tmForm.Op.Array = new()
                 {
-                    OpEnum.Invokeaction
+                         OpEnum.Invokeaction
                 };
+
+                tmAction.Forms.Add(tmForm);
+
 
                 var request = GetTMSchema(castedCommand.Request?.Schema);
                 var response = GetTMSchema(castedCommand.Response?.Schema);
@@ -142,7 +149,7 @@ namespace WotConverterDTDL.Converters
             }
         }
 
-        private static void CreateTMEvents(ref TM tm, DTDL dtdl)
+        private static void CreateTMEvents(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
         {
             var dtdlTelemetry = dtdl
                 .GetDTDLContents()
@@ -164,10 +171,12 @@ namespace WotConverterDTDL.Converters
                 };
 
                 var key = castedTelemetry.Name ?? castedTelemetry.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
+
+
                 tmEvent.Forms = new();
                 Form tmForm = new()
                 {
-                    Href = $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}",
+                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
                     Op = new GenericStringArray<OpEnum>()
                 };
 

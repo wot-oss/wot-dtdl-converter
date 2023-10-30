@@ -86,9 +86,12 @@ namespace WotConverterCore.Models.ThingModel.Serializers
             return property;
         }
 
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
         {
-            var property = (Property)untypedValue;
+            var property = (Property?)untypedValue;
+            if (property == null)
+                return;
+
             var propertyJson = JsonConvert.SerializeObject(untypedValue, Formatting.None, new JsonSerializerSettings
             {
                 Converters = { 
@@ -108,7 +111,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
             if (property.DataSchema == null)
                 serializer.Serialize(writer, jsonObjectProperty);
 
-            var dataSchema = JToken.FromObject(property.DataSchema);
+            var dataSchema = JToken.FromObject(property.DataSchema ??  new object());
             dataSchema = RemoveEmptyChildren(dataSchema);
 
             var jsonObjectPropertyObject = (JObject)jsonObjectProperty;

@@ -15,3 +15,4 @@
 /src/WotConverterDTDL/obj/*
 /src/realease/*
 /src/WotConverterDTDL/bin/*
+*.user

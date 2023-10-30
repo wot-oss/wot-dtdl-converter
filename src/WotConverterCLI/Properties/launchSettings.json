@@ -1,8 +1,8 @@
 {
   "profiles": {
     "WotConverterCLI": {
-      "commandName": "Project",
-      "commandLineArgs": "./Examples/Models/"
+      "commandLineArgs": "./Examples/Models -includeHrefs=false -tmOutPath=C:\\Users\\z004sa3n\\Desktop\\TMs -dtdlOutPath=C:\\Users\\z004sa3n\\Desktop\\DTDLs",
+      "commandName": "Project"
     }
   }
 }
