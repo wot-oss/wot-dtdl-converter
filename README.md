@@ -1,5 +1,5 @@
-# Wot-Converter
-A two way converter for TM files 
+# Wot-DTDL-Converter
+A two way converter for TM and DTDL files
 
 # Project structure
 The application is a .NET 6.0  solution composed of three main sub-projects:
