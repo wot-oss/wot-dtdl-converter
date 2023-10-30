@@ -187,6 +187,7 @@ internal class Program
             var trimmedFilePath = Path.GetDirectoryName(Path.GetRelativePath(pathToJsons, tm.Key)) ?? "";
             var filePath = Path.Combine(parameters.TmOutputPath, trimmedFilePath);
             var fileName = Path.GetFileName(tm.Key);
+            Path.ChangeExtension(fileName, "jsonld");
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
