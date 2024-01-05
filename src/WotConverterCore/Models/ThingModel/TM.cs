@@ -18,6 +18,9 @@ namespace WotConverterCore.Models.ThingModel
         [JsonProperty("@type", Required = Required.Always)]
         public GenericStringArray<string> LdType { get; set; } = string.Empty;
 
+        [JsonProperty("@id", Required = Required.Always)]
+        public string? Id { get; set; }
+
         [JsonProperty("schemaDefinitions")]
         public GenericStringDictionary<BaseDataSchema>? SchemaDefinitions { get; set; }
 
@@ -36,14 +39,14 @@ namespace WotConverterCore.Models.ThingModel
         [JsonProperty("base")]
         public string? Base { get; set; }
 
-        [JsonProperty("id")]
-        public GenericStringUri? Id { get; set; }
-
         [JsonProperty("titles")]
         public GenericStringDictionary<string>? Titles { get; set; }
 
         [JsonProperty("descriptions")]
         public GenericStringDictionary<string>? Descriptions { get; set; }
+
+        [JsonProperty("$comment")]
+        public string? Comment { get; set; }
 
         [JsonProperty("version")]
         public TmVersion? Version { get; set; }

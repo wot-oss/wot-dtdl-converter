@@ -17,11 +17,13 @@ namespace WotConverterDTDL.Converters
                 TM tm = new()
                 {
                     Title = dtdl.DisplayName?.String,
+                    Id = dtdl.Id,
                     Titles = dtdl.DisplayName?.Dictionary,
-                    Description = dtdl.Description?.String ?? $"Creted from {dtdl.DisplayName ?? "a"} DTDL model",
+                    Description = dtdl.Description?.String ?? $"Created from {dtdl.DisplayName ?? "a"} DTDL model",
                     Descriptions = dtdl.Description?.Dictionary,
                     Context = "https://www.w3.org/2019/wot/td/v1",
-                    LdType = "tm:ThingModel"
+                    LdType = "tm:ThingModel",
+                    Comment = dtdl.Comment 
                 };
 
                 //DTDL Properties
@@ -61,7 +63,10 @@ namespace WotConverterDTDL.Converters
                     Description = castedProperty.Description?.String,
                     Descriptions = castedProperty.Description?.Dictionary,
                     DataSchema = GetTMSchema(castedProperty.Schema),
+                    Comment = castedProperty.Comment
                 };
+                
+                tmProperty.DataSchema.Unit = castedProperty.Unit;
 
                 var key = castedProperty.Name ?? castedProperty.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
@@ -102,7 +107,8 @@ namespace WotConverterDTDL.Converters
                     Description = castedCommand.Description?.String,
                     Descriptions = castedCommand.Description?.Dictionary,
                     Title = castedCommand.DisplayName?.String,
-                    Titles = castedCommand.DisplayName?.Dictionary
+                    Titles = castedCommand.DisplayName?.Dictionary,
+                    Comment = castedCommand.Comment
                 };
 
                 var key = castedCommand.Name ?? castedCommand.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
@@ -131,6 +137,8 @@ namespace WotConverterDTDL.Converters
                     request.Descriptions = castedCommand.Request.Description?.Dictionary;
                     request.Title = castedCommand.Request.DisplayName?.String;
                     request.Titles = castedCommand.Request.DisplayName?.Dictionary;
+                    request.Comment = castedCommand.Request.Comment;
+                    request.Unit = castedCommand.Request.Unit;
 
                     tmAction.Input = request;
                 }
@@ -141,6 +149,8 @@ namespace WotConverterDTDL.Converters
                     response.Descriptions = castedCommand.Response.Description?.Dictionary;
                     response.Title = castedCommand.Response.DisplayName?.String;
                     response.Titles = castedCommand.Response.DisplayName?.Dictionary;
+                    response.Comment = castedCommand.Response.Comment;
+                    response.Unit = castedCommand.Response.Unit;                    
 
                     tmAction.Output = response;
                 }
@@ -168,7 +178,10 @@ namespace WotConverterDTDL.Converters
                     Description = castedTelemetry.Description?.String,
                     Descriptions = castedTelemetry.Description?.Dictionary,
                     DataResponse = GetTMSchema(castedTelemetry.Schema),
+                    Comment = castedTelemetry.Comment
                 };
+
+                tmEvent.DataResponse.Unit = castedTelemetry.Unit;
 
                 var key = castedTelemetry.Name ?? castedTelemetry.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
@@ -217,28 +230,23 @@ namespace WotConverterDTDL.Converters
                         Description = castedEnumSchema?.Description?.String,
                         Descriptions = castedEnumSchema?.Description?.Dictionary,
                         Title = castedEnumSchema?.DisplayName?.String,
-                        Titles = castedEnumSchema?.DisplayName?.Dictionary
+                        Titles = castedEnumSchema?.DisplayName?.Dictionary,
+                        Comment = castedEnumSchema?.Comment
                     };
 
                     return enumResult;
 
                 case DTDLSchemaType.String:
 
+                    // TODO(pedram:  the annotations are already parsed by the DTDLBaseContent
                     var stringResult = new StringSchema
                     {
                         Title = schema.DisplayName?.String,
                         Titles = schema.DisplayName?.Dictionary,
                         Description = schema.Description?.String,
                         Descriptions = schema.Description?.Dictionary,
-
-                    };
-                    stringResult.Format = schema.Type.Enumerator switch
-                    {
-                        DTDLSchemaType.DateTime => "dateTime",
-                        DTDLSchemaType.Time => "time",
-                        DTDLSchemaType.Duration => "duration",
-                        DTDLSchemaType.String => null,
-                        _ => null
+                        Comment = schema?.Comment,
+                        Unit    = schema?.Unit
                     };
 
                     return stringResult;
@@ -255,13 +263,16 @@ namespace WotConverterDTDL.Converters
                         Title = castedObjectSchema.DisplayName?.String,
                         Titles = castedObjectSchema.DisplayName?.Dictionary,
                         Descriptions = castedObjectSchema.Description?.Dictionary,
-                        Description = castedObjectSchema.Description?.String
+                        Description = castedObjectSchema.Description?.String,
+                        Comment = castedObjectSchema.Comment
                     };
 
                     foreach (var item in castedObjectSchema.GetObjectFields() ?? new())
                     {
                         var key = item.Name ?? item.DisplayName?.ToString();
                         var value = GetTMSchema(item.Schema);
+                        value.Comment = item.Comment;
+                        value.Unit = item.Unit;
                         if (value != null)
                         {
                             objectResult.AddObjectProperty(new KeyValuePair<string, BaseDataSchema>(
@@ -283,6 +294,7 @@ namespace WotConverterDTDL.Converters
                         Descriptions = schema.Description?.Dictionary,
                         Title = schema.DisplayName?.String,
                         Titles = schema.DisplayName?.Dictionary,
+                        Comment = schema.Comment
                     };
 
                     if (castedArraySchema.ElementSchema != null)
@@ -292,9 +304,30 @@ namespace WotConverterDTDL.Converters
 
                     return arrayResult;
 
+                case DTDLSchemaType.DateTime:
+                    var dateTimeResult = new StringSchema
+                    {
+                        Title = schema.DisplayName?.String,
+                        Titles = schema.DisplayName?.Dictionary,
+                        Description = schema.Description?.String,
+                        Descriptions = schema.Description?.Dictionary,
+                        Comment = schema?.Comment,
+                        Unit    = schema?.Unit
+                    };
+
+                    dateTimeResult.Format = schema.Type.Enumerator switch
+                    {
+                        DTDLSchemaType.DateTime => "dateTime",
+                        DTDLSchemaType.Time => "time",
+                        DTDLSchemaType.Duration => "duration",
+                        DTDLSchemaType.String => null,
+                        _ => null
+                    };
+                    return dateTimeResult;
+                    
                 case DTDLSchemaType.Double:
                 case DTDLSchemaType.Float:
-                    return new StringSchema();
+                    return new NumberSchema();
                 case DTDLSchemaType.Boolean:
                     return new BooleanSchema();
                 case DTDLSchemaType.Integer:

@@ -29,6 +29,12 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("descriptions")]
         public GenericStringDictionary<string>? Descriptions { get; set; }
 
+        [JsonProperty("$comment")]
+        public string? Comment { get; set; }
+
+        [JsonProperty("unit")]
+        public string? Unit { get; set; }
+
         [JsonProperty("writeOnly")]
         public bool? WriteOnly { get; set; }
 

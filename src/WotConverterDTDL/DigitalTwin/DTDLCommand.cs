@@ -38,12 +38,16 @@ namespace WotConverterDTDL.DigitalTwin
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
 
+        [JsonProperty("unit")]
+        public string? Unit { get; set; }
+        
         //Should Serialize (Avoid empty objects during serialization)
         public bool ShouldSerializeSchema() => !Schema.IsEmpty();
         public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
         public bool ShouldSerializeDescription() => !Description.IsEmpty();
     }
 
+    // TODO(Pedram): Why is this not inheriting from BaseContentSchema?
     public class DTDLCommandResponse
     {
         [JsonProperty("@type")]
@@ -67,6 +71,9 @@ namespace WotConverterDTDL.DigitalTwin
         [JsonProperty("schema")]
         public DTDLBaseSchema? Schema { get; set; }
 
+        [JsonProperty("unit")]
+        public string? Unit { get; set; }
+        
         public bool ShouldSerializeSchema() => !Schema.IsEmpty();
         public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
         public bool ShouldSerializeDescription() => !Description.IsEmpty();

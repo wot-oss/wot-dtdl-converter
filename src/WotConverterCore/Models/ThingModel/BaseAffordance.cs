@@ -25,6 +25,9 @@ namespace WotConverterCore.Models.ThingModel
         [JsonProperty("forms")]
         public GenericStringArray<Form>? Forms { get; set; }
 
+        [JsonProperty("comment")]
+        public string? Comment { get; set; }
+        
         //Should Serialize (Avoid empty objects during serialization)
         public bool ShouldSerializeTitles() => !Titles.IsEmpty();
         public bool ShouldSerializeDescriptions() => !Descriptions.IsEmpty();

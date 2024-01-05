@@ -10,7 +10,7 @@ internal class Program
     {
         Console.WriteLine("======== WOT TD CONVERTER =======");
 
-        if (args.Length < 0)
+        if (args.Length == 0)
         {
             Console.WriteLine("Provide a valid TM file to convert!");
             return 1;
@@ -187,7 +187,7 @@ internal class Program
             var trimmedFilePath = Path.GetDirectoryName(Path.GetRelativePath(pathToJsons, tm.Key)) ?? "";
             var filePath = Path.Combine(parameters.TmOutputPath, trimmedFilePath);
             var fileName = Path.GetFileName(tm.Key);
-            Path.ChangeExtension(fileName, "jsonld");
+            fileName = Path.ChangeExtension(fileName, "tm.json");
 
             if (!Directory.Exists(filePath))
                 Directory.CreateDirectory(filePath);
