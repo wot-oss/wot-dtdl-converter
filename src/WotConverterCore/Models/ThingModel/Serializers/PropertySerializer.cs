@@ -112,7 +112,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
             if (property.DataSchema == null)
                 serializer.Serialize(writer, jsonObjectProperty);
 
-            var dataSchema = JToken.FromObject(property.DataSchema ??  new object());
+            var dataSchema = JToken.FromObject(jsonObjectProperty["DataSchema"] ??  new object());
             dataSchema = RemoveEmptyChildren(dataSchema);
 
             var jsonObjectPropertyObject = (JObject)jsonObjectProperty;

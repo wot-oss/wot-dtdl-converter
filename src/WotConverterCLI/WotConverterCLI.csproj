@@ -29,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Examples\Models\Comparison\dtdl_schema.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Examples\Models\DTDL Fan.jsonld">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -23,21 +23,14 @@ namespace WotConverterCore.Models.Serializers
         public override void WriteJson(JsonWriter writer, object? untypedValue, JsonSerializer serializer)
         {
             var value = (GenericStringInt?)untypedValue ?? new GenericStringInt();
-            if (value == null)
-            {
-                Console.WriteLine("Could not convert GenericStringInt");
-                return;
-            }
             if (value.Integer != null)
             {
-                Console.WriteLine(value.ToString());
-                serializer.Serialize(writer, value.ToString());
+                serializer.Serialize(writer, value.Integer);
                 return;
             }
             if (value.StringInt != null)
             {
-                Console.WriteLine(value.ToString());
-                serializer.Serialize(writer, value.ToString());
+                serializer.Serialize(writer, value.StringInt);
                 return;
             }
 
