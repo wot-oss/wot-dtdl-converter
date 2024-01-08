@@ -1,0 +1,114 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "boolean-prop",
+            "schema": "boolean",
+            "unit": "metrePerSecond"
+        },
+        {
+            "@type": "Property",
+            "name": "date-prop",
+            "schema": "date"
+        },
+        {
+            "@type": "Property",
+            "name": "dateTime-prop",
+            "schema": "dateTime"
+        },
+        {
+            "@type": "Property",
+            "name": "double-prop",
+            "schema": "double"
+        },
+        {
+            "@type": "Property",
+            "name": "duration-prop",
+            "schema": "duration"
+        },
+        {
+            "@type": "Property",
+            "name": "float-prop",
+            "schema": "float"
+        },
+        {
+            "@type": "Property",
+            "name": "integer-prop",
+            "schema": "integer"
+        },
+        {
+            "@type": "Property",
+            "name": "long-prop",
+            "schema": "long"
+        },
+        {
+            "@type": "Property",
+            "name": "string-prop",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "time-prop",
+            "schema": "time"
+        },
+        {
+            "@type": "Property",
+            "name": "array-prop",
+            "schema": {
+                "@type": "Array",
+                "elementSchema": "string"
+            }
+        },
+        {
+            "@type": "Property",
+            "name": "enum-prop",
+            "schema": {
+                "@type": "Enum",
+                "valueSchema": "integer",
+                "enumValues": [
+                    {
+                        "name": "offline",
+                        "displayName": "Offline",
+                        "enumValue": 3 
+                    },
+                    {
+                        "name": "Online",
+                        "displayName": "Online",
+                        "enumValue": 4 
+                    }
+                ]
+            }
+        },        
+        {
+            "@type": "Property",
+            "name": "multiLineString-prop",
+            "schema": "multiLineString"
+        },
+        {
+            "@type": "Property",
+            "name": "multiPoint-prop",
+            "schema": "multiPoint"
+        },
+        {
+            "@type": "Property",
+            "name": "multiPolygon-prop",
+            "schema": "multiPolygon"
+        },
+        {
+            "@type": "Property",
+            "name": "point-prop",
+            "schema": "point"
+        },
+        {
+            "@type": "Property",
+            "name": "polygon-prop",
+            "schema": "polygon"
+        }
+    ]
+}
