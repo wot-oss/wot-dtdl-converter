@@ -1,0 +1,20 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+  "contents": [      
+      {
+          "@type": "Property",
+          "schema": {
+              "@type": "Array",
+              "elementSchema": "boolean"
+          },
+          "name": "array",
+          "displayName": "Array Schema Test",
+          "description": "DTDL Array to JSON Schema"
+      }
+  ]
+}

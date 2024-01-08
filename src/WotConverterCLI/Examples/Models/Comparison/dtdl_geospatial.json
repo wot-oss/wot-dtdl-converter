@@ -1,0 +1,18 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+  "contents": [      
+      {
+          "@type": "Telemetry",
+          "writable": false,
+          "schema": "point",
+          "name": "location",
+          "displayName": "Geo Location",
+          "description": "The current location as GeoJSON"
+      }
+  ]
+}

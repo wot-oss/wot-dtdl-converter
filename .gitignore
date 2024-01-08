@@ -16,3 +16,6 @@
 /src/realease/*
 /src/WotConverterDTDL/bin/*
 *.user
+*~
+/src/WotConverterCore/Interfaces/#IConversionParameters.cs#
+/src/WotConverterCore/Models/ThingModel/Schema/#EnumSchema.cs#

@@ -1,0 +1,63 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "comment on Thing Model",
+    "contents": [
+        {
+            "@type": "Telemetry",
+            "name": "accelerometer",
+            "comment": "comment on telemetry",
+            "schema": {
+                "@type": "Object",
+                "comment": "comment on schema object",
+                "fields": [
+                    {
+                        "name": "x",
+                        "schema": "double",
+                        "unit": "metrePerSecondSquared",
+                        "comment": "comment on object field x"
+                    },
+                    {
+                        "name": "y",
+                        "schema": "double",
+                        "unit": "metrePerSecondSquared",
+                        "comment": "comment on object field y"
+                    },
+                    {
+                        "name": "z",
+                        "schema": "double",
+                        "unit": "metrePerSecondSquared",
+                        "comment": "comment on object field z"
+                    }
+                ]
+            }
+        },
+	{
+            "@type": "Property",
+            "name": "batteryCharge",
+            "comment": "comment on batteryCharge",
+            "schema": "dateTime",
+            "unit": "percent" 
+        },
+        {
+            "@type": "Command",
+            "name": "calibration",
+            "comment": "comment on calibration",
+            "request": {
+                "name": "duration",
+                "schema": "double",
+                "comment": "comment on duration",
+		"unit": "seconds"
+            },
+            "response": {
+                "name": "status",
+                "schema": "string",
+                "comment": "comment on status",
+		"unit": "seconds"
+            }
+        }
+  ]
+}

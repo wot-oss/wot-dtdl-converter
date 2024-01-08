@@ -1,0 +1,30 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+  "contents": [      
+      {
+          "@type": "Command",
+          "Request": {
+              "@type": "CommandRequest",
+              "name": "rebootRequest",
+              "displayName": "Reboot Time",
+              "description": "Requested time to reboot the device.",
+              "schema": "dateTime"
+          },
+          "Response": {
+              "@type": "CommandResponse",
+              "name": "rebootResponse",
+              "displayName": "Scheduled Time",
+              "description": "Scheduled shutdown time",
+              "schema": "dateTime"
+          },
+          "name": "reboot",
+          "displayName": "SystemReboot",
+          "description": "Reboots the system at the specified time"
+      }
+  ]
+}

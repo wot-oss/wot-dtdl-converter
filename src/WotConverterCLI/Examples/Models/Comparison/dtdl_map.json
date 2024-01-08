@@ -1,0 +1,31 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+    "contents": [
+        {
+            "@type": "Telemetry",
+            "name": "accelerometer",
+            "schema": {
+                "@type": "Object",
+                "fields": [
+                    {
+                        "name": "x",
+                        "schema": "double"
+                    },
+                    {
+                        "name": "y",
+                        "schema": "double"
+                    },
+                    {
+                        "name": "z",
+                        "schema": "double"
+                    }
+                ]
+            }
+        }        
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:test:model;1",
+  "@type": "Interface",
+  "displayName": "Test Model",
+  "description": "Thing Model Test",
+  "comment": "http://localhost:3000",
+  "contents": [      
+      {
+          "@type": "Property",
+          "name": "state",
+          "schema": {
+              "@type": "Enum",
+              "valueSchema": "integer",
+              "enumValues": [
+                  {
+                      "name": "offline",
+                      "displayName": "Offline",
+                      "enumValue": 3
+                  },
+                  {
+                      "name": "online",
+                      "displayName": "Online",
+                      "enumValue": 4
+                  }
+              ]
+          }
+      }
+  ]
+}
