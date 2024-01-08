@@ -84,6 +84,22 @@
                     }
                 ]
             }
+        },
+        {
+            "@type": "Property",
+            "name": "modules",
+            "writable": true,
+            "schema": {
+                "@type": "Map",
+                "mapKey": {
+                    "name": "moduleName",
+                    "schema": "string"
+                },
+                "mapValue": {
+                    "name": "moduleState",
+                    "schema": "string"
+                }
+            }
         },        
         {
             "@type": "Property",
