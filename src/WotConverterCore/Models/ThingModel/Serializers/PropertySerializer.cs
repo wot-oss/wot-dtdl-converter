@@ -101,6 +101,7 @@ namespace WotConverterCore.Models.ThingModel.Serializers
                     GenericStringArraySerializer<Form>.Serializer,
                     GenericStringDictionarySerializer<string>.Serializer,
                     GenericStringDictionarySerializer<BaseDataSchema>.Serializer,
+                    GenericStringIntSerializer.Serializer,
                     BaseDataSchemaSerializer.Serializer
                 }
             });

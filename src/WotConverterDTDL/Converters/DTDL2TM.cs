@@ -5,6 +5,8 @@ using WotConverterCore.Models.ThingModel;
 using WotConverterCore.Models.ThingModel.DataSchema;
 using WotConverterDTDL.DigitalTwin;
 using WotConverterDTDL.DigitalTwin.Schema;
+// TODO(pedram): lsp tells me this using is unnecessary, but the project won't compile w/o it
+using WotConverterCore.Models.Common.Exceptions;
 
 namespace WotConverterDTDL.Converters
 {
@@ -51,7 +53,6 @@ namespace WotConverterDTDL.Converters
                 .Where(_ => _ != null && typeof(DTDLProperty) == _.GetType())?
                 .ToList() ?? new();
 
-            //TODO: Enum, Object, Map values
             foreach (var property in dtldlProperties)
             {
                 var castedProperty = (DTDLProperty)property;
@@ -65,27 +66,34 @@ namespace WotConverterDTDL.Converters
                     DataSchema = GetTMSchema(castedProperty.Schema),
                     Comment = castedProperty.Comment
                 };
-                
-                tmProperty.DataSchema.Unit = castedProperty.Unit;
+
+                if (tmProperty.DataSchema != null)
+                {
+                    tmProperty.DataSchema.Unit = castedProperty.Unit;
+                }
 
                 var key = castedProperty.Name ?? castedProperty.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
-                tmProperty.Forms = new();
-                Form tmForm = new()
+                if (parameters.InsertHrefs)
                 {
-                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
-                    Op = new GenericStringArray<OpEnum>()
-                };
+                    tmProperty.Forms = new();
+                    Form tmForm = new()
+                    {
+                        Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
+                        Op = new GenericStringArray<OpEnum>()
+                    };
 
-                tmForm.Op.Array = new()
-                {
+                    tmForm.Op.Array = new()
+                    {
                         OpEnum.Readproperty
-                };
+                    };
 
-                if (castedProperty.Writable ?? false)
-                    tmForm.Op.Array.Add(OpEnum.WriteProperty);
 
-                tmProperty.Forms.Add(tmForm);
+                    if (castedProperty.Writable ?? false)
+                        tmForm.Op.Array.Add(OpEnum.WriteProperty);
+
+                    tmProperty.Forms.Add(tmForm);
+                }
 
                 tm.AddProperty(key, tmProperty);
             }
@@ -113,20 +121,22 @@ namespace WotConverterDTDL.Converters
 
                 var key = castedCommand.Name ?? castedCommand.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
-                tmAction.Forms = new();
-                Form tmForm = new()
+                if (parameters.InsertHrefs)
                 {
-                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
-                    Op = new GenericStringArray<OpEnum>()
-                };
+                    tmAction.Forms = new();
+                    Form tmForm = new()
+                    {
+                        Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
+                        Op = new GenericStringArray<OpEnum>()
+                    };
 
-                tmForm.Op.Array = new()
-                {
+                    tmForm.Op.Array = new()
+                    {
                          OpEnum.Invokeaction
-                };
+                    };
 
-                tmAction.Forms.Add(tmForm);
-
+                    tmAction.Forms.Add(tmForm);
+                }
 
                 var request = GetTMSchema(castedCommand.Request?.Schema);
                 var response = GetTMSchema(castedCommand.Response?.Schema);
@@ -166,7 +176,6 @@ namespace WotConverterDTDL.Converters
                 .Where(_ => _ != null && typeof(DTDLTelemetry) == _.GetType())?
                 .ToList() ?? new();
 
-            //TODO: Enum, Object, Map values
             foreach (var telemetry in dtdlTelemetry)
             {
                 var castedTelemetry = (DTDLTelemetry)telemetry;
@@ -185,20 +194,22 @@ namespace WotConverterDTDL.Converters
 
                 var key = castedTelemetry.Name ?? castedTelemetry.DisplayName?.ToString() ?? Guid.NewGuid().ToString();
 
-
-                tmEvent.Forms = new();
-                Form tmForm = new()
+                if (parameters.InsertHrefs)
                 {
-                    Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
-                    Op = new GenericStringArray<OpEnum>()
-                };
+                    tmEvent.Forms = new();
+                    Form tmForm = new()
+                    {
+                        Href = parameters?.InsertHrefs ?? false ? $"{{{{{key?.ToUpper() ?? Guid.NewGuid().ToString()}_HREF}}}}" : null,
+                        Op = new GenericStringArray<OpEnum>()
+                    };
 
-                tmForm.Op.Array = new()
-                {
-                   OpEnum.Subscribeevent
-                };
+                    tmForm.Op.Array = new()
+                    {
+                        OpEnum.Subscribeevent
+                    };
 
-                tmEvent.Forms.Add(tmForm);
+                    tmEvent.Forms.Add(tmForm);
+                }
                 tm.AddEvent(key, tmEvent);
             }
         }
@@ -208,51 +219,131 @@ namespace WotConverterDTDL.Converters
             if (schema == null)
                 return null;
 
-
             switch (schema.Type.Enumerator)
             {
-                case DTDLSchemaType.Enum:
+                case DTDLSchemaType.Boolean:
+                    return new BooleanSchema();
 
+                case DTDLSchemaType.Date:
+                    var dateResult = new StringSchema();
+                    dateResult.Format = "date";
+                    return dateResult;
+
+                case DTDLSchemaType.DateTime:
+                    var dateTimeResult = new StringSchema();
+                    dateTimeResult.Format = "date-time";
+                    return dateTimeResult;
+
+                case DTDLSchemaType.Double:
+                    return new NumberSchema()
+                    {
+                        LdType = "xsd:double"
+                    };
+                        
+                case DTDLSchemaType.Float:
+                    return new NumberSchema()
+                    {
+                        LdType = "xsd:float"
+                    };
+                        
+
+                case DTDLSchemaType.Duration:
+                    var durationResult = new StringSchema();
+                    durationResult.Format = "duration";
+                    return durationResult;
+                    
+                case DTDLSchemaType.Long:
+                    return new IntegerSchema()
+                    {
+                        LdType = "xsd:long"
+                    };
+
+                case DTDLSchemaType.Integer:
+                    return new IntegerSchema()
+                    {
+                        LdType = "xsd:int"
+                    };
+                    
+                case DTDLSchemaType.String:
+                    var stringResult = new StringSchema();
+                    return stringResult;
+                    
+                case DTDLSchemaType.Time:
+                    var timeResult = new StringSchema();
+                    timeResult.Format = "time";
+                    return timeResult;
+
+                case DTDLSchemaType.Array:
+                    var castedArraySchema = (DTDLArraySchema)schema;
+                    if (castedArraySchema == null)
+                    {
+                        return null;
+                    }
+
+                    var arrayResult = new ArraySchema()
+                    {
+                        Description = castedArraySchema?.Description?.String,
+                        Descriptions = castedArraySchema?.Description?.Dictionary,
+                        Title = castedArraySchema?.DisplayName?.String,
+                        Titles = castedArraySchema?.DisplayName?.Dictionary,
+                        Comment = castedArraySchema?.Comment
+                    };
+                        
+                    arrayResult.Items = GetTMSchema(castedArraySchema?.ElementSchema);
+
+                    return arrayResult;
+                    
+                case DTDLSchemaType.Enum:
                     var castedEnumSchema = (DTDLEnumSchema)schema;
                     if (castedEnumSchema == null)
                         return null;
 
                     var listOfEnums = castedEnumSchema?
                         .GetEnumValues()?
-                        .Select(_ => _.EnumValue?.ToString())?.ToList() ?? new();
+                        .Select(d => new ConstObject {
+                                Const = d.EnumValue,
+                                Title = d.DisplayName?.String,
+                                Titles = d.DisplayName?.Dictionary,
+                                Descriptions = d.Description?.Dictionary,
+                                Description = d.Description?.String,
+                                Comment = d.Comment
+                            })?.ToList() ?? new();
 
+                    Console.WriteLine(listOfEnums.First().Name);
+                    Console.WriteLine(listOfEnums.First().Const);
                     if (!listOfEnums.Any())
-                        return null;
-
-                    var enumResult = new StringSchema()
                     {
-                        Enum = listOfEnums,
-                        Description = castedEnumSchema?.Description?.String,
-                        Descriptions = castedEnumSchema?.Description?.Dictionary,
-                        Title = castedEnumSchema?.DisplayName?.String,
-                        Titles = castedEnumSchema?.DisplayName?.Dictionary,
-                        Comment = castedEnumSchema?.Comment
-                    };
+                        Console.WriteLine("Bailing out");
+                        return null;
+                    }
 
+                    BaseDataSchema enumResult;
+                    switch (castedEnumSchema?.ValueSchema)
+                    {
+                        case "string":
+                            enumResult = new StringSchema()
+                            {
+                                OneOf = listOfEnums
+                            };
+                            break;
+                        case "integer":
+                            enumResult = new IntegerSchema()
+                            {
+                                OneOf = listOfEnums
+                            };                                
+                            break;
+                        default:
+                            throw new InvalidDTDLSchema();
+                    }
+                    
+                    
                     return enumResult;
 
-                case DTDLSchemaType.String:
-
-                    // TODO(pedram:  the annotations are already parsed by the DTDLBaseContent
-                    var stringResult = new StringSchema
-                    {
-                        Title = schema.DisplayName?.String,
-                        Titles = schema.DisplayName?.Dictionary,
-                        Description = schema.Description?.String,
-                        Descriptions = schema.Description?.Dictionary,
-                        Comment = schema?.Comment,
-                        Unit    = schema?.Unit
-                    };
-
-                    return stringResult;
-
+                case DTDLSchemaType.Map:
+                    Console.WriteLine("Map schema not yet implemented. Skipping schema.");
+                    return null;
+                    
                 case DTDLSchemaType.Object:
-
 
                     var castedObjectSchema = (DTDLObjectSchema)schema;
                     if (castedObjectSchema == null)
@@ -271,10 +362,10 @@ namespace WotConverterDTDL.Converters
                     {
                         var key = item.Name ?? item.DisplayName?.ToString();
                         var value = GetTMSchema(item.Schema);
-                        value.Comment = item.Comment;
-                        value.Unit = item.Unit;
                         if (value != null)
                         {
+                            value.Comment = item.Comment;
+                            value.Unit = item.Unit;
                             objectResult.AddObjectProperty(new KeyValuePair<string, BaseDataSchema>(
                                 key: key,
                                 value: value
@@ -284,57 +375,17 @@ namespace WotConverterDTDL.Converters
 
                     return objectResult;
 
-                case DTDLSchemaType.Array:
-
-                    var castedArraySchema = (DTDLArraySchema)schema;
-
-                    var arrayResult = new ArraySchema()
-                    {
-                        Description = schema.Description?.String,
-                        Descriptions = schema.Description?.Dictionary,
-                        Title = schema.DisplayName?.String,
-                        Titles = schema.DisplayName?.Dictionary,
-                        Comment = schema.Comment
-                    };
-
-                    if (castedArraySchema.ElementSchema != null)
-                    {
-                        arrayResult.Items = GetTMSchema(castedArraySchema.ElementSchema);
-                    }
-
-                    return arrayResult;
-
-                case DTDLSchemaType.DateTime:
-                    var dateTimeResult = new StringSchema
-                    {
-                        Title = schema.DisplayName?.String,
-                        Titles = schema.DisplayName?.Dictionary,
-                        Description = schema.Description?.String,
-                        Descriptions = schema.Description?.Dictionary,
-                        Comment = schema?.Comment,
-                        Unit    = schema?.Unit
-                    };
-
-                    dateTimeResult.Format = schema.Type.Enumerator switch
-                    {
-                        DTDLSchemaType.DateTime => "dateTime",
-                        DTDLSchemaType.Time => "time",
-                        DTDLSchemaType.Duration => "duration",
-                        DTDLSchemaType.String => null,
-                        _ => null
-                    };
-                    return dateTimeResult;
-                    
-                case DTDLSchemaType.Double:
-                case DTDLSchemaType.Float:
-                    return new NumberSchema();
-                case DTDLSchemaType.Boolean:
-                    return new BooleanSchema();
-                case DTDLSchemaType.Integer:
-                case DTDLSchemaType.Long:
-                    return new IntegerSchema();
-                default:
+                case DTDLSchemaType.LineString:
+                case DTDLSchemaType.MultiLineString:
+                case DTDLSchemaType.MultiPoint:
+                case DTDLSchemaType.MultiPolygon:
+                case DTDLSchemaType.Point:
+                case DTDLSchemaType.Polygon:
+                    Console.WriteLine("GeoSpatial Schema not yet implemented. Using string.");
                     return new StringSchema();
+                    
+                default:
+                    throw new InvalidDTDLSchema();
             }
         }
     }

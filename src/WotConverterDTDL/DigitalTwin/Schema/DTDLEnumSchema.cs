@@ -53,14 +53,14 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         [JsonProperty("@id")]
         public string? Id { get; set; }
 
-        [JsonProperty("displayName")]
-        public string? DisplayName { get; set; }
-
         [JsonProperty("name")]
         public string? Name { get; set; }
 
+        [JsonProperty("displayName")]
+        public GenericStringDictionary<string>? DisplayName { get; set; }
+
         [JsonProperty("description")]
-        public string? Description { get; set; }
+        public GenericStringDictionary<string>? Description { get; set; }
 
         [JsonProperty("comment")]
         public string? Comment { get; set; }

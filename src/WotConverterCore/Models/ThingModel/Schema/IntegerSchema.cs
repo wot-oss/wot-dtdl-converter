@@ -11,6 +11,9 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
             Type = TypeEnum.Integer;
         }
 
+        [JsonProperty("oneOf")]
+        public List<ConstObject>? OneOf { get; set; }
+
         [JsonProperty("minimum")]
         public GenericStringInt? Minimum { get; set; }
 
@@ -27,6 +30,7 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         public GenericStringInt? MultipleOf { get; set; }
 
         //Should Serialize (Avoid empty objects during serialization)
+        public bool ShouldSerializeOneOf() => !OneOf.IsEmpty();
         public bool ShouldSerializeMinimum() => !Minimum.IsEmpty();
         public bool ShouldSerializeExclusiveMinimum() => !ExclusiveMinimum.IsEmpty();
         public bool ShouldSerializeMaximum() => !Maximum.IsEmpty();

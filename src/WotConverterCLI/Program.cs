@@ -34,7 +34,7 @@ internal class Program
                 parameters.ParseFlag(arg);
         }
 
-        string tmSchema = string.Empty;
+
         var dtdls = new Dictionary<string, DTDL>();
         var tms = new Dictionary<string, TM>();
         var files = new List<string>();

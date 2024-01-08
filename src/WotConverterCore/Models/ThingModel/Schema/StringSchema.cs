@@ -11,6 +11,9 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
             Type = TypeEnum.String;
         }
 
+        [JsonProperty("oneOf")]
+        public List<ConstObject>? OneOf { get; set; }
+
         [JsonProperty("minLength")]
         public GenericStringInt? MinLength { get; set; }
 

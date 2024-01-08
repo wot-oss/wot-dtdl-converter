@@ -6,6 +6,7 @@ using WotConverterDTDL.DigitalTwin.Serializers;
 
 namespace WotConverterDTDL.DigitalTwin.Schema
 {
+    // TODO(pedram): why is everything initialized to null, e.g. "Unknown" is a sensible default for Type
     public class DTDLBaseSchema
     {
         [JsonProperty("@id")]
@@ -38,6 +39,9 @@ namespace WotConverterDTDL.DigitalTwin.Schema
         public static implicit operator DTDLBaseSchema(DTDLSchemaType type) => new DTDLBaseSchema { Type = type };
         public static implicit operator DTDLBaseSchema(string type) {
             var isParsed = Enum.TryParse<DTDLSchemaType>(type, true, out var result);
+            Console.WriteLine(type);
+            Console.WriteLine(isParsed);            
+            
 
             if(isParsed)
                 return result;
@@ -55,47 +59,69 @@ namespace WotConverterDTDL.DigitalTwin.Schema
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum DTDLSchemaType
     {
+        // ordered according to DTDLv3 spec 
         [JsonIgnore]
         Unknown,
 
-        [EnumMember(Value = "string")]
-        String,
+        [EnumMember(Value = "boolean")]
+        Boolean,
+
+        [EnumMember(Value = "date")]
+        Date,
+
+        [EnumMember(Value = "dateTime")]
+        DateTime,
 
         [EnumMember(Value = "double")]
         Double,
-        
-        [EnumMember(Value = "long")]
-        Long,
-        
+
+        [EnumMember(Value = "duration")]
+        Duration,
+
         [EnumMember(Value = "float")]
         Float,
 
         [EnumMember(Value = "integer")]
         Integer,
 
-        [EnumMember(Value = "dateTime")]
-        DateTime,
+        [EnumMember(Value = "long")]
+        Long,
+        
+        [EnumMember(Value = "string")]
+        String,
 
         [EnumMember(Value = "time")]
         Time,
 
-        [EnumMember(Value = "boolean")]
-        Boolean,
-
-        [EnumMember(Value = "duration")]
-        Duration,
-
         [EnumMember(Value = "Enum")]
         Enum,
-
-        [EnumMember(Value = "Object")]
-        Object,
 
         [EnumMember(Value = "Array")]
         Array,
 
         [EnumMember(Value = "Map")]
-        Map
+        Map,
+
+        [EnumMember(Value = "Object")]
+        Object,
+
+        [EnumMember(Value = "lineString")]
+        LineString,
+
+        [EnumMember(Value = "multiLineString")]
+        MultiLineString,
+
+        [EnumMember(Value = "multiPoint")]
+        MultiPoint,
+
+        [EnumMember(Value = "multiPolygon")]
+        MultiPolygon,
+
+        [EnumMember(Value = "point")]
+        Point,
+
+        [EnumMember(Value = "polygon")]
+        Polygon,
     };
 
 }
