@@ -276,9 +276,7 @@ namespace WotConverterDTDL.Converters
                 case DTDLSchemaType.Array:
                     var castedArraySchema = (DTDLArraySchema)schema;
                     if (castedArraySchema == null)
-                    {
                         return null;
-                    }
 
                     var arrayResult = new ArraySchema()
                     {
@@ -340,11 +338,24 @@ namespace WotConverterDTDL.Converters
                     return enumResult;
 
                 case DTDLSchemaType.Map:
-                    Console.WriteLine("Map schema not yet implemented. Skipping schema.");
-                    return null;
-                    
-                case DTDLSchemaType.Object:
+                    var castedMapSchema = (DTDLMapSchema)schema;
+                    if (castedMapSchema == null)
+                        return null;
 
+                    var mapResult = new ObjectSchema()
+                    {
+                        Title = castedMapSchema.DisplayName?.String,
+                        Titles = castedMapSchema.DisplayName?.Dictionary,
+                        Descriptions = castedMapSchema.Description?.Dictionary,
+                        Description = castedMapSchema.Description?.String,
+                        Comment = castedMapSchema.Comment,
+                        LdType = "dtdl:Map",
+                        AdditionalProperties = GetTMSchema(castedMapSchema?.MapValue?.Schema),
+                    };
+                    mapResult.AdditionalProperties.Unit = castedMapSchema?.MapValue?.Unit;
+                    return mapResult;
+
+                case DTDLSchemaType.Object:
                     var castedObjectSchema = (DTDLObjectSchema)schema;
                     if (castedObjectSchema == null)
                         return null;

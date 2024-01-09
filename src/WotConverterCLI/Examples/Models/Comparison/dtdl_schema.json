@@ -91,16 +91,39 @@
             "writable": true,
             "schema": {
                 "@type": "Map",
+                "description": "Module States",
                 "mapKey": {
                     "name": "moduleName",
                     "schema": "string"
                 },
                 "mapValue": {
                     "name": "moduleState",
-                    "schema": "string"
+                    "schema": "string",
+                    "unit": "metrePerSecond" 
                 }
             }
-        },        
+        },
+        {
+            "@type": "Property",
+            "name": "accelerometer",
+            "schema": {
+                "@type": "Object",
+                "fields": [
+                    {
+                        "name": "x",
+                        "schema": "double"
+                    },
+                    {
+                        "name": "y",
+                        "schema": "double"
+                    },
+                    {
+                        "name": "z",
+                        "schema": "double"
+                    }
+                ]
+            }
+        },
         {
             "@type": "Property",
             "name": "multiLineString-prop",

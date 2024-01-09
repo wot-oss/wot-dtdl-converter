@@ -14,6 +14,9 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("properties")]
         private GenericStringDictionary<BaseDataSchema>? Properties { get; set; }
 
+        [JsonProperty("additionalProperties")]
+        public BaseDataSchema? AdditionalProperties { get; set; }
+
         [JsonProperty("required")]
         public string[]? Required { get; set; }
 
