@@ -4,7 +4,7 @@
     {
         public MultiPointSchema()
         {
-            Type = TypeEnum.MultiPoint;
+            Ref = TypeEnum.MultiPoint.ToString();
         }
     }
 }

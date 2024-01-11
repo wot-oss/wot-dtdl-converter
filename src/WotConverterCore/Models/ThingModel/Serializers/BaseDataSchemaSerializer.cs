@@ -52,6 +52,36 @@ namespace WotConverterCore.Models.ThingModel.Serializers
                     using (var subReader = jObject.CreateReader())
                         serializer.Populate(subReader, baseObject);
                     break;
+                case TypeEnum.LineString:
+                    baseObject = existingValue as LineStringSchema ?? (LineStringSchema)serializer.ContractResolver.ResolveContract(typeof(LineStringSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;                                        
+                case TypeEnum.MultiLineString:
+                    baseObject = existingValue as MultiLineStringSchema ?? (MultiLineStringSchema)serializer.ContractResolver.ResolveContract(typeof(MultiLineStringSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
+                case TypeEnum.MultiPoint:
+                    baseObject = existingValue as MultiPointSchema ?? (MultiPointSchema)serializer.ContractResolver.ResolveContract(typeof(MultiPointSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
+                case TypeEnum.MultiPolygon:
+                    baseObject = existingValue as MultiPolygonSchema ?? (MultiPolygonSchema)serializer.ContractResolver.ResolveContract(typeof(MultiPolygonSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
+                case TypeEnum.Point:
+                    baseObject = existingValue as PointSchema ?? (PointSchema)serializer.ContractResolver.ResolveContract(typeof(PointSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;
+                case TypeEnum.Polygon:
+                    baseObject = existingValue as PolygonSchema ?? (PolygonSchema)serializer.ContractResolver.ResolveContract(typeof(PolygonSchema)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    break;                                        
                 case TypeEnum.Null:
                     baseObject = existingValue as NullSchema ?? (NullSchema)serializer.ContractResolver.ResolveContract(typeof(NullSchema)).DefaultCreator();
                     using (var subReader = jObject.CreateReader())

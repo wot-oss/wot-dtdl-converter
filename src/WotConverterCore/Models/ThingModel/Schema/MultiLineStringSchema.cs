@@ -4,7 +4,7 @@
     {
         public MultiLineStringSchema()
         {
-            Type = TypeEnum.MultiLineString;
+            Ref = TypeEnum.MultiLineString.ToString();
         }
     }
 }

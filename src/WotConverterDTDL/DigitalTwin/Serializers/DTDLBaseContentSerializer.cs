@@ -40,6 +40,20 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
                         serializer.Populate(subReader, baseObject);
                     return baseObject;
                 }
+                if (parsedType?.Contains("Relationship") ?? false)
+                {
+                    baseObject = existingValue as DTDLRelationship ?? (DTDLRelationship)serializer.ContractResolver.ResolveContract(typeof(DTDLRelationship)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    return baseObject;
+                }
+                if (parsedType?.Contains("Component") ?? false)
+                {
+                    baseObject = existingValue as DTDLComponent ?? (DTDLComponent)serializer.ContractResolver.ResolveContract(typeof(DTDLComponent)).DefaultCreator();
+                    using (var subReader = jObject.CreateReader())
+                        serializer.Populate(subReader, baseObject);
+                    return baseObject;
+                }
 
                 return null;
             }
@@ -64,6 +78,16 @@ namespace WotConverterDTDL.DigitalTwin.Serializers
                         using (var subReader = jObject.CreateReader())
                             serializer.Populate(subReader, baseObject);
                         return baseObject;
+                    case "Relationship":
+                        baseObject = existingValue as DTDLRelationship ?? (DTDLRelationship)serializer.ContractResolver.ResolveContract(typeof(DTDLRelationship)).DefaultCreator();
+                        using (var subReader = jObject.CreateReader())
+                            serializer.Populate(subReader, baseObject);
+                        return baseObject;
+                    case "Component":
+                        baseObject = existingValue as DTDLComponent ?? (DTDLComponent)serializer.ContractResolver.ResolveContract(typeof(DTDLComponent)).DefaultCreator();
+                        using (var subReader = jObject.CreateReader())
+                            serializer.Populate(subReader, baseObject);
+                        return baseObject;                                                
                     case null:
                     default:
                         return null;

@@ -18,7 +18,7 @@
           "@type": "Component",
           "name": "frontCamera",
           "displayName": "Low Resolution Front Camera",
-          "target": "dtmi:com:example:Camera;3"
+          "schema": "dtmi:com:example:Camera;3"
     }
   ]
 }

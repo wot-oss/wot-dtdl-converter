@@ -4,7 +4,7 @@
     {
         public PolygonSchema()
         {
-            Type = TypeEnum.Polygon;
+            Ref = TypeEnum.Polygon.ToString();
         }
     }
 }

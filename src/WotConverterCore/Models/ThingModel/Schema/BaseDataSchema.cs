@@ -11,6 +11,9 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         [JsonProperty("type")]
         public TypeEnum? Type { get; protected set; }
 
+        [JsonProperty("$ref")]
+        public string? Ref { get; set; }
+
         [JsonProperty("@type")]
         public string? LdType { get; set; }
 
@@ -77,7 +80,28 @@ namespace WotConverterCore.Models.ThingModel.DataSchema
         Null,
 
         [EnumMember(Value = "array")]
-        Array
+        Array,
 
+        [EnumMember(Value = "$ref")]
+        Ref,
+        
+        // GeoJSON
+        [EnumMember(Value = "https://geojson.org/schema/LineString.json")]
+        LineString,
+        
+        [EnumMember(Value = "https://geojson.org/schema/MultiLineString.json")]
+        MultiLineString,
+
+        [EnumMember(Value = "https://geojson.org/schema/MultiPoint.json")]
+        MultiPoint,
+
+        [EnumMember(Value = "https://geojson.org/schema/MultiPolygon.json")]
+        MultiPolygon,
+
+        [EnumMember(Value = "https://geojson.org/schema/Point.json")]
+        Point,
+        
+        [EnumMember(Value = "https://geojson.org/schema/Polygon.json")]
+        Polygon
     };
 }

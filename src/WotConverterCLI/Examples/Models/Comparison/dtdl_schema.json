@@ -131,6 +131,11 @@
         },
         {
             "@type": "Property",
+            "name": "LineString-prop",
+            "schema": "lineString"
+        },
+        {
+            "@type": "Property",
             "name": "multiPoint-prop",
             "schema": "multiPoint"
         },

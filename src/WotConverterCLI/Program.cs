@@ -142,6 +142,7 @@ internal class Program
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 Console.Error.WriteLine($"Error during conversion for file {item} => {ex.Message}");
                 errorList.Add(item, ex.Message);
             }

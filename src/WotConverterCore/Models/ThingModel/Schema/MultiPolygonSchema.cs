@@ -4,7 +4,7 @@
     {
         public MultiPolygonSchema()
         {
-            Type = TypeEnum.MultiPolygon;
+            Ref = TypeEnum.MultiPolygon.ToString();
         }
     }
 }

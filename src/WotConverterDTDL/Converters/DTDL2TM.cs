@@ -37,6 +37,11 @@ namespace WotConverterDTDL.Converters
                 //DTDL Telemetry
                 CreateTMEvents(ref tm, dtdl, p);
 
+                //DTDL Relationship
+                CreateTMLinks(ref tm, dtdl, p);
+
+                CreateTMSubmodels(ref tm, dtdl, p);
+
                 return tm;
             }
             catch (Exception ex)
@@ -214,6 +219,67 @@ namespace WotConverterDTDL.Converters
             }
         }
 
+        private static void CreateTMLinks(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
+        {
+
+            var dtdlRelationships = dtdl
+                .GetDTDLContents()
+                .Where(_ => _ != null && typeof(DTDLRelationship) == _.GetType())?
+                .ToList() ?? new();
+
+            foreach (var relationship in dtdlRelationships)
+            {
+                var castedRelationship = (DTDLRelationship)relationship;
+
+                Link tmLink = new()
+                {
+                    Type = "dtdl:Relationship",
+                    Id = castedRelationship.Id,
+                    DisplayName = castedRelationship.DisplayName?.String,
+                    Description = castedRelationship.Description,
+                    Comment = castedRelationship.Comment,
+                    Writable = castedRelationship.Writable,
+                    Rel = "dtdl:" + castedRelationship.Name,
+                    Href = castedRelationship.Target,
+                    MaxMultiplicity = castedRelationship.MaxMultiplicity,
+                    MinMultiplicity = castedRelationship.MinMultiplicity
+                };
+
+                tm.AddLink(tmLink);
+            }
+
+        }
+
+        private static void CreateTMSubmodels(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
+        {
+
+            var dtdlComponents = dtdl
+                .GetDTDLContents()
+                .Where(_ => _ != null && typeof(DTDLComponent) == _.GetType())?
+                .ToList() ?? new();
+
+            foreach (var component in dtdlComponents)
+            {
+                Console.WriteLine("submodels");                
+                var castedComponent = (DTDLComponent)component;
+
+                Link tmLink = new()
+                {
+                    Id = castedComponent.Id,
+                    DisplayName = castedComponent.DisplayName?.String,
+                    Description = castedComponent.Description,
+                    Comment = castedComponent.Comment,
+                    Rel = "tm:submodel",
+                    Name = castedComponent.Name,
+                    Href = castedComponent.Schema,
+                };
+
+                tm.AddLink(tmLink);
+            }
+
+        }
+        
+
         private static BaseDataSchema? GetTMSchema(DTDLBaseSchema? schema)
         {
             if (schema == null)
@@ -387,13 +453,22 @@ namespace WotConverterDTDL.Converters
                     return objectResult;
 
                 case DTDLSchemaType.LineString:
+                    return new LineStringSchema();
+
                 case DTDLSchemaType.MultiLineString:
+                    return new MultiLineStringSchema();
+                    
                 case DTDLSchemaType.MultiPoint:
+                    return new MultiPointSchema();
+                    
                 case DTDLSchemaType.MultiPolygon:
+                    return new MultiPolygonSchema();
+                    
                 case DTDLSchemaType.Point:
+                    return new PointSchema();
+                    
                 case DTDLSchemaType.Polygon:
-                    Console.WriteLine("GeoSpatial Schema not yet implemented. Using string.");
-                    return new StringSchema();
+                    return new PolygonSchema();
                     
                 default:
                     throw new InvalidDTDLSchema();

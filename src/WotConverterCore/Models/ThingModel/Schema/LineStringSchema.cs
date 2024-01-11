@@ -4,7 +4,7 @@
     {
         public LineStringSchema()
         {
-            Type = TypeEnum.LineString;
+            Ref = TypeEnum.LineString.ToString();
         }
     }
 }

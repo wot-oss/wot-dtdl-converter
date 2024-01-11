@@ -61,7 +61,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Support { get; set; }
 
         [JsonProperty("links")]
-        public GenericStringArray<Link> Links { get; set; }
+        public List<Link>? Links { get; set; }
 
         [JsonProperty("properties")]
         private GenericStringDictionary<Property>? Properties { get; set; }
@@ -131,7 +131,14 @@ namespace WotConverterCore.Models.ThingModel
             Events.Dictionary?.Add(key, tmEvent);
         }
 
+        public void AddLink(Link link)
+        {
+            if (Links == null)
+                Links = new List<Link>();
 
+            Links.Add(link);
+        }
+        
         public static bool Validate(string thingModelJson)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -156,7 +163,47 @@ namespace WotConverterCore.Models.ThingModel
         public string Instance { get; set; }
     }
 
-    public class Link
+    // dtdl:Relationships have some properties not supported by TMs, yet.
+    // We include them in TMs using JSON-LD's context extension
+    public class DTDLLinkExtensions
+    {
+        [JsonProperty("@type")]
+        public GenericStringArray<string> Type { get; set; }
+
+        [JsonProperty("@id")]
+        public string? Id { get; set; }
+
+        [JsonProperty("dtdl:name")]
+        public string? Name { get; set; }
+
+        [JsonProperty("dtdl:displayName")]
+        public GenericStringDictionary<string>? DisplayName { get; set; }
+
+        [JsonProperty("dtdl:description")]
+        public GenericStringDictionary<string>? Description { get; set; }
+        
+        [JsonProperty("x-jsonschema:$comment")]
+        public string? Comment { get; set; }
+
+        [JsonProperty("dtdl:writable")]
+        public bool? Writable { get; set; }        
+
+        [JsonProperty("dtdl:maxMultiplicity")]
+        public int? MaxMultiplicity { get; set; }
+        
+        [JsonProperty("dtdl:minMultiplicity")]
+        public int? MinMultiplicity { get; set; }        
+
+        [JsonProperty("dtdl:properties")]
+        public int? Properties { get; set; }        
+        
+        //String Oerator
+        public bool ShouldSerializeDescription() => !Description.IsEmpty();
+
+        public bool ShouldSerializeDisplayName() => !DisplayName.IsEmpty();
+    }
+
+    public class Link : DTDLLinkExtensions
     {
         [JsonProperty("anchor")]
         public string? Anchor { get; set; }
@@ -171,7 +218,7 @@ namespace WotConverterCore.Models.ThingModel
         public string? Rel { get; set; }
 
         [JsonProperty("type")]
-        public string? Type { get; set; }
+        public string? LinkType { get; set; }
 
         [JsonProperty("sizes")]
         public string? Sizes { get; set; }

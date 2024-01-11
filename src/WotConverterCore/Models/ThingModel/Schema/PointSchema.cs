@@ -4,7 +4,7 @@
     {
         public PointSchema()
         {
-            Type = TypeEnum.Point;
+            Ref = TypeEnum.Point.ToString();
         }
     }
 }
