@@ -42,6 +42,8 @@ namespace WotConverterDTDL.Converters
 
                 CreateTMSubmodels(ref tm, dtdl, p);
 
+                CreateTMExtensions(ref tm, dtdl, p);
+
                 return tm;
             }
             catch (Exception ex)
@@ -260,7 +262,6 @@ namespace WotConverterDTDL.Converters
 
             foreach (var component in dtdlComponents)
             {
-                Console.WriteLine("submodels");                
                 var castedComponent = (DTDLComponent)component;
 
                 Link tmLink = new()
@@ -278,7 +279,35 @@ namespace WotConverterDTDL.Converters
             }
 
         }
-        
+
+        private static void CreateTMExtensions(ref TM tm, DTDL dtdl, IConversionParameters? parameters = null)
+        {
+            if (dtdl.Extends == null) {
+                return;
+            }
+
+            if (dtdl.Extends.isString())
+            {
+                Link tmLink = new()
+                {
+                    Rel = "tm:extends",
+                    Href = dtdl.Extends.String
+                };
+
+                tm.AddLink(tmLink);
+            }
+
+            foreach (var extension in dtdl.Extends.Array)
+            {
+                Link tmLink = new()
+                {
+                    Rel = "tm:extends",
+                    Href = extension
+                };
+                tm.AddLink(tmLink);
+            }
+        }
+
 
         private static BaseDataSchema? GetTMSchema(DTDLBaseSchema? schema)
         {
