@@ -285,6 +285,7 @@ namespace WotConverterDTDL.Converters
             if (dtdl.Extends == null) {
                 return;
             }
+            
 
             if (dtdl.Extends.isString())
             {
@@ -295,6 +296,7 @@ namespace WotConverterDTDL.Converters
                 };
 
                 tm.AddLink(tmLink);
+                return;
             }
 
             foreach (var extension in dtdl.Extends.Array)
